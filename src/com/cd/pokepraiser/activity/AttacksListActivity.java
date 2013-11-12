@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ListView;
 
+import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.adapter.AttackInfoArrayAdapter;
 import com.cd.pokepraiser.data.AttackInfo;
@@ -18,7 +19,7 @@ public class AttacksListActivity extends PokepraiserActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attackslist_screen);
         
-        attacksDataSource = new AttacksDataSource(this);
+        attacksDataSource = new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
         
         attacksDataSource.open();
         AttackInfo[] theAttacks = attacksDataSource.getAttackInfoList();
@@ -26,7 +27,7 @@ public class AttacksListActivity extends PokepraiserActivity {
         
         ListView attacksListContent = (ListView)findViewById(R.id.attacksList);
         
-        AttackInfoArrayAdapter adapter = new AttackInfoArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, theAttacks);
+        AttackInfoArrayAdapter adapter = new AttackInfoArrayAdapter(this, android.R.layout.simple_list_item_1, theAttacks);
         attacksListContent.setAdapter(adapter);
     }	
     

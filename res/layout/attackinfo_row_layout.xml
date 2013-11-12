@@ -10,7 +10,7 @@
         android:layout_weight="1"     
         android:gravity="left|center_vertical"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
     
     <TextView
         android:id="@+id/basePower"
@@ -19,7 +19,7 @@
         android:layout_weight="0"        
 		android:gravity="right|center_vertical"        
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="20sp" />    
+        android:textSize="12sp" />    
 
     <TextView
         android:id="@+id/baseAccuracy"
@@ -28,7 +28,7 @@
         android:layout_weight="0"        
 		android:gravity="right|center_vertical"        
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="20sp" />    
+        android:textSize="12sp" />    
         
     <TextView
         android:id="@+id/basePP"
@@ -37,6 +37,6 @@
         android:layout_weight="0"        
 		android:gravity="right|center_vertical"        
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="20sp" />    
+        android:textSize="12sp" />    
     
 </LinearLayout>

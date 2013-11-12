@@ -3,9 +3,9 @@ package com.cd.pokepraiser.data;
 public class AttackInfo {
 	private String name;
 	private String type;
-	private Integer basePower;
-	private Integer baseAccuracy;
-	private Integer basePp;
+	private String basePower;
+	private String baseAccuracy;
+	private String basePp;
 	
 	public String getName() {
 		return name;
@@ -19,22 +19,22 @@ public class AttackInfo {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Integer getBasePower() {
+	public String getBasePower() {
 		return basePower;
 	}
-	public void setBasePower(Integer basePower) {
+	public void setBasePower(String basePower) {
 		this.basePower = basePower;
 	}
-	public Integer getBaseAccuracy() {
+	public String getBaseAccuracy() {
 		return baseAccuracy;
 	}
-	public void setBaseAccuracy(Integer baseAccuracy) {
+	public void setBaseAccuracy(String baseAccuracy) {
 		this.baseAccuracy = baseAccuracy;
 	}
-	public Integer getBasePp() {
+	public String getBasePp() {
 		return basePp;
 	}
-	public void setBasePp(Integer basePp) {
+	public void setBasePp(String basePp) {
 		this.basePp = basePp;
 	}
 	@Override

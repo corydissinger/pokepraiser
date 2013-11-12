@@ -1,20 +1,19 @@
 package com.cd.pokepraiser.db.attacks;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.cd.pokepraiser.data.AttackInfo;
-import com.cd.pokepraiser.db.DataBaseHelper;
+import com.cd.pokepraiser.db.DatabaseHelper;
 
 public class AttacksDataSource {
 	
 	private SQLiteDatabase db;
-	private DataBaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 	
-	public AttacksDataSource(Context context){
-		this.dbHelper = new DataBaseHelper(context);
+	public AttacksDataSource(DatabaseHelper dbHelper){
+		this.dbHelper = dbHelper;
 	}
 	
 	public void open() throws SQLException {
@@ -31,10 +30,9 @@ public class AttacksDataSource {
 		final AttackInfo [] attackInfoList = new AttackInfo[cursor.getCount()];
 		int i = 0;
 		
-		while(!cursor.isAfterLast()){
+		while(cursor.moveToNext()){
 			final AttackInfo attack = cursorToAttackInfo(cursor);
 			attackInfoList[i++] = attack;
-			cursor.moveToNext();
 		}
 		
 		cursor.close();
@@ -45,9 +43,9 @@ public class AttacksDataSource {
 		final AttackInfo attack = new AttackInfo();
 		attack.setName(cursor.getString(0));
 		attack.setType(cursor.getString(1));
-		attack.setBasePower(cursor.getInt(2));
-		attack.setBaseAccuracy(cursor.getInt(3));
-		attack.setBasePp(cursor.getInt(4));
+		attack.setBasePower(Integer.toString(cursor.getInt(2)));
+		attack.setBaseAccuracy(Integer.toString(cursor.getInt(3)));
+		attack.setBasePp(Integer.toString(cursor.getInt(4)));
 		return attack;
 	}
 }

@@ -2,31 +2,33 @@ package com.cd.pokepraiser;
 
 import java.io.IOException;
 
-import com.cd.pokepraiser.db.DataBaseHelper;
-import com.cd.pokepraiser.db.attacks.AttacksDataSource;
-
 import android.app.Application;
+
+import com.cd.pokepraiser.db.DatabaseHelper;
 
 public class PokepraiserApplication extends Application {
 
-	private DataBaseHelper dbHelper;
+	private DatabaseHelper dbHelper;
 	
 	public void loadResources(){
-		dbHelper = new DataBaseHelper(this);
+		dbHelper = new DatabaseHelper(this);
 		
 		try {
-			dbHelper.createDataBase();
+			dbHelper.initializeDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new Error("Unable to create database for PokePraiser");
 		}
 		
-		dbHelper.openDataBase();
 	}
 	
 	public void closeResources(){
 		if(dbHelper != null)
 			dbHelper.close();
+	}
+	
+	public DatabaseHelper getDatabaseReference(){
+		return dbHelper;
 	}
 	
 }
