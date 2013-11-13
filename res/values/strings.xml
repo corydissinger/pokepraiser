@@ -8,5 +8,7 @@
     <string name="please_wait">Please wait a moment...</string>
     <string name="main_menu">Main Menu</string>
     <string name="all_attacks">All Attacks</string>
+    <string name="battle_desc_header">Battle Effect:</string>
+    <string name="secondary_desc_header">Secondary Effect:</string>
 
 </resources>

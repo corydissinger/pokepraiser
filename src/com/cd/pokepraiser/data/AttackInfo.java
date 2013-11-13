@@ -6,6 +6,8 @@ public class AttackInfo {
 	private String basePower;
 	private String baseAccuracy;
 	private String basePp;
+	private int categoryDrawableId; 
+	private int attackDbId;
 	
 	public String getName() {
 		return name;
@@ -37,10 +39,16 @@ public class AttackInfo {
 	public void setBasePp(String basePp) {
 		this.basePp = basePp;
 	}
-	@Override
-	public String toString() {
-		return "AttackInfo [name=" + name + ", type=" + type + ", basePower="
-				+ basePower + ", baseAccuracy=" + baseAccuracy + ", basePp="
-				+ basePp + "]";
+	public int getCategoryDrawableId() {
+		return categoryDrawableId;
+	}
+	public void setCategoryDrawableId(int categoryDrawableId) {
+		this.categoryDrawableId = categoryDrawableId;
+	}
+	public int getAttackDbId() {
+		return attackDbId;
+	}
+	public void setAttackDbId(int attackDbId) {
+		this.attackDbId = attackDbId;
 	}
 }

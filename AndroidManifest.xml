@@ -26,16 +26,22 @@
         </activity>
 
         <activity
-            android:name="com.cd.pokepraiser.activity.AttacksListActivity"
-            android:label="@string/app_name" >
-            
-        </activity>   
-
-        <activity
             android:name="com.cd.pokepraiser.activity.MainMenuScreenActiviy"
             android:label="@string/app_name" >
             
         </activity>        
+        
+        <activity
+            android:name="com.cd.pokepraiser.activity.AttacksListActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        
+        <activity
+            android:name="com.cd.pokepraiser.activity.AttacksDetailActivity"
+            android:label="@string/app_name" >
+            
+        </activity>           
         
     </application>
 

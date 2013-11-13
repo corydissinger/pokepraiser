@@ -1,7 +1,11 @@
 package com.cd.pokepraiser.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.cd.pokepraiser.PokepraiserApplication;
@@ -9,6 +13,7 @@ import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.adapter.AttackInfoArrayAdapter;
 import com.cd.pokepraiser.data.AttackInfo;
 import com.cd.pokepraiser.db.attacks.AttacksDataSource;
+import com.cd.pokepraiser.util.ExtrasConstants;
 
 public class AttacksListActivity extends PokepraiserActivity {
 
@@ -29,6 +34,17 @@ public class AttacksListActivity extends PokepraiserActivity {
         
         AttackInfoArrayAdapter adapter = new AttackInfoArrayAdapter(this, android.R.layout.simple_list_item_1, theAttacks);
         attacksListContent.setAdapter(adapter);
+        
+        attacksListContent.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View clickedView, int position, long arg3) {
+				final AttackInfo attackItem = (AttackInfo) parent.getItemAtPosition(position);
+				
+	        	Intent i = new Intent(AttacksListActivity.this, AttacksDetailActivity.class);
+        		i.putExtra(ExtrasConstants.ATTACK_ID, attackItem.getAttackDbId());
+				startActivity(i);
+			}
+        });
     }	
     
     @Override
