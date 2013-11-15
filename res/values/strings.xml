@@ -8,7 +8,14 @@
     <string name="please_wait">Please wait a moment...</string>
     <string name="main_menu">Main Menu</string>
     <string name="all_attacks">All Attacks</string>
-    <string name="battle_desc_header">Battle Effect:</string>
-    <string name="secondary_desc_header">Secondary Effect:</string>
+    <string name="battle_desc_header">Battle Effect</string>
+    <string name="secondary_desc_header">Secondary Effect</string>
+    <string name="power">Power</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="pp">PP:</string>
+    <string name="effect_percent">Effect Rate:</string>
+    <string name="battle_effect_label">Battle Effect</string>
+    <string name="world_effect_label">World Effect</string>
+    <string name="all_abilities">All Abilities</string>
 
 </resources>

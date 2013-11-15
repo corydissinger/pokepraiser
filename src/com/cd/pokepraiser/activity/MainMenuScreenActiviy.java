@@ -17,6 +17,10 @@ public class MainMenuScreenActiviy extends PokepraiserActivity {
     public void openAttacksList(View v){
         Intent i = new Intent(MainMenuScreenActiviy.this, AttacksListActivity.class);
         startActivity(i);
-        finish();    	
     }
+    
+    public void openAbilitiesList(View v){
+        Intent i = new Intent(MainMenuScreenActiviy.this, AbilitiesListActivity.class);
+        startActivity(i);
+    }    
 }

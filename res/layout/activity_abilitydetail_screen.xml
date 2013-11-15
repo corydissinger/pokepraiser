@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/attackDetailLayout"
+       	android:layout_height="wrap_content"
+       	android:layout_width="fill_parent"
+       	android:orientation="vertical">
+       	
+	    <TextView
+	        android:id="@+id/abilityName"
+	        android:layout_marginLeft="10sp"
+			android:layout_marginRight="10sp"
+	        android:layout_marginTop="5sp"			
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textSize="30sp" />
+	
+	    <LinearLayout
+	        android:id="@+id/battleLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10sp" >
+	        
+		    <TextView
+		        android:id="@+id/battleEffectLabel"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="3"
+		        android:gravity="right|center_vertical"
+	        	android:text="@string/battle_effect_label"		        
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="25sp" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/battleEffect"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="3"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="25sp" />		    	        
+	        
+        </LinearLayout>
+
+	    <LinearLayout
+	        android:id="@+id/worldLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+	        
+		    <TextView
+		        android:id="@+id/worldEffectLabel"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="3"
+		        android:gravity="right|center_vertical"
+	        	android:text="@string/world_effect_label"		        
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="25sp" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/worldEffect"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="3"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="25sp" />		    	        
+	        
+        </LinearLayout>	    
+	    		    
+	</LinearLayout>
+	
+</ScrollView>

@@ -75,7 +75,8 @@ public class AttacksDataSource {
 		attackDetail.setReflectable((cursor.getInt(14) == 1) ? true : false);
 		attackDetail.setBlockable((cursor.getInt(15) == 1) ? true : false);
 		attackDetail.setMirrorable((cursor.getInt(16) == 1) ? true : false);
-		attackDetail.setPriority(cursor.getInt(17));		
+		attackDetail.setPriority(cursor.getInt(17));	
+		attackDetail.setEffectPct(cursor.getInt(18));
 		
 		cursor.close();
 		return attackDetail;
