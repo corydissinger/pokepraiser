@@ -5,15 +5,15 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:minSdkVersion="7"
+        android:targetSdkVersion="18" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:name="com.cd.pokepraiser.PokepraiserApplication"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.PokepraiserTheme" >
         
         <activity
             android:name="com.cd.pokepraiser.activity.LoadingScreenActivity"
@@ -27,6 +27,18 @@
 
         <activity
             android:name="com.cd.pokepraiser.activity.MainMenuScreenActiviy"
+            android:label="@string/app_name" >
+            
+        </activity>        
+
+        <activity
+            android:name="com.cd.pokepraiser.activity.AbilitiesListActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        
+        <activity
+            android:name="com.cd.pokepraiser.activity.AbilityDetailActivity"
             android:label="@string/app_name" >
             
         </activity>        
@@ -44,13 +56,13 @@
         </activity>           
         
         <activity
-            android:name="com.cd.pokepraiser.activity.AbilitiesListActivity"
+            android:name="com.cd.pokepraiser.activity.PokemonListActivity"
             android:label="@string/app_name" >
             
         </activity>
         
         <activity
-            android:name="com.cd.pokepraiser.activity.AbilityDetailActivity"
+            android:name="com.cd.pokepraiser.activity.PokemonDetailActivity"
             android:label="@string/app_name" >
             
         </activity>        

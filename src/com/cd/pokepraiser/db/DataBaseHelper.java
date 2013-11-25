@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.util.FileHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -19,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static String DB_PATH 			= DB_DIR + DB_NAME;
 	private static String OLD_DB_PATH 		= DB_DIR + "old_" + DB_NAME;
 
-	private static final int DB_VERSION		= 1;
+	private static final int DB_VERSION		= 3;
 	
 	private final Context myContext;
 	

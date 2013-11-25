@@ -10,12 +10,20 @@
     <string name="all_attacks">All Attacks</string>
     <string name="battle_desc_header">Battle Effect</string>
     <string name="secondary_desc_header">Secondary Effect</string>
-    <string name="power">Power</string>
+    <string name="power">Power:</string>
     <string name="accuracy">Accuracy:</string>
     <string name="pp">PP:</string>
     <string name="effect_percent">Effect Rate:</string>
     <string name="battle_effect_label">Battle Effect</string>
     <string name="world_effect_label">World Effect</string>
     <string name="all_abilities">All Abilities</string>
+    <string name="all_pokemon">All Pokemon</string>
+    <string name="teambuilder">Teambuilder</string>
+    <string name="search">Search</string>
+    <string name="hidden_ability">Hidden Ability</string>
+    <string name="search_pokemon">Search Pokemon...</string>
+    <string name="search_attacks">Search Attacks...</string>
+    <string name="search_abilities">Search Abilities...</string>
+    <string name="learned_by">Learned By</string>
 
 </resources>

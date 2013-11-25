@@ -11,7 +11,7 @@ public class MainMenuScreenActiviy extends PokepraiserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mainmenu_screen);
+        setContentView(R.layout.main_menu_screen);
     }	
 	
     public void openAttacksList(View v){
@@ -23,4 +23,9 @@ public class MainMenuScreenActiviy extends PokepraiserActivity {
         Intent i = new Intent(MainMenuScreenActiviy.this, AbilitiesListActivity.class);
         startActivity(i);
     }    
+    
+    public void openPokemonList(View v){
+        Intent i = new Intent(MainMenuScreenActiviy.this, PokemonListActivity.class);
+        startActivity(i);    	
+    }
 }

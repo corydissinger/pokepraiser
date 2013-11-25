@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 
@@ -12,7 +13,9 @@ public class LoadingScreenActivity extends PokepraiserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading_screen);
+        setContentView(R.layout.loading_screen);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();        
         
         new PrefetchData().execute();
     }

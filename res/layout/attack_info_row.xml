@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"         
+        android:paddingTop="20sp"
+        android:paddingBottom="20sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp" >
+        
+	    <TextView
+	        android:id="@+id/attackName"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="7"     
+	        android:gravity="center"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textSize="14sp" />
+	    
+		<ImageView
+		    android:id="@+id/attackCategory"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center"
+	        android:layout_weight="1" />    
+	    
+		<LinearLayout
+		    android:layout_width="0dip"
+		    android:layout_height="match_parent"
+		    android:layout_weight="4"
+		    android:gravity="center">
+		    
+		    <TextView
+		        android:id="@+id/basePower"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+				android:gravity="center"        
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textSize="12sp" />    
+		
+		    <TextView
+		        android:id="@+id/baseAccuracy"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+				android:gravity="center"        
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textSize="12sp" 
+		        android:paddingLeft="10sp"/>    
+		        
+		    <TextView
+		        android:id="@+id/basePP"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+				android:gravity="center"        
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textSize="12sp" 
+		        android:paddingLeft="10sp" />
+
+		</LinearLayout>
+				    		        
+	</LinearLayout>
+	    
+</LinearLayout>
