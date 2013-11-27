@@ -78,8 +78,10 @@ public class PokemonDataSource {
 		pokemonDetail.setEggOne(cursor.getInt(14));
 		pokemonDetail.setEggTwo(cursor.getInt(15));
 
-		final int imgDrawableId 		= resources.getIdentifier(cursor.getString(16), "drawable", "com.cd.pokepraiser");
-		final int icnDrawableId 		= resources.getIdentifier(cursor.getString(17), "drawable", "com.cd.pokepraiser");		
+		final int imgDrawableId 		= resources.getIdentifier("p" + cursor.getString(16), "drawable", "com.cd.pokepraiser");
+		
+		final String safeResourceName	= cursor.getString(17).replace("-", "_");		
+		final int icnDrawableId 		= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");		
 		
 		pokemonDetail.setImgDrawable(imgDrawableId);
 		pokemonDetail.setIconDrawable(icnDrawableId);		

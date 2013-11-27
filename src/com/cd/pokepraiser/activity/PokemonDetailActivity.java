@@ -49,15 +49,30 @@ public class PokemonDetailActivity extends PokepraiserActivity {
         TextView dexNo		 		= (TextView) findViewById(R.id.dexNo);
         TextView pokemonName		= (TextView) findViewById(R.id.pokemonName);
         
+        ImageView pokemonPicture	= (ImageView) findViewById(R.id.pokemonPicture);
+        
         ImageView typeOne			= (ImageView) findViewById(R.id.typeOne);
         ImageView typeTwo			= (ImageView) findViewById(R.id.typeTwo);        
 
+        TextView abilityLabel		= (TextView) findViewById(R.id.abilityLabel);        
+        TextView abilityOneLabel	= (TextView) findViewById(R.id.abilityOneLabel);        
+        TextView abilityTwoLabel	= (TextView) findViewById(R.id.abilityTwoLabel);        
+        TextView abilityHiddenLabel	= (TextView) findViewById(R.id.abilityHiddenLabel);
         TextView abilityOne			= (TextView) findViewById(R.id.abilityOne);
         TextView abilityTwo			= (TextView) findViewById(R.id.abilityTwo);        
         TextView abilityHidden		= (TextView) findViewById(R.id.abilityHidden);        
         
+        TextView hpLabel			= (TextView) findViewById(R.id.baseHpLabel);
+        TextView atkLabel			= (TextView) findViewById(R.id.baseAtkLabel);
+        TextView defLabel			= (TextView) findViewById(R.id.baseDefLabel);
+        TextView spatkLabel			= (TextView) findViewById(R.id.baseSpatkLabel);
+        TextView spdefLabel			= (TextView) findViewById(R.id.baseSpdefLabel);
+        TextView speLabel			= (TextView) findViewById(R.id.baseSpeLabel);        
+        
         dexNo.setText(Integer.toString(pokemonDetail.getDexNo()));
         pokemonName.setText(pokemonDetail.getName());
+        
+        pokemonPicture.setImageResource(pokemonDetail.getImgDrawable());
         
         //Make the type images and draw them
         typeOne.setImageResource(TypeUtils.getTypeDrawableId(pokemonDetail.getTypeOne()));
@@ -67,7 +82,6 @@ public class PokemonDetailActivity extends PokepraiserActivity {
         }
         
         //Make the ability names
-        
         abilityOne.setText(pokemonAbilities[0].getName());
 
         if(pokemonAbilities.length == 1){
@@ -89,11 +103,22 @@ public class PokemonDetailActivity extends PokepraiserActivity {
             
         }
         
+        //Apply typeface
 		((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{dexNo,
 																				pokemonName,
+																				abilityLabel,
 																				abilityOne,
 																				abilityTwo,
-																				abilityHidden
+																				abilityHidden,
+																				abilityOneLabel,
+																				abilityTwoLabel,																			
+																				abilityHiddenLabel,
+																				hpLabel,
+																				atkLabel,
+																				defLabel,
+																				spatkLabel,
+																				spdefLabel,
+																				speLabel
 																				});
     }
     

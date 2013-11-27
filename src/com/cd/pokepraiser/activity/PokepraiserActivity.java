@@ -14,14 +14,6 @@ public class PokepraiserActivity extends SherlockActivity {
 
     //protected void onStart();
     
-    //protected void onRestart();
-
-    //protected void onResume();
-
-    //protected void onPause();
-
-    //protected void onStop();
-
     protected void onDestroy(){
     	((PokepraiserApplication)getApplication()).closeResources();
     	super.onDestroy();    	

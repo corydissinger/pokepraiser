@@ -20,10 +20,19 @@
     <string name="all_pokemon">All Pokemon</string>
     <string name="teambuilder">Teambuilder</string>
     <string name="search">Search</string>
-    <string name="hidden_ability">Hidden Ability</string>
+    <string name="ability_label">Abilities</string>    
+    <string name="first_ability">First:</string>
+    <string name="second_ability">Second:</string>        
+    <string name="hidden_ability">Hidden:</string>
     <string name="search_pokemon">Search Pokemon...</string>
     <string name="search_attacks">Search Attacks...</string>
     <string name="search_abilities">Search Abilities...</string>
     <string name="learned_by">Learned By</string>
+    <string name="hp_label">HP:</string>    
+    <string name="attack_label">ATK:</string>
+    <string name="defense_label">DEF:</string>
+    <string name="special_attack_label">SP. ATK:</string>
+    <string name="special_defense_label">SP. DEF:</string>
+    <string name="speed_label">SPEED:</string>    
 
 </resources>

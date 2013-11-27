@@ -14,23 +14,35 @@ public class PokepraiserApplication extends Application {
 	private Typeface datFont = null;
 	
 	public void loadResources(){
-		dbHelper = new DatabaseHelper(this);
-		
 		if(datFont == null)
 			datFont = Typeface.createFromAsset(getAssets(), "pokemon_gb_typeface.ttf");
+		
+		dbHelper = new DatabaseHelper(this);			
 		
 		try {
 			dbHelper.initializeDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new Error("Unable to create database for PokePraiser");
-		}
-		
+		}			
 	}
 	
 	public void closeResources(){
-		if(dbHelper != null)
+		if(dbHelper != null){
 			dbHelper.close();
+		}
+	}
+	
+	public boolean isDbOpen(){
+		if(dbHelper == null){
+			return false;
+		}else{
+			if(dbHelper.getReadableDatabase().isOpen()){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	}
 	
 	public DatabaseHelper getDatabaseReference(){
