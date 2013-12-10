@@ -8,16 +8,16 @@
         android:id="@+id/scrollableChild"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/dex_background"
+        android:padding="15sp">
     
 		    <LinearLayout 
 		        android:id="@+id/headerNameRow"
-		        android:layout_marginTop="10sp"
-		        android:layout_marginRight="50sp"		        
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="14sp"
-		        android:background="@color/medium_blue"
+		        android:background="@color/white"
 		        android:orientation="vertical">
 		
 			    <TextView
@@ -42,11 +42,13 @@
 		        
 		    </LinearLayout>
 
+			<include layout="@layout/horizontal_bar"/>
+		
 		    <LinearLayout		    
 		        android:baselineAligned="false"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_margin="10sp">
+		        android:background="@color/white" >
 
 				<ImageView
 				    android:id="@+id/pokemonPicture"
@@ -60,10 +62,9 @@
 			        android:gravity="center"
 			        android:layout_width="0dip"
 			        android:layout_weight="1"
-			        android:layout_height="wrap_content"
+			        android:layout_height="match_parent"
 		        	android:orientation="vertical"
-		        	android:layout_margin="20sp"
-		        	android:background="@color/light_gray" >
+		        	android:layout_margin="20sp" >
 		            
 					<ImageView
 					    android:id="@+id/typeOne"
@@ -89,14 +90,15 @@
 		        
 	        </LinearLayout>
 
+			<include layout="@layout/horizontal_fat_bar"/>
+		
 		    <LinearLayout 
 		        android:id="@+id/abilityBox"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:layout_margin="10sp"
 				android:padding="10sp"				
-				android:background="@color/light_gray" >			
+		        android:background="@color/white" >			
 					    
 		        <TextView 
 		        	android:id="@+id/abilityLabel"
@@ -108,21 +110,20 @@
 		        
 				<View
 		        	android:layout_width="0dp"			    
-			        android:layout_height="12sp"
+			        android:layout_height="20sp"
 			        android:visibility="invisible"/>		        
 		        
 			    <LinearLayout 
 			        android:id="@+id/abilityOneCell"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					android:weightSum="12" >		            
+					android:orientation="vertical" >		            
 	            		     
 				    <TextView
 				        android:id="@+id/abilityOneLabel"
-			            android:layout_width="0dip"
+			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="4"		        
+				        android:layout_marginLeft="40sp"		        
 				        android:gravity="right|center_vertical"
 				        android:textAppearance="?android:attr/textAppearanceLarge"
 				        android:textSize="12sp"
@@ -130,17 +131,18 @@
 				    
 					<View
 			        	android:layout_width="0sp"			    
-				        android:layout_height="0sp"
-				        android:layout_weight="1"
+				        android:layout_height="12sp"
 				        android:visibility="invisible"/>					    					    
 				        
 				    <Button
 				        android:id="@+id/abilityOne"
-			            android:layout_width="0dip"
+			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="7"		        
+			            android:layout_marginLeft="30sp"
+			            android:layout_marginRight="30sp"			            
 				        android:gravity="center"
-				        android:textSize="12sp"
+				        android:textSize="14sp"
+				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityOne" />						
 				    
@@ -148,21 +150,20 @@
 	            
 				<View
 		        	android:layout_width="0dp"			    
-			        android:layout_height="12sp"
+			        android:layout_height="10sp"
 			        android:visibility="invisible"/>		    
 			    
 			    <LinearLayout 
 			        android:id="@+id/abilityTwoCell"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-					android:orientation="horizontal" 
-					android:weightSum="12" >
+					android:orientation="vertical" >
 	
 				    <TextView
 				        android:id="@+id/abilityTwoLabel"
-			            android:layout_width="0dip"
+			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="4"			        
+				        android:layout_marginLeft="40sp"			        
 				        android:gravity="right|center_vertical"
 				        android:textAppearance="?android:attr/textAppearanceLarge"
 				        android:textSize="12sp"
@@ -170,17 +171,18 @@
 			        
 					<View
 			        	android:layout_width="0sp"			    
-				        android:layout_height="0sp"
-				        android:layout_weight="1"
+				        android:layout_height="12sp"
 				        android:visibility="invisible"/>
 	
 				    <Button
 				        android:id="@+id/abilityTwo"
-			            android:layout_width="0dip"
+			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="7"			        
+			            android:layout_marginLeft="30sp"
+			            android:layout_marginRight="30sp"			        
 				        android:gravity="center"
-				        android:textSize="12sp"
+				        android:textSize="14sp"
+				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityTwo" />			
 			        				        
@@ -188,38 +190,39 @@
 	
 				<View
 		        	android:layout_width="0dp"			    
-			        android:layout_height="12sp"
+			        android:layout_height="10sp"
 			        android:visibility="invisible"/>				    
 			    
 			    <LinearLayout 
 			        android:id="@+id/abilityHiddenCell"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
-					android:orientation="horizontal" 
+					android:orientation="vertical" 
 					android:weightSum="12">				    
 	
 				    <TextView
 				        android:id="@+id/abilityHiddenLabel"
-			            android:layout_width="0dip"
+			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="4"		            		        
+				        android:layout_marginLeft="40sp"		            		        
 				        android:gravity="right|center_vertical"
 				        android:text="@string/hidden_ability"
 				        android:textSize="12sp"  />					
 					
 					<View
 			        	android:layout_width="0sp"			    
-				        android:layout_height="0sp"
-				        android:layout_weight="1"
+				        android:layout_height="12sp"
 				        android:visibility="invisible"/>
 	
 				    <Button
 				        android:id="@+id/abilityHidden"
-			            android:layout_width="0dip"
+			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
-				        android:layout_weight="7"			            		        
+			            android:layout_marginLeft="30sp"
+			            android:layout_marginRight="30sp"		            		        
 				        android:gravity="center"
-				        android:textSize="12sp" 
+				        android:textSize="14sp" 
+				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityHidden" />				        
 				        
@@ -227,37 +230,60 @@
 
 		</LinearLayout>
 		
+		<include layout="@layout/horizontal_fat_bar"/>
+		
 	    <LinearLayout
 			android:id="@+id/hpRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
-	        
-		    <TextView
-		        android:id="@+id/baseHpLabel"
-	        	android:text="@string/hp_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	        	        			        
-				style="@style/statAttributeLabel" />
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white" >
+			    
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseHpLabel"
+		        	android:text="@string/hp_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseHp"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>	   	        
 		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
+		        android:layout_height="10dp"
 		        android:visibility="invisible"/>		    
 		    
 			<ProgressBar
 			    android:id="@+id/baseHpBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_green" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>			    
 			    	   
@@ -265,33 +291,54 @@
 			android:id="@+id/atkRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
-	        
-		    <TextView
-		        android:id="@+id/baseAtkLabel"
-	        	android:text="@string/attack_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	        	        			        
-				style="@style/statAttributeLabel" />
+			android:padding="10sp" 
+			android:orientation="vertical" 
+			android:background="@color/white">
+
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseAtkLabel"
+		        	android:text="@string/attack_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseAtk"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>	   	        
 		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
+		        android:layout_height="10dp"
 		        android:visibility="invisible"/>		    
 		    
 			<ProgressBar
 			    android:id="@+id/baseAtkBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_red" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>
 	    
@@ -299,33 +346,54 @@
 			android:id="@+id/defRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
-	        
-		    <TextView
-		        android:id="@+id/baseDefLabel"
-	        	android:text="@string/defense_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	        	        			        
-				style="@style/statAttributeLabel" />
+			android:padding="10sp"
+			android:orientation="vertical"
+			android:background="@color/white" >
+
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseDefLabel"
+		        	android:text="@string/defense_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseDef"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>	   	        
 		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
-		        android:visibility="invisible"/>		    
-		    
+		        android:layout_height="10dp"
+		        android:visibility="invisible"/>	        
+	        
 			<ProgressBar
 			    android:id="@+id/baseDefBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_light_green" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>
 	    
@@ -333,33 +401,54 @@
 			android:id="@+id/spatkRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
+			android:padding="10sp"
+			android:orientation="vertical"
+ 			android:background="@color/white" >
 	        
-		    <TextView
-		        android:id="@+id/baseSpatkLabel"
-	        	android:text="@string/special_attack_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	        	        			        
-				style="@style/statAttributeLabel" />
-		    
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseSpatkLabel"
+		        	android:text="@string/special_attack_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseSpatk"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>			    		    
+		    		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
-		        android:visibility="invisible"/>		    
+		        android:layout_height="10dp"
+		        android:visibility="invisible"/>	        
 		    
 			<ProgressBar
 			    android:id="@+id/baseSpatkBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_light_red" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>
 	    
@@ -367,33 +456,54 @@
 			android:id="@+id/spdefRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
-	        
-		    <TextView
-		        android:id="@+id/baseSpdefLabel"
-	        	android:text="@string/special_defense_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	        	        			        
-				style="@style/statAttributeLabel" />
-		    
+			android:padding="10sp"
+			android:orientation="vertical"
+			android:background="@color/white" >
+
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseSpdefLabel"
+		        	android:text="@string/special_defense_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseSpdef"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>			    		    
+		    		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
+		        android:layout_height="10dp"
 		        android:visibility="invisible"/>		    
 		    
 			<ProgressBar
 			    android:id="@+id/baseSpdefBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"			    
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_yellow" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>
 	    
@@ -401,35 +511,362 @@
 			android:id="@+id/speRow"	        
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-			android:padding="10sp" >
-	        
-		    <TextView
-		        android:id="@+id/baseSpeLabel"
-	        	android:text="@string/speed_label"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"	        	
-		        android:layout_weight="4"	  
-		        style="@style/statAttributeLabel" />
-		    
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white" >
+
+	        <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:layout_marginLeft="20sp" >
+				    	        
+			    <TextView
+			        android:id="@+id/baseSpeLabel"
+		        	android:text="@string/speed_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        	        	
+					style="@style/statAttributeLabel" />
+	
+				<View
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_weight="1"
+			        android:visibility="invisible"/>			    
+			    
+			    <TextView
+			        android:id="@+id/baseSpe"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="3"			        
+			        android:gravity="left|center_vertical"
+			        android:textSize="14sp" />
+			    
+			</LinearLayout>			    		    
+		    		    
 			<View
 		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_weight="1"
-		        android:visibility="invisible"/>		    
+		        android:layout_height="10dp"
+		        android:visibility="invisible"/>			    
 		    
 			<ProgressBar
 			    android:id="@+id/baseSpeBar"
 			    style="@android:style/Widget.ProgressBar.Horizontal"
-			    android:layout_width="0dip"
-	        	android:layout_weight="7"		    
+			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20sp"
+			    android:layout_marginRight="20sp"
 			    android:indeterminate="false"
 			    android:maxHeight="10dip"
-			    android:minHeight="10dip"
-			    android:progress="50"
-			    android:progressDrawable="@drawable/progress_green" />	        
+			    android:minHeight="10dip" />	        
 	        
 	    </LinearLayout>
+
+   		<include layout="@layout/horizontal_fat_bar"/>	    
+	    
+	    <TextView
+			android:background="@color/white"	        
+	        android:id="@+id/learnedAttacksLabel"
+        	android:text="@string/learned_attacks_label"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:gravity="center"
+			android:padding="10sp"
+			android:textSize="22sp" />	    
+	    	    
+		<include layout="@layout/horizontal_bar"/>	    
+	    
+	    <LinearLayout
+			android:id="@+id/levelUpAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="0" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/levelUpAttacksLabel"
+		        	android:text="@string/level_up_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/levelUpAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/levelUpAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"		        
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>
+        
+		<include layout="@layout/horizontal_bar"/>	    
+	    
+		<LinearLayout
+			android:id="@+id/tmHmAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="1" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/tmHmAttacksLabel"
+		        	android:text="@string/tm_hm_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/tmHmAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/tmHmAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>	    	    
+        
+		<include layout="@layout/horizontal_bar"/>		
+		
+		<LinearLayout
+			android:id="@+id/eggAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="2" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/eggAttacksLabel"
+		        	android:text="@string/egg_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/eggAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/eggAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"		        
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>
+        
+		<include layout="@layout/horizontal_bar"/>		
+		
+		<LinearLayout
+			android:id="@+id/gvOnlyAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="3" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/gvOnlyAttacksLabel"
+		        	android:text="@string/gv_only_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/gvOnlyAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/gvOnlyAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"		        
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>	
+        
+		<include layout="@layout/horizontal_bar"/>		
+		
+		<LinearLayout
+			android:id="@+id/preEvoAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="4" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/preEvoAttacksLabel"
+		        	android:text="@string/pre_evo_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/preEvoAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/preEvoAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"		        
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>
+        
+		<include layout="@layout/horizontal_bar"/>
+		
+		<LinearLayout
+			android:id="@+id/moveTutorAttacks"	        
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:padding="10sp" 
+			android:orientation="vertical"
+			android:background="@color/white"
+			android:tag="5" >
+	        
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:layout_marginTop="10sp" >	        
+	        			
+			    <TextView
+			        android:id="@+id/moveTutorAttacksLabel"
+		        	android:text="@string/move_tutor_label"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="4"
+					android:gravity="center"
+					android:textSize="18sp" />
+			    
+			    <Button 
+			        android:id="@+id/moveTutorAttacksButton"
+					android:gravity="center"			        
+		        	android:text="@string/show"
+			        android:layout_width="0dip"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="2"
+					android:onClick="toggleAttackList"
+					android:textSize="12sp"	/>
+			    
+		    </LinearLayout>
+			    
+		    <LinearLayout 
+				android:id="@+id/moveTutorAttacksList"	        
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10sp"		        
+				android:orientation="vertical"
+				android:visibility="gone" >
+		        
+		    </LinearLayout>
+	        
+        </LinearLayout>					
 	    
 	</LinearLayout>		    
 		    

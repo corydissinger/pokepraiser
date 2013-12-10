@@ -1,18 +1,20 @@
 package com.cd.pokepraiser.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
+import com.cd.pokepraiser.data.AttackAttributes;
 import com.cd.pokepraiser.data.AttackDetail;
 import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
@@ -22,10 +24,12 @@ import com.cd.pokepraiser.util.TypeUtils;
 
 public class AttacksDetailActivity extends PokepraiserActivity {
 
+	private static final String ATTACK_DETAIL = "attackDetail";
+	
 	private AttacksDataSource attacksDataSource;
 	private PokemonDataSource pokemonDataSource;	
 	
-	private ArrayList<PokemonInfo> pokemonLearningAttack;
+	private AttackDetail mAttackDetail;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +39,29 @@ public class AttacksDetailActivity extends PokepraiserActivity {
         final Intent receivedIntent = getIntent();
         final int attackId			= receivedIntent.getIntExtra(ExtrasConstants.ATTACK_ID, 0);
         
-        attacksDataSource = new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-        pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+        AttackAttributes attackAttributes;
         
-        attacksDataSource.open();
-        final AttackDetail attackDetail = attacksDataSource.getAttackDetail(attackId);
-        attacksDataSource.close();
-
-        pokemonDataSource.open();
-
-        pokemonLearningAttack = pokemonDataSource.getPokemonLearningAttack(attackDetail.getAttackDbId(), getResources());
-        pokemonDataSource.close();        
+        if(savedInstanceState == null){
+        	List<PokemonInfo> pokemonLearningAttack;
+        	
+	        attacksDataSource = new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+	        pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+	        
+	        attacksDataSource.open();
+	        attackAttributes = attacksDataSource.getAttackDetail(attackId);
+	        attacksDataSource.close();
+	
+	        pokemonDataSource.open();
+	        pokemonLearningAttack = pokemonDataSource.getPokemonLearningAttack(attackAttributes.getAttackDbId(), getResources());
+	        pokemonDataSource.close();
+	        
+	        mAttackDetail = new AttackDetail();
+	        mAttackDetail.setAttackAttributes(attackAttributes);
+	        mAttackDetail.setPokemonLearningAttack(pokemonLearningAttack);
+    	}else{
+    		mAttackDetail = savedInstanceState.getParcelable(ATTACK_DETAIL);
+    		attackAttributes = mAttackDetail.getAttackAttributes();
+    	}
         
         TextView attackName		= (TextView) findViewById(R.id.attackName);
         TextView battleDesc 	= (TextView) findViewById(R.id.battleDesc);
@@ -64,23 +80,65 @@ public class AttacksDetailActivity extends PokepraiserActivity {
     	TextView effectPct 		= (TextView) findViewById(R.id.effectPct);        
 
     	TextView battleDescLabel	= (TextView) findViewById(R.id.battleDescLabel);
-    	TextView secondaryDescLabel	= (TextView) findViewById(R.id.secondaryDescLabel);    	
+    	TextView secondaryDescLabel	= (TextView) findViewById(R.id.secondaryDescLabel);
     	
+    	TextView contactLabel		= (TextView) findViewById(R.id.contactLabel);        
+    	TextView contact 			= (TextView) findViewById(R.id.contact);
     	
-        attackName.setText(attackDetail.getName());
-        battleDesc.setText(attackDetail.getBattleEffectDesc());
-        secondaryDesc.setText(attackDetail.getSecondaryEffectDesc());
+    	TextView soundLabel			= (TextView) findViewById(R.id.soundLabel);        
+    	TextView sound 				= (TextView) findViewById(R.id.sound);
+    	
+    	TextView punchLabel			= (TextView) findViewById(R.id.punchLabel);        
+    	TextView punch 				= (TextView) findViewById(R.id.punch);    	
+    	
+    	TextView snatchLabel			= (TextView) findViewById(R.id.snatchLabel);        
+    	TextView snatch 				= (TextView) findViewById(R.id.snatch);    	
+
+    	TextView gravityLabel			= (TextView) findViewById(R.id.gravityLabel);        
+    	TextView gravity 				= (TextView) findViewById(R.id.gravity);
+    	
+    	TextView defrostLabel			= (TextView) findViewById(R.id.defrostLabel);        
+    	TextView defrost 				= (TextView) findViewById(R.id.defrost);    
+    	
+    	TextView triplesLabel			= (TextView) findViewById(R.id.triplesLabel);        
+    	TextView triples 				= (TextView) findViewById(R.id.triples);
+    	
+    	TextView reflectedLabel			= (TextView) findViewById(R.id.reflectedLabel);        
+    	TextView reflected 				= (TextView) findViewById(R.id.reflected);
+    	
+    	TextView blockedLabel			= (TextView) findViewById(R.id.blockedLabel);        
+    	TextView blocked 				= (TextView) findViewById(R.id.blocked);
+    	
+    	TextView mirrorableLabel			= (TextView) findViewById(R.id.mirrorableLabel);        
+    	TextView mirrorable 				= (TextView) findViewById(R.id.mirrorable);    	
+    	
+    	TextView learnedBy			= (TextView) findViewById(R.id.learningLabel);
+    	
+        attackName.setText(attackAttributes.getName());
+        battleDesc.setText(attackAttributes.getBattleEffectDesc());
+        secondaryDesc.setText(attackAttributes.getSecondaryEffectDesc());
         
-    	power.setText(attackDetail.getBasePower());
-    	accuracy.setText(attackDetail.getBaseAccuracy());	
-        pp.setText(attackDetail.getBasePp());
+    	power.setText(attackAttributes.getBasePower());
+    	accuracy.setText(attackAttributes.getBaseAccuracy());	
+        pp.setText(attackAttributes.getBasePp());
         
-        if(attackDetail.getEffectPct() > 0){
-        	effectPct.setText(Integer.toString(attackDetail.getEffectPct()) + "%");
+        if(attackAttributes.getEffectPct() > 0){
+        	effectPct.setText(Integer.toString(attackAttributes.getEffectPct()) + "%");
         }else{
         	LinearLayout effectPctRow = (LinearLayout) findViewById(R.id.effectPctLayoutRow);
         	((LinearLayout)effectPctRow.getParent()).removeView(effectPctRow);
         }
+        
+        contact.setText(attackAttributes.isContacts() ? R.string.yes : R.string.no);
+        sound.setText(attackAttributes.isSound() ? R.string.yes : R.string.no);
+        punch.setText(attackAttributes.isPunch() ? R.string.yes : R.string.no);
+        snatch.setText(attackAttributes.isSnatchable() ? R.string.yes : R.string.no);
+        gravity.setText(attackAttributes.isGravity() ? R.string.yes : R.string.no);
+        defrost.setText(attackAttributes.isDefrosts() ? R.string.yes : R.string.no);
+        triples.setText(attackAttributes.isHitsOpponentTriples() ? R.string.yes : R.string.no);
+        reflected.setText(attackAttributes.isReflectable() ? R.string.yes : R.string.no);
+        blocked.setText(attackAttributes.isBlockable() ? R.string.yes : R.string.no);
+        mirrorable.setText(attackAttributes.isMirrorable() ? R.string.yes : R.string.no);
         
         ((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{attackName,
         																		battleDescLabel,
@@ -94,16 +152,44 @@ public class AttacksDetailActivity extends PokepraiserActivity {
         																		ppLabel,
         																		pp,
         																		effectPctLabel,
-        																		effectPct});
+        																		effectPct,
+        																		learnedBy,
+        																		contact,
+        																		contactLabel,
+        																		sound,
+        																		soundLabel,
+        																		punch,
+        																		punchLabel,
+        																		snatch,
+        																		snatchLabel,
+        																		gravity,
+        																		gravityLabel,
+        																		defrost,
+        																		defrostLabel,
+        																		triples,
+        																		triplesLabel,
+        																		reflected,
+        																		reflectedLabel,
+        																		blocked,
+        																		blockedLabel,
+        																		mirrorable,
+        																		mirrorableLabel});
         
         buildPokemonList();
     }
     
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+    	savedInstanceState.putParcelable(ATTACK_DETAIL, mAttackDetail);
+    	
+    	super.onSaveInstanceState(savedInstanceState);
+    }    
+    
 	public void buildPokemonList(){
-        LinearLayout attackScrollable = (LinearLayout) findViewById(R.id.attackScrollable);
+        LinearLayout learningList = (LinearLayout) findViewById(R.id.learningList);
 		
-		for(int i = 0; i < pokemonLearningAttack.size(); i++){
-			final PokemonInfo thePokemon = pokemonLearningAttack.get(i);
+		for(int i = 0; i < mAttackDetail.getPokemonLearningAttack().size(); i++){
+			final PokemonInfo thePokemon = mAttackDetail.getPokemonLearningAttack().get(i);
 			
 			LayoutInflater inflater = getLayoutInflater();
 			View view 				= inflater.inflate(R.layout.pokemon_info_row, null);
@@ -128,12 +214,6 @@ public class AttacksDetailActivity extends PokepraiserActivity {
 		    	typeCell.removeView(findViewById(R.id.typeSpacer));
 				typeCell.removeView(typeTwo);			
 			}
-		
-			if(i % 2 == 0){
-				view.setBackgroundResource(R.drawable.dark_gray_background);
-			}else{
-				view.setBackgroundResource(R.drawable.gray_background);			
-			}
 			
 			((PokepraiserApplication)getApplication()).applyTypeface(pokemonName);
 			((PokepraiserApplication)getApplication()).applyTypeface(dexNo);
@@ -151,13 +231,8 @@ public class AttacksDetailActivity extends PokepraiserActivity {
 			dexNo.setTextColor(theColor);
 			pokemonName.setTextColor(theColor);
 			
-			attackScrollable.addView(view);
+			learningList.addView(view);
 		}
 	}    
-    
-    @Override
-	public void onBackPressed(){
-    	finish();
-    }
 	
 }

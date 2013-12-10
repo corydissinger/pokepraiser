@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.cd.pokepraiser.data.AttackDetail;
+import com.cd.pokepraiser.data.AttackAttributes;
 import com.cd.pokepraiser.data.AttackInfo;
+import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.db.DatabaseHelper;
 import com.cd.pokepraiser.db.queries.AttacksQueries;
 import com.cd.pokepraiser.db.util.AttacksHelper;
+import com.cd.pokepraiser.util.TypeUtils;
 
 public class AttacksDataSource {
 	
@@ -52,13 +54,14 @@ public class AttacksDataSource {
 		attack.setBasePp(Integer.toString(cursor.getInt(4)));
 		attack.setCategoryDrawableId(AttacksHelper.getCategoryDrawableResource(cursor.getInt(5)));
 		attack.setAttackDbId(cursor.getInt(6));
+		attack.setTypeDrawableId(TypeUtils.getTypeDrawableId(cursor.getInt(7)));		
 		return attack;
 	}	
 	
-	public AttackDetail getAttackDetail(int attackDbId){
+	public AttackAttributes getAttackDetail(int attackDbId){
 		Cursor cursor = db.rawQuery(AttacksQueries.GET_ATTACK_DETAIL, new String [] { Integer.toString(attackDbId) });
 
-		final AttackDetail attackDetail = new AttackDetail();
+		final AttackAttributes attackDetail = new AttackAttributes();
 		cursor.moveToFirst();
 		
 		attackDetail.setName(cursor.getString(0));
@@ -85,5 +88,39 @@ public class AttacksDataSource {
 		cursor.close();
 		return attackDetail;
 	}
+	
+	public ArrayList<PokemonAttackInfo> getPokemonAttackInfoList(int dexNo, int altForm){
+		Cursor cursor = db.rawQuery(AttacksQueries.GET_ALL_LEARNED_ATTACKS_ONE +
+				 					Integer.toString(dexNo) +
+			 						AttacksQueries.GET_ALL_LEARNED_ATTACKS_TWO +
+			 						Integer.toString(altForm) +
+			 						AttacksQueries.GET_ALL_LEARNED_ATTACKS_THREE, null);
+
+		final ArrayList<PokemonAttackInfo> attackInfoList = new ArrayList<PokemonAttackInfo>(cursor.getCount());
+		
+		while(cursor.moveToNext()){
+			final PokemonAttackInfo attack = cursorToPokemonAttackInfo(cursor);
+			attackInfoList.add(attack);
+		}
+		
+		cursor.close();
+		return attackInfoList;
+	}
+	
+	private PokemonAttackInfo cursorToPokemonAttackInfo(Cursor cursor){
+		final PokemonAttackInfo attack = new PokemonAttackInfo();
+		
+		attack.setAttackDbId(cursor.getInt(0));		
+		attack.setName(cursor.getString(1));
+		attack.setTypeDrawableId(TypeUtils.getTypeDrawableId(cursor.getInt(2)));
+		attack.setBasePower(Integer.toString(cursor.getInt(3)));
+		attack.setBaseAccuracy(Integer.toString(cursor.getInt(4)));
+		attack.setBasePp(Integer.toString(cursor.getInt(5)));
+		attack.setCategoryDrawableId(AttacksHelper.getCategoryDrawableResource(cursor.getInt(6)));
+		attack.setLearnedType(cursor.getInt(7));
+		attack.setLvlOrTm(cursor.getInt(8));		
+		
+		return attack;
+	}	
 
 }

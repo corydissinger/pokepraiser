@@ -1,12 +1,14 @@
 package com.cd.pokepraiser.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
+import com.cd.pokepraiser.data.AbilityAttributes;
 import com.cd.pokepraiser.data.AbilityDetail;
 import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
@@ -23,10 +26,12 @@ import com.cd.pokepraiser.util.TypeUtils;
 
 public class AbilityDetailActivity extends PokepraiserActivity {
 
+	private static final String ABILITY_DETAIL	= "abilityDetail";
+	
 	private AbilitiesDataSource abilitiesDataSource;
 	private PokemonDataSource pokemonDataSource;
 
-    private ArrayList<PokemonInfo> pokemonLearningAbility;	
+	private AbilityDetail mAbilityDetail;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +40,31 @@ public class AbilityDetailActivity extends PokepraiserActivity {
         
         final Intent receivedIntent = getIntent();
         final int abilityId			= receivedIntent.getIntExtra(ExtrasConstants.ABILITY_ID, 0);        
+
+    	AbilityAttributes abilityAttributes;
         
-        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-        pokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-        
-        abilitiesDataSource.open();
-        final AbilityDetail abilityDetail = abilitiesDataSource.getAbilityDetail(abilityId);
-        abilitiesDataSource.close();        
-        
-        pokemonDataSource.open();
-        pokemonLearningAbility	
-        	= pokemonDataSource.getPokemonLearningAbility(abilityId, getResources());
-        pokemonDataSource.close();
+        if(savedInstanceState == null){
+        	List<PokemonInfo> pokemonLearningAbility;        	
+	        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+	        pokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+	        
+	        abilitiesDataSource.open();
+	        abilityAttributes
+	        	= abilitiesDataSource.getAbilityAttributes(abilityId);
+	        abilitiesDataSource.close();        
+	        
+	        pokemonDataSource.open();
+	        pokemonLearningAbility	
+	        	= pokemonDataSource.getPokemonLearningAbility(abilityId, getResources());
+	        pokemonDataSource.close();
+	        
+	        mAbilityDetail = new AbilityDetail();
+	        mAbilityDetail.setAbilityAttributes(abilityAttributes);
+	        mAbilityDetail.setPokemonLearningAbility(pokemonLearningAbility);
+        }else{
+        	mAbilityDetail = savedInstanceState.getParcelable(ABILITY_DETAIL);
+        	abilityAttributes = mAbilityDetail.getAbilityAttributes();
+        }
 
         TextView abilityName 		= (TextView) findViewById(R.id.abilityName);
         TextView battleEffectLabel 	= (TextView) findViewById(R.id.battleEffectLabel);        
@@ -59,11 +77,11 @@ public class AbilityDetailActivity extends PokepraiserActivity {
         
         //Apply data to ability detail views
         
-        abilityName.setText(abilityDetail.getName());
-        battleEffect.setText(abilityDetail.getBattleEffect());
+        abilityName.setText(abilityAttributes.getName());
+        battleEffect.setText("\t" + abilityAttributes.getBattleEffect());
         
-        if(abilityDetail.getWorldEffect() != null && !("".equals(abilityDetail.getWorldEffect()))){
-	        worldEffect.setText(abilityDetail.getWorldEffect());
+        if(abilityAttributes.getWorldEffect() != null && !("".equals(abilityAttributes.getWorldEffect()))){
+	        worldEffect.setText("\t" + abilityAttributes.getWorldEffect());
         }else{
         	((ViewManager)worldEffectLabel.getParent()).removeView(worldEffectLabel);        	
         	((ViewManager)worldEffect.getParent()).removeView(worldEffect);
@@ -85,11 +103,18 @@ public class AbilityDetailActivity extends PokepraiserActivity {
         																		learningLabel});        
     }
     
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+    	savedInstanceState.putParcelable(ABILITY_DETAIL, mAbilityDetail);
+    	
+    	super.onSaveInstanceState(savedInstanceState);
+    }    
+    
 	public void buildPokemonList(){
-        LinearLayout abilityScrollable = (LinearLayout) findViewById(R.id.abilityScrollable);
+        LinearLayout learningList = (LinearLayout) findViewById(R.id.learningList);
 		
-		for(int i = 0; i < pokemonLearningAbility.size(); i++){
-			final PokemonInfo thePokemon = pokemonLearningAbility.get(i);
+		for(int i = 0; i < mAbilityDetail.getPokemonLearningAbility().size(); i++){
+			final PokemonInfo thePokemon = mAbilityDetail.getPokemonLearningAbility().get(i);
 			
 			LayoutInflater inflater = getLayoutInflater();
 			View view 				= inflater.inflate(R.layout.pokemon_info_row, null);
@@ -114,12 +139,6 @@ public class AbilityDetailActivity extends PokepraiserActivity {
 		    	typeCell.removeView(findViewById(R.id.typeSpacer));
 				typeCell.removeView(typeTwo);			
 			}
-		
-			if(i % 2 == 0){
-				view.setBackgroundResource(R.drawable.dark_gray_background);
-			}else{
-				view.setBackgroundResource(R.drawable.gray_background);			
-			}
 			
 			((PokepraiserApplication)getApplication()).applyTypeface(pokemonName);
 			((PokepraiserApplication)getApplication()).applyTypeface(dexNo);
@@ -133,11 +152,33 @@ public class AbilityDetailActivity extends PokepraiserActivity {
 				}
 	        });
 
-			final int theColor = getResources().getColor(R.color.clickable_text);
-			dexNo.setTextColor(theColor);
-			pokemonName.setTextColor(theColor);
+			view.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					TextView dexNo 		= (TextView) v.findViewById(R.id.dexNo);
+					TextView pokeName 	= (TextView) v.findViewById(R.id.pokemonName);					
+					
+					final int blueResource		= getResources().getColor(R.color.medium_blue);
+					final int blackResource		= getResources().getColor(R.color.black);					
+					
+	                switch (event.getAction()) {
+
+		                case MotionEvent.ACTION_DOWN:
+		                	dexNo.setTextColor(blueResource);
+		                	pokeName.setTextColor(blueResource);
+		                    break;
+		                case MotionEvent.ACTION_UP:
+		                	dexNo.setTextColor(blackResource);
+		                	pokeName.setTextColor(blackResource);
+		                    break;
+	                }
+	                
+					return false;
+				}
+			});
 			
-			abilityScrollable.addView(view);
+			learningList.addView(view);
 		}
 	}    
 

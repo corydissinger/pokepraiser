@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="abilityNameStyle">
-        <item name="android:layout_marginRight">30sp</item>
-        <item name="android:layout_marginTop">10sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">22sp</item>
         <item name="android:padding">14sp</item>        
-        <item name="android:background">@color/medium_blue</item>        
+        <item name="android:background">@color/white</item>        
     </style>
 
     <style name="abilityAttributeHeaderStyle">
-        <item name="android:layout_marginLeft">30sp</item>
-        <item name="android:layout_marginTop">10sp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:padding">14sp</item>
-        <item name="android:background">@color/sandstone</item>        
+        <item name="android:background">@color/white</item>        
     </style>
     
     <style name="abilityAttributeBodyStyle">
-        <item name="android:layout_marginLeft">10sp</item>
-        <item name="android:layout_marginRight">10sp</item>
-        <item name="android:layout_marginTop">10sp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">3</item>        
-        <item name="android:gravity">left|center_vertical</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:padding">14sp</item>        
-        <item name="android:background">@color/light_gray</item>        
+        <item name="android:padding">14sp</item>
+        <item name="android:background">@color/white</item>        
     </style>
         
 </resources>

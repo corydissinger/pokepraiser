@@ -1,152 +1,53 @@
 package com.cd.pokepraiser.data;
 
-public class AttackDetail {
-	private String name;
-	private String type;
-	private String basePower;
-	private String baseAccuracy;
-	private String basePp;
-	private int categoryDrawableId; 
-	private int attackDbId;
-	private int effectPct;
-	private String battleEffectDesc;
-	private String secondaryEffectDesc;
-	private boolean contacts;
-	private boolean sound;
-	private boolean punch;
-	private boolean snatchable;
-	private boolean gravity;
-	private boolean defrosts;
-	private boolean hitsOpponentTriples;
-	private boolean reflectable;
-	private boolean blockable;
-	private boolean mirrorable;
-	private int priority;	
+import java.util.List;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AttackDetail implements Parcelable {
+
+	private AttackAttributes attackAttributes;
+	private List<PokemonInfo> pokemonLearningAttack;
 	
-	public String getName() {
-		return name;
+	public AttackDetail(){}
+	
+	public AttackDetail(Parcel pc) {
+		attackAttributes = (AttackAttributes) pc.readValue(AttackDetail.class.getClassLoader());
+		pc.readList(pokemonLearningAttack, AttackDetail.class.getClassLoader());
 	}
-	public void setName(String name) {
-		this.name = name;
+	
+	public AttackAttributes getAttackAttributes() {
+		return attackAttributes;
 	}
-	public String getType() {
-		return type;
+	public void setAttackAttributes(AttackAttributes attackAttributes) {
+		this.attackAttributes = attackAttributes;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public List<PokemonInfo> getPokemonLearningAttack() {
+		return pokemonLearningAttack;
 	}
-	public String getBasePower() {
-		return basePower;
+	public void setPokemonLearningAttack(
+			List<PokemonInfo> pokemonLearningAttack) {
+		this.pokemonLearningAttack = pokemonLearningAttack;
 	}
-	public void setBasePower(String basePower) {
-		this.basePower = basePower;
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	public String getBaseAccuracy() {
-		return baseAccuracy;
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(attackAttributes);
+		dest.writeList(pokemonLearningAttack);
 	}
-	public void setBaseAccuracy(String baseAccuracy) {
-		this.baseAccuracy = baseAccuracy;
-	}
-	public String getBasePp() {
-		return basePp;
-	}
-	public void setBasePp(String basePp) {
-		this.basePp = basePp;
-	}
-	public int getCategoryDrawableId() {
-		return categoryDrawableId;
-	}
-	public void setCategoryDrawableId(int categoryDrawableId) {
-		this.categoryDrawableId = categoryDrawableId;
-	}
-	public int getAttackDbId() {
-		return attackDbId;
-	}
-	public void setAttackDbId(int attackDbId) {
-		this.attackDbId = attackDbId;
-	}
-	public int getEffectPct() {
-		return effectPct;
-	}
-	public void setEffectPct(int effectPct) {
-		this.effectPct = effectPct;
-	}
-	public String getBattleEffectDesc() {
-		return battleEffectDesc;
-	}
-	public void setBattleEffectDesc(String battleEffectDesc) {
-		this.battleEffectDesc = battleEffectDesc;
-	}
-	public String getSecondaryEffectDesc() {
-		return secondaryEffectDesc;
-	}
-	public void setSecondaryEffectDesc(String secondaryEffectDesc) {
-		this.secondaryEffectDesc = secondaryEffectDesc;
-	}
-	public boolean isContacts() {
-		return contacts;
-	}
-	public void setContacts(boolean contacts) {
-		this.contacts = contacts;
-	}
-	public boolean isSound() {
-		return sound;
-	}
-	public void setSound(boolean sound) {
-		this.sound = sound;
-	}
-	public boolean isPunch() {
-		return punch;
-	}
-	public void setPunch(boolean punch) {
-		this.punch = punch;
-	}
-	public boolean isSnatchable() {
-		return snatchable;
-	}
-	public void setSnatchable(boolean snatchable) {
-		this.snatchable = snatchable;
-	}
-	public boolean isGravity() {
-		return gravity;
-	}
-	public void setGravity(boolean gravity) {
-		this.gravity = gravity;
-	}
-	public boolean isDefrosts() {
-		return defrosts;
-	}
-	public void setDefrosts(boolean defrosts) {
-		this.defrosts = defrosts;
-	}
-	public boolean isHitsOpponentTriples() {
-		return hitsOpponentTriples;
-	}
-	public void setHitsOpponentTriples(boolean hitsOpponentTriples) {
-		this.hitsOpponentTriples = hitsOpponentTriples;
-	}
-	public boolean isReflectable() {
-		return reflectable;
-	}
-	public void setReflectable(boolean reflectable) {
-		this.reflectable = reflectable;
-	}
-	public boolean isBlockable() {
-		return blockable;
-	}
-	public void setBlockable(boolean blockable) {
-		this.blockable = blockable;
-	}
-	public boolean isMirrorable() {
-		return mirrorable;
-	}
-	public void setMirrorable(boolean mirrorable) {
-		this.mirrorable = mirrorable;
-	}
-	public int getPriority() {
-		return priority;
-	}
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
+	
+	public static final Parcelable.Creator<AttackDetail> CREATOR = new Parcelable.Creator<AttackDetail>() {
+		public AttackDetail createFromParcel(Parcel pc) {
+			return new AttackDetail(pc);
+		}
+		
+		public AttackDetail[] newArray(int size) {
+			return new AttackDetail[size];
+		}
+	};	
 }

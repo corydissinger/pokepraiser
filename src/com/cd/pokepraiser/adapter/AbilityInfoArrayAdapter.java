@@ -41,12 +41,6 @@ public class AbilityInfoArrayAdapter extends ArrayAdapter<AbilityInfo> {
 		abilityName.setText(abilityInfo.getName());
 		((PokepraiserApplication)mContext.getApplication()).applyTypeface(abilityName);
 		
-		if(position % 2 == 0){
-			view.setBackgroundResource(R.drawable.dark_gray_background);
-		}else{
-			view.setBackgroundResource(R.drawable.gray_background);			
-		}		
-		
 		return view;
 	}
 	

@@ -2,17 +2,37 @@
 <resources>
 
     <string name="app_name">Pokepraiser</string>
+    
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    
     <string name="loading_pokepraiser">Loading Pokepraiser</string>
     <string name="please_wait">Please wait a moment...</string>
+    
     <string name="main_menu">Main Menu</string>
+    <string name="all_abilities">All Abilities</string>    
     <string name="all_attacks">All Attacks</string>
+    <string name="all_pokemon">All Pokemon</string>
+    <string name="advanced_pokesearch">Advanced Pokesearch</string>        
+    
     <string name="battle_desc_header">Battle Effect</string>
     <string name="secondary_desc_header">Secondary Effect</string>
     <string name="power">Power:</string>
     <string name="accuracy">Accuracy:</string>
     <string name="pp">PP:</string>
+    <string name="contact">Physical Contact?</string>
+    <string name="sound">Sound Type?</string>
+    <string name="punch">Punch Move?</string>
+    <string name="snatch">Snatchable?</string>
+    <string name="gravity">Grounded by Gravity?</string>
+    <string name="defrost">Defrosts User?</string>
+    <string name="triples">Hits opposite side in Triple Battles?</string>
+    <string name="reflected">Reflected by Magic Bounce?</string>
+    <string name="blocked">Blocked by Protect?</string>
+    <string name="mirrorable">Copyable by Mirror Move?</string>
+                                            
+    <string name="power_short">POW:</string>
+    <string name="accuracy_short">ACC:</string>
+    <string name="pp_short">PP:</string>    
     <string name="effect_percent">Effect Rate:</string>
     <string name="battle_effect_label">Battle Effect</string>
     <string name="world_effect_label">World Effect</string>
@@ -33,6 +53,20 @@
     <string name="defense_label">DEF:</string>
     <string name="special_attack_label">SP. ATK:</string>
     <string name="special_defense_label">SP. DEF:</string>
-    <string name="speed_label">SPEED:</string>    
+    <string name="speed_label">SPEED:</string>
+    <string name="learned_attacks_label">Learned Attacks</string>    
+    <string name="level_up_label">Level Up</string>
+    <string name="tm_hm_label">TM &amp; HM</string>
+    <string name="egg_label">Egg Moves</string>
+	<string name="gv_only_label">Gen V Only</string>
+	<string name="pre_evo_label">Pre Evolve</string>
+	<string name="move_tutor_label">Move Tutor</string>		                        
+    <string name="show">Show</string>
+    <string name="hide">Hide</string> 
+    <string name="level">LVL</string>
+    <string name="tm_hm">TM/HM</string>           
 
+    <string name="yes">Yes</string>
+    <string name="no">No</string>        
+    
 </resources>

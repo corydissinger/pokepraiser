@@ -1,26 +1,29 @@
 package com.cd.pokepraiser.data;
 
-public class AttackInfo {
+import java.io.Serializable;
+
+public class PokemonAttackInfo implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3447481293673377857L;
+	
 	private String name;
-	private String type;
 	private String basePower;
 	private String baseAccuracy;
 	private String basePp;
 	private int categoryDrawableId; 
 	private int typeDrawableId;
 	private int attackDbId;
+	private int learnedType;
+	private int lvlOrTm;	
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 	public String getBasePower() {
 		return basePower;
@@ -57,5 +60,17 @@ public class AttackInfo {
 	}
 	public void setAttackDbId(int attackDbId) {
 		this.attackDbId = attackDbId;
+	}
+	public int getLearnedType() {
+		return learnedType;
+	}
+	public void setLearnedType(int learnedType) {
+		this.learnedType = learnedType;
+	}
+	public int getLvlOrTm() {
+		return lvlOrTm;
+	}
+	public void setLvlOrTm(int lvlOrTm) {
+		this.lvlOrTm = lvlOrTm;
 	}
 }

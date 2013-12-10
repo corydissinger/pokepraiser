@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.cd.pokepraiser.data.PokemonDetail;
+import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.db.DatabaseHelper;
 import com.cd.pokepraiser.db.queries.PokemonQueries;
@@ -55,10 +55,10 @@ public class PokemonDataSource {
 		return pokemonInfoList;
 	}
 	
-	public PokemonDetail getPokemonDetail(int pokemonId, Resources resources){
+	public PokemonAttributes getPokemonAttributes(int pokemonId, Resources resources){
 		Cursor cursor = db.rawQuery(PokemonQueries.GET_POKEMON_DETAIL, new String [] { Integer.toString(pokemonId) });
 
-		final PokemonDetail pokemonDetail = new PokemonDetail();
+		final PokemonAttributes pokemonDetail = new PokemonAttributes();
 		cursor.moveToFirst();
 		
 		pokemonDetail.setPokemonId(cursor.getInt(0));
@@ -77,6 +77,7 @@ public class PokemonDataSource {
 		pokemonDetail.setAbHa(cursor.getInt(13));
 		pokemonDetail.setEggOne(cursor.getInt(14));
 		pokemonDetail.setEggTwo(cursor.getInt(15));
+		pokemonDetail.setAltForm(cursor.getInt(18));
 
 		final int imgDrawableId 		= resources.getIdentifier("p" + cursor.getString(16), "drawable", "com.cd.pokepraiser");
 		

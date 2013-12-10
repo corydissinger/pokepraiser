@@ -1,6 +1,13 @@
 package com.cd.pokepraiser.data;
 
-public class AbilityInfo {
+import java.io.Serializable;
+
+public class AbilityInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5852164010711735624L;
+	
 	public String name;
 	public int abilityDbId;
 	public String getName() {

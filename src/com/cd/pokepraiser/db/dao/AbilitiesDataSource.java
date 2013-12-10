@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.cd.pokepraiser.data.AbilityDetail;
+import com.cd.pokepraiser.data.AbilityAttributes;
 import com.cd.pokepraiser.data.AbilityInfo;
 import com.cd.pokepraiser.db.DatabaseHelper;
 import com.cd.pokepraiser.db.queries.AbilitiesQueries;
@@ -44,10 +44,10 @@ public class AbilitiesDataSource {
 		return abilityNameList;
 	}
 	
-	public AbilityDetail getAbilityDetail(int abilityDbId){
+	public AbilityAttributes getAbilityAttributes(int abilityDbId){
 		Cursor cursor = db.rawQuery(AbilitiesQueries.GET_ABILITY_DETAIL, new String [] { Integer.toString(abilityDbId) });
 
-		final AbilityDetail abilityDetail = new AbilityDetail();
+		final AbilityAttributes abilityDetail = new AbilityAttributes();
 		cursor.moveToFirst();
 		
 		abilityDetail.setName(cursor.getString(0));

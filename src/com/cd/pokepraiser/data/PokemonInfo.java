@@ -1,7 +1,14 @@
 package com.cd.pokepraiser.data;
 
-public class PokemonInfo implements Cloneable {
+import java.io.Serializable;
 
+public class PokemonInfo implements Cloneable, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5625306042321119539L;
+	
 	private int pokemonId;
 	private int dexNo;
 	private String pokemonName;

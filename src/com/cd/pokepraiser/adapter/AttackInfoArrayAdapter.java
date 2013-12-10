@@ -27,6 +27,7 @@ public class AttackInfoArrayAdapter extends ArrayAdapter<AttackInfo> {
 	
 	static class ViewHolder{
 		protected TextView attackName;
+		protected ImageView typeImage;		
 		protected ImageView categoryImage;
 		protected TextView basePower;
 		protected TextView baseAccuracy;
@@ -50,38 +51,43 @@ public class AttackInfoArrayAdapter extends ArrayAdapter<AttackInfo> {
 			final ViewHolder viewHolder		= new ViewHolder();
 			
 			viewHolder.attackName			= (TextView) view.findViewById(R.id.attackName);
+			viewHolder.typeImage			= (ImageView) view.findViewById(R.id.attackType);
 			viewHolder.categoryImage		= (ImageView) view.findViewById(R.id.attackCategory);
 			viewHolder.basePower			= (TextView) view.findViewById(R.id.basePower);
 			viewHolder.baseAccuracy			= (TextView) view.findViewById(R.id.baseAccuracy);
 			viewHolder.basePp				= (TextView) view.findViewById(R.id.basePP);
+
+			TextView basePowerLabel			= (TextView) view.findViewById(R.id.basePowerLabel);
+			TextView baseAccuracyLabel		= (TextView) view.findViewById(R.id.baseAccuracyLabel);
+			TextView basePPLabel			= (TextView) view.findViewById(R.id.basePPLabel);			
 			
-			((PokepraiserApplication)context.getApplication()).applyTypeface(viewHolder.attackName);
-			((PokepraiserApplication)context.getApplication()).applyTypeface(viewHolder.basePower);
-			((PokepraiserApplication)context.getApplication()).applyTypeface(viewHolder.baseAccuracy);
-			((PokepraiserApplication)context.getApplication()).applyTypeface(viewHolder.basePp);			
+			((PokepraiserApplication)context.getApplication()).applyTypeface(new TextView[]{basePowerLabel,
+																			 baseAccuracyLabel,
+																			 basePPLabel,
+																			 viewHolder.attackName,
+																			 viewHolder.basePower,
+																			 viewHolder.baseAccuracy,
+																			 viewHolder.basePp});
 			
 			view.setTag(viewHolder);
+			
 		}else{
 			view = convertView;
 		}
 		
 		ViewHolder holder = (ViewHolder) view.getTag();
 		
-		final AttackInfo attackPos 		= filteredAttacks
-				.get(position);
-		final Drawable drawableCategory	= context.getResources().getDrawable(attackPos.getCategoryDrawableId());
+		final AttackInfo attackPos 		= filteredAttacks.get(position);
+		
+		final Drawable drawableType		=  context.getResources().getDrawable(attackPos.getTypeDrawableId());
+		final Drawable drawableCategory	= context.getResources().getDrawable(attackPos.getCategoryDrawableId());		
 		
 		holder.attackName.setText(attackPos.getName());
+		holder.typeImage.setImageDrawable(drawableType);
 		holder.categoryImage.setImageDrawable(drawableCategory);
 		holder.basePower.setText(attackPos.getBasePower());
 		holder.baseAccuracy.setText(attackPos.getBaseAccuracy());
 		holder.basePp.setText(attackPos.getBasePp());
-
-		if(position % 2 == 0){
-			view.setBackgroundResource(R.drawable.dark_gray_background);
-		}else{
-			view.setBackgroundResource(R.drawable.gray_background);			
-		}		
 		
 		return view;
 	}

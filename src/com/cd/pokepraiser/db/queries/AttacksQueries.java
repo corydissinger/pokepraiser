@@ -9,7 +9,8 @@ public class AttacksQueries {
 		  + "		ATKS.B_ACCURACY,"
 		  + "		ATKS.B_PP,"
 		  + "		ATKS.CATEGORY,"
-		  + "		ATKS._id"		  
+		  + "		ATKS._id,"
+		  + "		ATKS.TYPE"		  
 		  + " FROM ATTACKS AS ATKS"
 		  + " JOIN TYPE_NAMES AS TYPES"
 		  + " ON ATKS.TYPE = TYPES._id;";
@@ -38,4 +39,25 @@ public class AttacksQueries {
 			 +	" JOIN TYPE_NAMES AS TYPES"
 			 +	" ON ATKS.TYPE = TYPES._id"
 			 +	" WHERE ATKS._id = ?;";
+	
+	public static final String GET_ALL_LEARNED_ATTACKS_ONE = 
+				"SELECT PKMN_ATKS.ATTACK_NO,"
+			+		"ATKS.NAME,"
+		   	+		"ATKS.TYPE,"			
+		   	+		"ATKS.B_POWER,"
+		   	+		"ATKS.B_ACCURACY,"
+		   	+		"ATKS.B_PP,"
+		   	+		"ATKS.CATEGORY,"
+			+		"PKMN_ATKS.LEARNED_TYPE,"
+			+		"PKMN_ATKS.LVL_OR_TM"
+		    +	" FROM POKEMON_ATTACKS AS PKMN_ATKS"
+			+	" JOIN ATTACKS AS ATKS"
+			+	" ON PKMN_ATKS.ATTACK_NO = ATKS._id"
+		    +	" WHERE PKMN_ATKS.DEX_NO ="; //Shitty hack, thands Android SQLite apis!
+	
+	public static final String GET_ALL_LEARNED_ATTACKS_TWO =
+			" AND PKMN_ATKS.ALT_FORM =";
+	
+	public static final String GET_ALL_LEARNED_ATTACKS_THREE =	
+			" ORDER BY PKMN_ATKS.LEARNED_TYPE, PKMN_ATKS.LVL_OR_TM;";	
 }

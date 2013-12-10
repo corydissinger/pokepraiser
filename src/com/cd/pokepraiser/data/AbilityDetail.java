@@ -1,25 +1,54 @@
 package com.cd.pokepraiser.data;
 
-public class AbilityDetail {
-	public String name;
-	public String battleEffect;
-	public String worldEffect;
-	public String getName() {
-		return name;
+import java.util.List;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AbilityDetail implements Parcelable {
+
+	private AbilityAttributes abilityAttributes;
+    private List<PokemonInfo> pokemonLearningAbility;
+    
+    public AbilityDetail(){}
+    
+    private AbilityDetail(Parcel pc){
+    	abilityAttributes = (AbilityAttributes) pc.readValue(AbilityDetail.class.getClassLoader());
+    	pc.readList(pokemonLearningAbility, AbilityDetail.class.getClassLoader());
+    }
+    
+	public AbilityAttributes getAbilityAttributes() {
+		return abilityAttributes;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setAbilityAttributes(AbilityAttributes abilityAttributes) {
+		this.abilityAttributes = abilityAttributes;
 	}
-	public String getBattleEffect() {
-		return battleEffect;
+	public List<PokemonInfo> getPokemonLearningAbility() {
+		return pokemonLearningAbility;
 	}
-	public void setBattleEffect(String battleEffect) {
-		this.battleEffect = battleEffect;
+	public void setPokemonLearningAbility(List<PokemonInfo> pokemonLearningAbility) {
+		this.pokemonLearningAbility = pokemonLearningAbility;
 	}
-	public String getWorldEffect() {
-		return worldEffect;
+	
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	public void setWorldEffect(String worldEffect) {
-		this.worldEffect = worldEffect;
-	}
+	
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(abilityAttributes);
+		dest.writeList(pokemonLearningAbility);
+	}	
+	
+	public static final Parcelable.Creator<AbilityDetail> CREATOR = new Parcelable.Creator<AbilityDetail>() {
+		public AbilityDetail createFromParcel(Parcel pc) {
+			return new AbilityDetail(pc);
+		}
+		
+		public AbilityDetail[] newArray(int size) {
+			return new AbilityDetail[size];
+		}
+	};	
 }

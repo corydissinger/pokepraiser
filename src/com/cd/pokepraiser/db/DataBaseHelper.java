@@ -13,7 +13,8 @@ import com.cd.pokepraiser.util.FileHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	// The Android's default system path of your application database.
-	private static String DB_DIR 			= "/data/data/com.cd.pokepraiser/databases/";
+	private static String FS				= System.getProperty("file.separator");
+	private static String DB_DIR 			= FS + "data" + FS + "data" + FS + "com.cd.pokepraiser" + FS + "databases" + FS;
 	private static String DB_NAME 			= "pokedb.sqlite";
 	private static String DB_PATH 			= DB_DIR + DB_NAME;
 	private static String OLD_DB_PATH 		= DB_DIR + "old_" + DB_NAME;

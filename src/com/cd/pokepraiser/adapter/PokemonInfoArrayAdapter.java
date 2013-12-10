@@ -70,12 +70,6 @@ public class PokemonInfoArrayAdapter extends ArrayAdapter<PokemonInfo> {
 			typeCell.removeView(typeTwo);			
 		}
 
-		if(position % 2 == 0){
-			view.setBackgroundResource(R.drawable.dark_gray_background);
-		}else{
-			view.setBackgroundResource(R.drawable.gray_background);			
-		}
-		
 		((PokepraiserApplication)context.getApplication()).applyTypeface(pokemonName);
 		((PokepraiserApplication)context.getApplication()).applyTypeface(dexNo);		
 		

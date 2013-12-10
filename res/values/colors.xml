@@ -2,6 +2,7 @@
 <resources>
     <!-- A simple Tetrad color scheme from  http://colorschemedesigner.com/-->
     <color name="exciting_red">#FF6B4F</color>
+    <color name="serious_red">#A0000F</color>    
     <color name="sandstone">#FFA94F</color>
     <color name="medium_blue">#35859F</color>
     <color name="vibrant_green">#3ABB65</color>
