@@ -9,7 +9,8 @@ public class PokemonQueries {
 		  + "		PKMN.TYPE_ONE,"
 		  + "		PKMN.TYPE_TWO,"
 		  + "		PKMN.ICON_PATH"
-		  + " FROM POKEMON AS PKMN;";
+		  + " FROM POKEMON AS PKMN"
+		  + " ORDER BY PKMN.DEX_NO ASC, PKMN.ALT_FORM ASC;";
 	
 	public static final String GET_POKEMON_DETAIL = 
 			"SELECT PKMN._id,"
@@ -76,4 +77,28 @@ public class PokemonQueries {
 			+	" JOIN POKEMON AS PKMN"
 			+	" ON PKMN.DEX_NO = PKMN_ATKS.DEX_NO"
 			+	" WHERE ATKS._id = ?;";
+	
+	public static final String POKEMON_SEARCH_QUERY_PT1 = 
+			"SELECT PKMN._id,"
+		  + "		PKMN.DEX_NO,"
+		  + "		PKMN.NAME,"
+		  + "		PKMN.TYPE_ONE,"
+		  + "		PKMN.TYPE_TWO,"
+		  + "		PKMN.ICON_PATH"
+		  + " FROM POKEMON AS PKMN ";		  
+	
+	public static final String ABILITY_FILTER =
+		"(PKMN.AB_ONE = ? OR PKMN.AB_TWO = ? OR PKMN.AB_HA = ?) ";
+	
+	public static final String MONO_TYPE_FILTER =
+		"(PKMN.TYPE_ONE = ? OR PKMN.TYPE_TWO = ?) ";
+	
+	public static final String DUAL_TYPE_FILTER =
+		"(PKMN.TYPE_ONE = ? AND PKMN.TYPE_TWO = ?) ";	
+	
+	public static final String ATTACK_JOIN =
+		"JOIN POKEMON_ATTACKS AS PKMN_ATKS ON PKMN.DEX_NO = PKMN_ATKS.DEX_NO AND PKMN.ALT_FORM = PKMN_ATKS.ALT_FORM ";
+	
+	public static final String ATTACK_WHERE = 
+		"PKMN_ATKS.ATTACK_NO = ?";
 }

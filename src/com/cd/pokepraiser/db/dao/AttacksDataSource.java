@@ -1,6 +1,7 @@
 package com.cd.pokepraiser.db.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.database.Cursor;
 import android.database.SQLException;
@@ -9,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.cd.pokepraiser.data.AttackAttributes;
 import com.cd.pokepraiser.data.AttackInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
+import com.cd.pokepraiser.data.TypeInfo;
 import com.cd.pokepraiser.db.DatabaseHelper;
 import com.cd.pokepraiser.db.queries.AttacksQueries;
 import com.cd.pokepraiser.db.util.AttacksHelper;
@@ -122,5 +124,23 @@ public class AttacksDataSource {
 		
 		return attack;
 	}	
+	
+	public List<TypeInfo> getAllTypeInfo(){
+		Cursor cursor = db.rawQuery(AttacksQueries.GET_ALL_TYPES, null);
+
+		final List<TypeInfo> allTypeInfo = new ArrayList<TypeInfo>(cursor.getCount());		
+		
+		while(cursor.moveToNext()){
+			final TypeInfo type = new TypeInfo();
+			
+			type.setDbId(cursor.getInt(0));
+			type.setName(cursor.getString(1));
+			
+			allTypeInfo.add(type);
+		}
+		
+		cursor.close();
+		return allTypeInfo;
+	}
 
 }

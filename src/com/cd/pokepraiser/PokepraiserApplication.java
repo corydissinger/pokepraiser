@@ -46,16 +46,27 @@ public class PokepraiserApplication extends Application {
 	}
 	
 	public DatabaseHelper getDatabaseReference(){
+		//If this works, huzzah for strange practices...
+		if(dbHelper == null){
+			dbHelper = new DatabaseHelper(this);			
+		}
+		
 		return dbHelper;
 	}
 	
 	public void applyTypeface(TextView someView){
+		loadTypeface();
 		someView.setTypeface(datFont);
 	}
 
 	public void applyTypeface(TextView [] someViews){
+		loadTypeface();		
 		for(TextView someView : someViews)
 			someView.setTypeface(datFont);
 	}	
-	
+
+	private void loadTypeface() {
+		if(datFont == null)
+			datFont = Typeface.createFromAsset(getAssets(), "pokemon_gb_typeface.ttf");		
+	}	
 }

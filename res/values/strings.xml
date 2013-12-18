@@ -12,6 +12,7 @@
     <string name="all_abilities">All Abilities</string>    
     <string name="all_attacks">All Attacks</string>
     <string name="all_pokemon">All Pokemon</string>
+    <string name="all_types">All Types</string>    
     <string name="advanced_pokesearch">Advanced Pokesearch</string>        
     
     <string name="battle_desc_header">Battle Effect</string>
@@ -40,7 +41,7 @@
     <string name="all_pokemon">All Pokemon</string>
     <string name="teambuilder">Teambuilder</string>
     <string name="search">Search</string>
-    <string name="ability_label">Abilities</string>    
+    <string name="abilities_label">Abilities</string>    
     <string name="first_ability">First:</string>
     <string name="second_ability">Second:</string>        
     <string name="hidden_ability">Hidden:</string>
@@ -66,7 +67,22 @@
     <string name="level">LVL</string>
     <string name="tm_hm">TM/HM</string>           
 
+    <string name="ability_label">Ability:</string>
+    <string name="type_label">Type:</string>        
+	<string name="attack_one_label">Attack One:</string>
+	<string name="attack_two_label">Attack Two:</string>
+	<string name="attack_three_label">Attack Three:</string>
+	<string name="attack_four_label">Attack Four:</string>	
+	<string name="searching">Searching</string>	
+    
+	<!-- Common strings -->
     <string name="yes">Yes</string>
-    <string name="no">No</string>        
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="none">None</string>                
+
+	<!-- Error strings -->    
+    <string name="error">Error</string>
+    <string name="search_not_found">No Pokemon match your search filters!</string>    
     
 </resources>

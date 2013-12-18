@@ -5,6 +5,12 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * @author Cory
+ *
+ * PokemonDetail implements the Parcelable Android API so that all the underlying JavaBeans style Serializable Objects
+ * can be easlily transported across the Bundle instance we get.
+ */
 public class PokemonDetail implements Parcelable{
 
 	private PokemonAttributes pokemonAttributes;

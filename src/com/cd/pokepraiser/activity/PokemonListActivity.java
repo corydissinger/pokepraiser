@@ -29,16 +29,22 @@ public class PokemonListActivity extends PokepraiserActivity {
 	
 	private ArrayList<PokemonInfo> thePokemon;
 	
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokemon_list_screen);
         
-        pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+        final Intent receivedIntent = getIntent();
+        thePokemon = (ArrayList<PokemonInfo>) receivedIntent.getSerializableExtra(ExtrasConstants.POKEMON_SEARCH);        
         
-        pokemonDataSource.open();
-        thePokemon = pokemonDataSource.getPokemonList(getResources());
-        pokemonDataSource.close();
+        if(thePokemon == null){
+            pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+            
+            pokemonDataSource.open();
+            thePokemon = pokemonDataSource.getPokemonList(getResources());
+            pokemonDataSource.close();        	
+        }
         
         ListView pokemonListContent = (ListView)findViewById(R.id.pokemonList);
         pokemonSearch = (EditText)findViewById(R.id.searchPokemon);

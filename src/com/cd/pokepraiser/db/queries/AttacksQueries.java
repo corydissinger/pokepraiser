@@ -2,6 +2,8 @@ package com.cd.pokepraiser.db.queries;
 
 public class AttacksQueries {
 
+	public static final String GET_ALL_TYPES		= "SELECT * FROM TYPE_NAMES";
+	
 	public static final String GET_ALL_ATTACK_INFO = 
 			"SELECT ATKS.NAME,"
 		  + "		TYPES.NAME,"

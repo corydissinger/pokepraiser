@@ -64,6 +64,12 @@
         <activity
             android:name="com.cd.pokepraiser.activity.PokemonDetailActivity"
             android:label="@string/app_name" >
+
+        </activity>            
+            
+        <activity
+            android:name="com.cd.pokepraiser.activity.PokeSearchActivity"
+            android:label="@string/app_name" >            
             
         </activity>        
         

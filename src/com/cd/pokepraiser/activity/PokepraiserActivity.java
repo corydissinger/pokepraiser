@@ -4,12 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 
-public class PokepraiserActivity extends SherlockActivity {
+public class PokepraiserActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);   
     }
@@ -44,6 +45,10 @@ public class PokepraiserActivity extends SherlockActivity {
                 i = new Intent(PokepraiserActivity.this, AbilitiesListActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.advanced_pokesearch:
+            	i = new Intent(PokepraiserActivity.this, PokeSearchActivity.class);
+            	startActivity(i);
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -3,6 +3,11 @@ package com.cd.pokepraiser.data;
 import java.io.Serializable;
 
 
+/**
+ * @author Cory
+ * 
+ * PokemonAttributes holds the data that describes the full amount of information for a single 'Pokemon'.
+ */
 public class PokemonAttributes implements Serializable {
 	/**
 	 * 

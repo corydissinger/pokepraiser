@@ -17,9 +17,11 @@ import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.adapter.AbilityInfoArrayAdapter;
 import com.cd.pokepraiser.data.AbilityInfo;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
+import com.cd.pokepraiser.dialog.AbilitySearchDialog;
+import com.cd.pokepraiser.dialog.AbilitySearchDialog.AbilitySearchDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
 
-public class AbilitiesListActivity extends PokepraiserActivity {
+public class AbilitiesListActivity extends PokepraiserActivity implements AbilitySearchDialogListener {
 
 	private AbilitiesDataSource abilitiesDataSource;
 	
@@ -69,8 +71,7 @@ public class AbilitiesListActivity extends PokepraiserActivity {
             }
              
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                    int arg3) {
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                  
             }
              
@@ -80,6 +81,11 @@ public class AbilitiesListActivity extends PokepraiserActivity {
         });         
         
         
-    }	
+    }
+
+	@Override
+	public void onAbilityItemClick(AbilitySearchDialog dialog) {
+		
+	}	
     
 }

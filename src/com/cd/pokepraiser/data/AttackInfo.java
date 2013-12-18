@@ -1,6 +1,13 @@
 package com.cd.pokepraiser.data;
 
-public class AttackInfo {
+import java.io.Serializable;
+
+public class AttackInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9115466445826957889L;
+	
 	private String name;
 	private String type;
 	private String basePower;

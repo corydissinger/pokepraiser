@@ -1,6 +1,7 @@
 package com.cd.pokepraiser.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
@@ -34,11 +35,11 @@ public class AttackInfoArrayAdapter extends ArrayAdapter<AttackInfo> {
 		protected TextView basePp;
 	}
 	
-	public AttackInfoArrayAdapter(Activity context, int textViewResourceId, ArrayList<AttackInfo> objects) {
-		super(context, textViewResourceId, objects);
+	public AttackInfoArrayAdapter(Activity context, int textViewResourceId, List<AttackInfo> mAttacks) {
+		super(context, textViewResourceId, mAttacks);
 		this.context = context;
-		attackInfoArray = new ArrayList<AttackInfo>(objects);
-		filteredAttacks	= new ArrayList<AttackInfo>(objects);
+		attackInfoArray = new ArrayList<AttackInfo>(mAttacks);
+		filteredAttacks	= new ArrayList<AttackInfo>(mAttacks);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {

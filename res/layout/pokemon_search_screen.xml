@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/dex_background"
+        android:padding="20sp" >
+        
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+    	    android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/abilityLabel"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/ability_label" />
+	        
+		    <Button
+	        	android:id="@+id/abilitySearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openAbilitySearchDialog" />
+		    
+			<ImageView
+			    android:id="@+id/abilityCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>
+						
+        </LinearLayout>
+
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>				        
+	    </LinearLayout>        
+
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp">
+	        
+			<TextView
+		        android:id="@+id/typeOne"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/type_label" />
+				        
+		    <Button
+	        	android:id="@+id/typeOneSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openTypeSearchDialog" />
+		    
+			<ImageView
+			    android:id="@+id/typeOneCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/typeTwo"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/type_label" />
+				        
+		    <Button
+	        	android:id="@+id/typeTwoSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openTypeSearchDialog" />
+		    
+			<ImageView
+			    android:id="@+id/typeTwoCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>				        
+	    </LinearLayout>        
+        
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/attackOne"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/attack_one_label" />
+				        
+		    <Button
+	        	android:id="@+id/attackOneSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openAttackSearchDialog"
+		        android:tag="0" />
+		    
+			<ImageView
+			    android:id="@+id/attackOneCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+        
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/attackTwo"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/attack_two_label" />
+
+		    <Button
+	        	android:id="@+id/attackTwoSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openAttackSearchDialog"
+		        android:tag="1" />
+		    
+			<ImageView
+			    android:id="@+id/attackTwoCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+        
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/attackThree"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/attack_three_label" />
+				        
+		    <Button
+	        	android:id="@+id/attackThreeSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openAttackSearchDialog"
+		        android:tag="2" />
+		    
+			<ImageView
+			    android:id="@+id/attackThreeCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+        
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/attackFour"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/attack_four_label" />
+				        
+		    <Button
+	        	android:id="@+id/attackFourSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+		        android:gravity="center"
+		        android:text="@string/none"		        
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true"
+		        android:onClick="openAttackSearchDialog"
+		        android:tag="3" />
+		    
+			<ImageView
+			    android:id="@+id/attackFourCancel"
+			    android:background="@drawable/ic_action_cancel"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="match_parent"/>		    
+		                
+        </LinearLayout>
+
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>				        
+	    </LinearLayout>        
+
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+	        android:padding="5sp" >
+				    
+		    <Button
+	        	android:id="@+id/search"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_margin="10sp"
+		        android:gravity="center"
+		        android:text="@string/search"	        
+		        android:textSize="22sp"
+		        android:textColor="@color/clickable_text"	        
+		        android:clickable="true"
+		        android:onClick="searchPokemon" />        
+		        
+	    </LinearLayout>
+        	    
+    </LinearLayout>
+    
+
+</ScrollView>

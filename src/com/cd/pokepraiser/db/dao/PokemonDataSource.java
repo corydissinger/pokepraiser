@@ -1,6 +1,7 @@
 package com.cd.pokepraiser.db.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -9,8 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonInfo;
+import com.cd.pokepraiser.data.PokemonSearchQuery;
 import com.cd.pokepraiser.db.DatabaseHelper;
 import com.cd.pokepraiser.db.queries.PokemonQueries;
+import com.cd.pokepraiser.db.util.PokemonSearchQueryBuilder;
 
 public class PokemonDataSource {
 	
@@ -120,7 +123,7 @@ public class PokemonDataSource {
 		return pokemonInfoList;
 	}
 	
-	public ArrayList<PokemonInfo> getPokemonLearningAttack(final int theAttackId, Resources resources){
+	public List<PokemonInfo> getPokemonLearningAttack(final int theAttackId, Resources resources){
 		Cursor cursor = db.rawQuery(PokemonQueries.GET_POKEMON_LEARNING_ATTACK, 
 										new String []{ Integer.toString(theAttackId)});
 
@@ -146,4 +149,31 @@ public class PokemonDataSource {
 		cursor.close();
 		return pokemonInfoList;
 	}	
+	
+	public List<PokemonInfo> getPokemonSearch(final PokemonSearchQuery searchQuery, Resources resources){
+		final PokemonSearchQueryBuilder queryBuilder = new PokemonSearchQueryBuilder(searchQuery);
+		
+		Cursor cursor = db.rawQuery(queryBuilder.buildQueryString(), queryBuilder.buildParamsArray());
+		final ArrayList<PokemonInfo> pokemonInfoList = new ArrayList<PokemonInfo>(cursor.getCount());		
+
+		while(cursor.moveToNext()){
+			final PokemonInfo info = new PokemonInfo();
+			
+			//TODO: Never name Android resources with hyphens, use underscores!
+			final String safeResourceName	= cursor.getString(5).replace("-", "_");
+			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
+			
+			info.setPokemonId(cursor.getInt(0));
+			info.setDexNo(cursor.getInt(1));
+			info.setPokemonName(cursor.getString(2));
+			info.setTypeOne(cursor.getInt(3));
+			info.setTypeTwo(cursor.getInt(4));
+			info.setIconDrawable(drawableId);
+			
+			pokemonInfoList.add(info);
+		}		
+		
+		cursor.close();
+		return pokemonInfoList;
+	}
 }

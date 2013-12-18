@@ -1,6 +1,7 @@
 package com.cd.pokepraiser.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ public class AbilityInfoArrayAdapter extends ArrayAdapter<AbilityInfo> {
 	private ArrayList<AbilityInfo> mFilteredAbilities;
 	private Filter mFilter;
 	
-	public AbilityInfoArrayAdapter(Activity context, int textViewResourceId, ArrayList<AbilityInfo> objects) {
+	public AbilityInfoArrayAdapter(Activity context, int textViewResourceId, List<AbilityInfo> objects) {
 		super(context, textViewResourceId, objects);
 		this.mContext = context;
 		mAbilityInfoArray 	= new ArrayList<AbilityInfo>(objects);;
