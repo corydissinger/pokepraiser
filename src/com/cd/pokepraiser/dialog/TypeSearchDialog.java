@@ -29,7 +29,9 @@ public class TypeSearchDialog extends DialogFragment {
 
 	private TypeInfoArrayAdapter adapter;	
 	private List<TypeInfo> mTypes;
-	private int selectedItem  = 0;
+	
+	private int selectedItem  	= 0;
+	private int originButton	= 0;
 	
 	public TypeSearchDialog(){}
 	
@@ -86,5 +88,13 @@ public class TypeSearchDialog extends DialogFragment {
 
 	public void setSelectedItem(int selectedItem) {
 		this.selectedItem = selectedItem;
+	}
+
+	public int getOriginButton() {
+		return originButton;
+	}
+
+	public void setOriginButton(int originButton) {
+		this.originButton = originButton;
 	}
 }

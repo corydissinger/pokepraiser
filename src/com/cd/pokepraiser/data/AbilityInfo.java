@@ -2,7 +2,7 @@ package com.cd.pokepraiser.data;
 
 import java.io.Serializable;
 
-public class AbilityInfo implements Serializable {
+public class AbilityInfo implements Serializable, Cloneable {
 	/**
 	 * 
 	 */
@@ -21,5 +21,17 @@ public class AbilityInfo implements Serializable {
 	}
 	public void setAbilityDbId(int abilityDbId) {
 		this.abilityDbId = abilityDbId;
+	}
+	
+	public AbilityInfo clone() {
+		AbilityInfo ability;
+		
+		try{
+			ability = (AbilityInfo) super.clone();
+			return ability;
+		}catch(CloneNotSupportedException ce){
+			ce.printStackTrace();
+			throw new RuntimeException();
+		}
 	}
 }

@@ -34,13 +34,15 @@ public class PokemonSearchQueryBuilder {
 		
 		builder.append(PokemonQueries.POKEMON_SEARCH_QUERY_PT1);
 		
-		if(selectedAttacks.length > 0){
+		for(int i = 0; i < selectedAttacks.length; i++){
 			// Only join tables when needed
+			//
+			// But make sure to join one for each attack for performance AND accuracy
 			//
 			// JOIN POKEMON_ATTACKS AS PKMN_ATKS 
 			// ON PKMN.DEX_NO = PKMN_ATKS.DEX_NO 
 			// AND PKMN.ALT_FORM = PKMN_ATKS.ALT_FORM
-			builder.append(PokemonQueries.ATTACK_JOIN);
+			builder.append(PokemonQueries.ATTACK_JOIN.replaceAll("0", Integer.toString(i)));			
 		}
 		
 		builder.append(WHERE);
@@ -77,11 +79,13 @@ public class PokemonSearchQueryBuilder {
 			
 			// PKMN_ATKS.ATTACK_NO = ?
 			for(int i = 0; i < selectedAttacks.length; i++){
+				
 				if(i != 0){
+					builder.append(" ");
 					builder.append(AND);
 				}
 				
-				builder.append(PokemonQueries.ATTACK_WHERE);
+				builder.append(PokemonQueries.ATTACK_WHERE.replaceAll("0", Integer.toString(i)));
 			}
 			
 			builder.append(")");

@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/searchParent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -44,7 +45,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>
+			    android:layout_height="match_parent"
+			    android:visibility="invisible" />
 						
         </LinearLayout>
 
@@ -90,7 +92,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
 
@@ -128,7 +131,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
 
@@ -175,7 +179,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
         
@@ -214,7 +219,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
         
@@ -253,7 +259,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
         
@@ -292,7 +299,8 @@
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"/>		    
+			    android:layout_height="match_parent"
+			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
 

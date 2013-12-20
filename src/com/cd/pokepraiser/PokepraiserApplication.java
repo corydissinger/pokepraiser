@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import android.app.Application;
 import android.graphics.Typeface;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cd.pokepraiser.db.DatabaseHelper;
@@ -65,6 +68,27 @@ public class PokepraiserApplication extends Application {
 			someView.setTypeface(datFont);
 	}	
 
+	public void overrideFonts(final View v){
+		loadTypeface();
+		
+		try{
+			if(v instanceof ViewGroup){
+				
+				ViewGroup vg = (ViewGroup) v;
+				
+				for(int i = 0; i < vg.getChildCount(); i++){
+					View child = vg.getChildAt(i);
+					overrideFonts(child);
+				}
+				
+			}else if(v instanceof TextView) {
+				((TextView) v).setTypeface(datFont);
+			}
+		}catch(Exception e){
+			Log.w("Font Error", e.getMessage());
+		}
+	}
+	
 	private void loadTypeface() {
 		if(datFont == null)
 			datFont = Typeface.createFromAsset(getAssets(), "pokemon_gb_typeface.ttf");		

@@ -79,7 +79,7 @@ public class PokemonQueries {
 			+	" WHERE ATKS._id = ?;";
 	
 	public static final String POKEMON_SEARCH_QUERY_PT1 = 
-			"SELECT PKMN._id,"
+			"SELECT DISTINCT PKMN._id,"
 		  + "		PKMN.DEX_NO,"
 		  + "		PKMN.NAME,"
 		  + "		PKMN.TYPE_ONE,"
@@ -97,8 +97,8 @@ public class PokemonQueries {
 		"(PKMN.TYPE_ONE = ? AND PKMN.TYPE_TWO = ?) ";	
 	
 	public static final String ATTACK_JOIN =
-		"JOIN POKEMON_ATTACKS AS PKMN_ATKS ON PKMN.DEX_NO = PKMN_ATKS.DEX_NO AND PKMN.ALT_FORM = PKMN_ATKS.ALT_FORM ";
+		"JOIN POKEMON_ATTACKS AS PKMN_ATKS0 ON PKMN.DEX_NO = PKMN_ATKS0.DEX_NO AND PKMN.ALT_FORM = PKMN_ATKS0.ALT_FORM ";
 	
 	public static final String ATTACK_WHERE = 
-		"PKMN_ATKS.ATTACK_NO = ?";
+		"PKMN_ATKS0.ATTACK_NO = ?";
 }

@@ -1,6 +1,8 @@
 package com.cd.pokepraiser.dialog;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.adapter.AbilityInfoArrayAdapter;
 import com.cd.pokepraiser.data.AbilityInfo;
@@ -30,7 +33,7 @@ public class AbilitySearchDialog extends DialogFragment {
 	
 	private AbilityInfoArrayAdapter adapter;	
 	private List<AbilityInfo> mAbilities;
-	private int selectedItem  = 0;
+	private AbilityInfo selectedItem;
 	
 	public AbilitySearchDialog(){}
 	
@@ -65,7 +68,7 @@ public class AbilitySearchDialog extends DialogFragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				selectedItem = position;
+				selectedItem = adapter.getFilteredAbilities().get(position);
 				mListener.onAbilityItemClick(AbilitySearchDialog.this);
 			}
 			
@@ -101,11 +104,23 @@ public class AbilitySearchDialog extends DialogFragment {
         return builder.create();
 	}
 
-	public int getSelectedItem() {
+	public AbilityInfo getSelectedItem() {
 		return selectedItem;
 	}
 
-	public void setSelectedItem(int selectedItem) {
+	public void setSelectedItem(AbilityInfo selectedItem) {
 		this.selectedItem = selectedItem;
+	}
+	
+	@Override
+	public void dismiss(){
+		adapter.getFilter().filter("");
+		super.dismiss();
+	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog){
+		adapter.getFilter().filter("");		
+		super.onCancel(dialog);
 	}
 }

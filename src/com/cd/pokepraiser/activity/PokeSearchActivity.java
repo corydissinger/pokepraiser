@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
@@ -49,6 +49,7 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 	private PokemonSearchDialog	mPokemonSearch;	
 	
 	private Button				mAbilitySearchButton;
+	
 	private Button				mTypeOneSearchButton;
 	private Button				mTypeTwoSearchButton;
 	
@@ -57,13 +58,20 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 	private Button				mAttackThreeSearchButton;
 	private Button				mAttackFourSearchButton;
 	
+	private ImageView			mAbilityCancel;
+	
+	private ImageView			mTypeOneCancel;
+	private ImageView			mTypeTwoCancel;
+	
+	private ImageView			mAttackOneCancel;
+	private ImageView			mAttackTwoCancel;
+	private ImageView			mAttackThreeCancel;
+	private ImageView			mAttackFourCancel;	
+	
 	private static final String POKEMON_SEARCH 		= "P";
 	private static final String ALL_ATTACKS 		= "O";
 	private static final String ALL_ABILITIES 		= "K";
 	private static final String ALL_TYPES	 		= "E";
-	
-	private static boolean IS_TYPE_ONE				= false;
-	private static boolean IS_TYPE_TWO				= false;	
 	
     @SuppressWarnings("unchecked")
 	@Override
@@ -107,41 +115,75 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
         mAttackThreeSearchButton	= (Button) findViewById(R.id.attackThreeSearch);
         mAttackFourSearchButton		= (Button) findViewById(R.id.attackFourSearch);        
         
-        TextView abilityLabel 		= (TextView) findViewById(R.id.abilityLabel);
-        TextView typeOneLabel 		= (TextView) findViewById(R.id.typeOne);
-        TextView typeTwoLabel 		= (TextView) findViewById(R.id.typeTwo);
-        TextView attackOneLabel 	= (TextView) findViewById(R.id.attackOne);
-        TextView attackTwoLabel 	= (TextView) findViewById(R.id.attackTwo);
-        TextView attackThreeLabel 	= (TextView) findViewById(R.id.attackThree);
-        TextView attackFourLabel 	= (TextView) findViewById(R.id.attackFour);        
+        mAbilityCancel				= (ImageView) findViewById(R.id.abilityCancel);
         
-        ((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{mAbilitySearchButton,
-        																		mTypeOneSearchButton,
-        																		mTypeTwoSearchButton,
-        																		mAttackOneSearchButton,
-        																		mAttackTwoSearchButton,
-        																		mAttackThreeSearchButton,
-        																		mAttackFourSearchButton,        																		
-        																		abilityLabel,
-        																		typeOneLabel,
-        																		typeTwoLabel,
-        																		attackOneLabel,
-        																		attackTwoLabel,
-        																		attackThreeLabel,
-        																		attackFourLabel});
+        mTypeOneCancel				= (ImageView) findViewById(R.id.typeOneCancel);
+        mTypeTwoCancel				= (ImageView) findViewById(R.id.typeTwoCancel);
+        
+        mAttackOneCancel			= (ImageView) findViewById(R.id.attackOneCancel);
+        mAttackTwoCancel			= (ImageView) findViewById(R.id.attackTwoCancel);
+        mAttackThreeCancel			= (ImageView) findViewById(R.id.attackThreeCancel);
+        mAttackFourCancel			= (ImageView) findViewById(R.id.attackFourCancel);        
+        
+        final ImageView [] theClickableImages = new ImageView[]{mAbilityCancel, 
+        														mTypeOneCancel, 
+        														mTypeTwoCancel, 
+        														mAttackOneCancel, 
+        														mAttackTwoCancel, 
+        														mAttackThreeCancel, 
+        														mAttackFourCancel};
+        
+        for(ImageView clickableImage : theClickableImages){
+        	clickableImage.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					handleCancelClick(v);
+				}
+			});
+        }
+        
+        ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(R.id.searchParent));
         
         applyUserValues();
     }
     
     private void applyUserValues() {
     	if(!mSearchQuery.isEmpty()){
-    		mAbilitySearchButton.setText(mAllAbilities.get(mSearchQuery.getAbilityId()).getName());
-    		mTypeOneSearchButton.setText(mAllTypes.get(mSearchQuery.getTypeOne()).getName());
-    		mTypeTwoSearchButton.setText(mAllTypes.get(mSearchQuery.getTypeTwo()).getName());    
-    		mAttackOneSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdOne()).getName());
-    		mAttackTwoSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdTwo()).getName());
-    		mAttackThreeSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdThree()).getName());
-    		mAttackFourSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdFour()).getName());    		
+    		
+    		if(mSearchQuery.getAbilityId() != -1){
+    			mAbilitySearchButton.setText(mAllAbilities.get(mSearchQuery.getAbilityId()).getName());
+				mAbilityCancel.setVisibility(View.VISIBLE);
+    		}
+    		
+    		if(mSearchQuery.getTypeOne() != -1){
+    			mTypeOneSearchButton.setText(mAllTypes.get(mSearchQuery.getTypeOne()).getName());
+				mTypeOneCancel.setVisibility(View.VISIBLE);    			
+    		}
+    			
+    		if(mSearchQuery.getTypeTwo() != -1){
+    			mTypeTwoSearchButton.setText(mAllTypes.get(mSearchQuery.getTypeTwo()).getName());
+				mTypeTwoCancel.setVisibility(View.VISIBLE);    			
+    		}
+    			
+    		if(mSearchQuery.getAttackIdOne() != -1){
+    			mAttackOneSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdOne()).getName());
+				mAttackOneCancel.setVisibility(View.VISIBLE);    			
+    		}
+    			
+			if(mSearchQuery.getAttackIdTwo() != -1){
+				mAttackTwoSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdTwo()).getName());
+				mAttackTwoCancel.setVisibility(View.VISIBLE);				
+			}
+				
+			if(mSearchQuery.getAttackIdThree() != -1){
+				mAttackThreeSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdThree()).getName());
+				mAttackThreeCancel.setVisibility(View.VISIBLE);				
+			}
+				
+			if(mSearchQuery.getAttackIdFour() != -1){
+				mAttackFourSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdFour()).getName());
+				mAttackFourCancel.setVisibility(View.VISIBLE);
+			}
     	}
 	}
 
@@ -160,70 +202,133 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
     }
     
     public void openTypeSearchDialog(View v){
+    	mTypeSearch.setOriginButton(v.getId());
     	mTypeSearch.show(getSupportFragmentManager(), null);
-    	
-    	if(R.id.typeOneSearch == v.getId()){
-    		IS_TYPE_ONE = true;
-    	}else if(R.id.typeTwoSearch == v.getId()){
-    		IS_TYPE_TWO = true;    		
-    	}
     }    
 
     public void openAttackSearchDialog(View v){
-    	final int originButton = Integer.parseInt((String)v.getTag());
-    	mAttackSearch.setOriginButton(originButton);
+    	mAttackSearch.setOriginButton(v.getId());
     	mAttackSearch.show(getSupportFragmentManager(), null);
     }    
     
     public void searchPokemon(View v){
-    	new SearchTask().execute();
+    	if(mSearchQuery.isEmpty())
+    		new ErrorDialog(R.string.search_not_found).show(getSupportFragmentManager(), null);    		
+    	else
+    		new SearchTask().execute();
     }
     
 	@Override
 	public void onAbilityItemClick(AbilitySearchDialog dialog) {
-		final AbilityInfo selectedAbility = mAllAbilities.get(dialog.getSelectedItem());
+		final AbilityInfo selectedAbility = dialog.getSelectedItem();
 		mSearchQuery.setAbilityId(selectedAbility.getAbilityDbId());
 		mAbilitySearchButton.setText(selectedAbility.getName());
+		mAbilityCancel.setVisibility(View.VISIBLE);
 		dialog.dismiss();
 	}
 
 	@Override
 	public void onTypeItemClick(TypeSearchDialog dialog) {
 		final TypeInfo selectedType = mAllTypes.get(dialog.getSelectedItem());
+		final int originButtonId	= dialog.getOriginButton();
 		
-		if(IS_TYPE_ONE){
-			mSearchQuery.setTypeOne(selectedType.getDbId());
-			mTypeOneSearchButton.setText(selectedType.getName());
-		}else if(IS_TYPE_TWO){
-			mSearchQuery.setTypeTwo(selectedType.getDbId());
-			mTypeTwoSearchButton.setText(selectedType.getName());			
+		switch(originButtonId){
+			case R.id.typeOneSearch:
+								mSearchQuery.setTypeOne(selectedType.getDbId());
+								mTypeOneSearchButton.setText(selectedType.getName());	
+								mTypeOneCancel.setVisibility(View.VISIBLE);
+								break;
+									
+			case R.id.typeTwoSearch:
+								mSearchQuery.setTypeTwo(selectedType.getDbId());
+								mTypeTwoSearchButton.setText(selectedType.getName());
+								mTypeTwoCancel.setVisibility(View.VISIBLE);
+								break;									
 		}
-
-		IS_TYPE_ONE = false;		
-		IS_TYPE_TWO = false;
+		
 		dialog.dismiss();
 	}
 
 	@Override
 	public void onAttackItemClick(AttackSearchDialog dialog) {
 		final AttackInfo selectedAttack = mAllAttacks.get(dialog.getSelectedItem());
-		final int originButton			= dialog.getOriginButton();
-		
-		if(0 == originButton){
-			mSearchQuery.setAttackIdOne(selectedAttack.getAttackDbId());
-			mAttackOneSearchButton.setText(selectedAttack.getName());
-		}else if(1 == originButton){
-			mSearchQuery.setAttackIdTwo(selectedAttack.getAttackDbId());
-			mAttackTwoSearchButton.setText(selectedAttack.getName());			
-		}else if(2 == originButton){
-			mSearchQuery.setAttackIdThree(selectedAttack.getAttackDbId());
-			mAttackThreeSearchButton.setText(selectedAttack.getName());			
-		}else if(3 == originButton){
-			mSearchQuery.setAttackIdFour(selectedAttack.getAttackDbId());
-			mAttackFourSearchButton.setText(selectedAttack.getName());			
-		} 
+		final int originButtonId		= dialog.getOriginButton();
+
+		switch(originButtonId){
+			case R.id.attackOneSearch:
+							mSearchQuery.setAttackIdOne(selectedAttack.getAttackDbId());
+							mAttackOneSearchButton.setText(selectedAttack.getName());
+							mAttackOneCancel.setVisibility(View.VISIBLE);
+							break;
+							
+			case R.id.attackTwoSearch:
+							mSearchQuery.setAttackIdTwo(selectedAttack.getAttackDbId());
+							mAttackTwoSearchButton.setText(selectedAttack.getName());
+							mAttackTwoCancel.setVisibility(View.VISIBLE);							
+							break;
+							
+			case R.id.attackThreeSearch:
+							mSearchQuery.setAttackIdThree(selectedAttack.getAttackDbId());
+							mAttackThreeSearchButton.setText(selectedAttack.getName());
+							mAttackThreeCancel.setVisibility(View.VISIBLE);							
+							break;
+							
+			case R.id.attackFourSearch:
+							mSearchQuery.setAttackIdFour(selectedAttack.getAttackDbId());
+							mAttackFourSearchButton.setText(selectedAttack.getName());
+							mAttackFourCancel.setVisibility(View.VISIBLE);							
+							break;							
+		}
 		
 		dialog.dismiss();
+	}
+	
+	public void handleCancelClick(View v){
+		final int viewId				= v.getId();
+		
+		switch(viewId){
+			case R.id.abilityCancel:
+								v.setVisibility(View.INVISIBLE);
+								mAbilitySearchButton.setText(R.string.none);
+								mSearchQuery.setAbilityId(-1);
+								break;
+								
+			case R.id.typeOneCancel:
+								v.setVisibility(View.INVISIBLE);
+								mTypeOneSearchButton.setText(R.string.none);
+								mSearchQuery.setTypeOne(-1);				
+								break;
+				
+			case R.id.typeTwoCancel:
+								v.setVisibility(View.INVISIBLE);
+								mTypeTwoSearchButton.setText(R.string.none);
+								mSearchQuery.setTypeTwo(-1);				
+								break;
+				
+			case R.id.attackOneCancel:
+								v.setVisibility(View.INVISIBLE);
+								mAttackOneSearchButton.setText(R.string.none);
+								mSearchQuery.setAttackIdOne(-1);				
+								break;
+				
+			case R.id.attackTwoCancel:
+								v.setVisibility(View.INVISIBLE);
+								mAttackTwoSearchButton.setText(R.string.none);
+								mSearchQuery.setAttackIdTwo(-1);				
+								break;
+				
+			case R.id.attackThreeCancel:
+								v.setVisibility(View.INVISIBLE);
+								mAttackThreeSearchButton.setText(R.string.none);
+								mSearchQuery.setAttackIdThree(-1);				
+								break;
+				
+			case R.id.attackFourCancel:
+								v.setVisibility(View.INVISIBLE);
+								mAttackFourSearchButton.setText(R.string.none);
+								mSearchQuery.setAttackIdFour(-1);				
+								break;				
+		}
 	}
 	
 	private class SearchTask extends AsyncTask<Void, Void, List<PokemonInfo>> {
