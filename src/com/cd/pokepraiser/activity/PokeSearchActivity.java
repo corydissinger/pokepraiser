@@ -151,7 +151,7 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
     	if(!mSearchQuery.isEmpty()){
     		
     		if(mSearchQuery.getAbilityId() != -1){
-    			mAbilitySearchButton.setText(mAllAbilities.get(mSearchQuery.getAbilityId()).getName());
+    			mAbilitySearchButton.setText(mAllAbilities.get(mSearchQuery.getAbilityId() - 1).getName());
 				mAbilityCancel.setVisibility(View.VISIBLE);
     		}
     		
@@ -165,23 +165,24 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 				mTypeTwoCancel.setVisibility(View.VISIBLE);    			
     		}
     			
+    		//The reason we do attack_id - 1 is because attack ids start at 1, not 0
     		if(mSearchQuery.getAttackIdOne() != -1){
-    			mAttackOneSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdOne()).getName());
+    			mAttackOneSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdOne() - 1).getName());
 				mAttackOneCancel.setVisibility(View.VISIBLE);    			
     		}
     			
 			if(mSearchQuery.getAttackIdTwo() != -1){
-				mAttackTwoSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdTwo()).getName());
+				mAttackTwoSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdTwo() - 1).getName());
 				mAttackTwoCancel.setVisibility(View.VISIBLE);				
 			}
 				
 			if(mSearchQuery.getAttackIdThree() != -1){
-				mAttackThreeSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdThree()).getName());
+				mAttackThreeSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdThree() - 1).getName());
 				mAttackThreeCancel.setVisibility(View.VISIBLE);				
 			}
 				
 			if(mSearchQuery.getAttackIdFour() != -1){
-				mAttackFourSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdFour()).getName());
+				mAttackFourSearchButton.setText(mAllAttacks.get(mSearchQuery.getAttackIdFour() - 1).getName());
 				mAttackFourCancel.setVisibility(View.VISIBLE);
 			}
     	}

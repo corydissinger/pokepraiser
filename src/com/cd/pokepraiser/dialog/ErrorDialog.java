@@ -26,11 +26,8 @@ public class ErrorDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final Activity theActivity = getActivity();
 		
-		View searchDialogView 		= theActivity.getLayoutInflater().inflate(R.layout.searching_dialog, null);
-		
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
-        builder.setTitle(R.string.searching)
-    		.setView(searchDialogView)
+        builder.setTitle(R.string.error)
 			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

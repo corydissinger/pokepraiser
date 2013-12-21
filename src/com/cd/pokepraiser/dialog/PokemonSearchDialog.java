@@ -4,8 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.cd.pokepraiser.R;
@@ -19,12 +23,29 @@ public class PokemonSearchDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final Activity theActivity = getActivity();
 		
-		View searchDialogView 		= theActivity.getLayoutInflater().inflate(R.layout.searching_dialog, null);
+		final ProgressDialog dialog = new ProgressDialog(getActivity());
+		dialog.setTitle(R.string.searching);
+		dialog.setMessage(getString(R.string.searching));
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(false);
+ 
+		// Disable the back button
+		OnKeyListener keyListener = new OnKeyListener() {
+ 
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				
+				if( keyCode == KeyEvent.KEYCODE_BACK){					
+					return true;
+				}
+				return false;
+			}
+ 
 		
-        AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
-        builder.setTitle(R.string.searching)
-    		.setView(searchDialogView);
+		};
+		dialog.setOnKeyListener(keyListener);        
         
-        return builder.create();
+        return dialog;
 	}
 }

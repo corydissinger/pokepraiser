@@ -67,6 +67,7 @@
     <string name="level">LVL</string>
     <string name="tm_hm">TM/HM</string>           
 
+    <!-- Search Screen -->
     <string name="ability_label">Ability:</string>
     <string name="type_label">Type:</string>        
 	<string name="attack_one_label">Attack One:</string>
