@@ -32,13 +32,13 @@ public class AbilitySearchDialog extends DialogFragment {
 	AbilitySearchDialogListener mListener;
 	
 	private AbilityInfoArrayAdapter adapter;	
-	private List<AbilityInfo> mAbilities;
+	private ArrayList<AbilityInfo> mAbilities;
 	private AbilityInfo selectedItem;
 	
 	public AbilitySearchDialog(){}
 	
 	public AbilitySearchDialog(List<AbilityInfo> allAbilities){
-		mAbilities = allAbilities;
+		mAbilities = new ArrayList<AbilityInfo>(allAbilities);
 	}
 	
     @Override

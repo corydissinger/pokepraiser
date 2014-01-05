@@ -31,7 +31,7 @@
 	        	android:id="@+id/abilitySearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"
 		        android:textSize="14sp"
@@ -41,11 +41,12 @@
 		    
 			<ImageView
 			    android:id="@+id/abilityCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible" />
 						
         </LinearLayout>
@@ -78,7 +79,7 @@
 	        	android:id="@+id/typeOneSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -88,11 +89,12 @@
 		    
 			<ImageView
 			    android:id="@+id/typeOneCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
@@ -117,7 +119,7 @@
 	        	android:id="@+id/typeTwoSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -127,11 +129,12 @@
 		    
 			<ImageView
 			    android:id="@+id/typeTwoCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
@@ -164,7 +167,7 @@
 	        	android:id="@+id/attackOneSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -175,11 +178,12 @@
 		    
 			<ImageView
 			    android:id="@+id/attackOneCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
@@ -204,7 +208,7 @@
 	        	android:id="@+id/attackTwoSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -215,11 +219,12 @@
 		    
 			<ImageView
 			    android:id="@+id/attackTwoCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
@@ -244,7 +249,7 @@
 	        	android:id="@+id/attackThreeSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -255,11 +260,12 @@
 		    
 			<ImageView
 			    android:id="@+id/attackThreeCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>
@@ -284,7 +290,7 @@
 	        	android:id="@+id/attackFourSearch"
 		        android:layout_weight="5"
 	            android:layout_width="0dp"
-	            android:layout_height="match_parent"
+	            android:layout_height="wrap_content"
 		        android:gravity="center"
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
@@ -295,11 +301,12 @@
 		    
 			<ImageView
 			    android:id="@+id/attackFourCancel"
-			    android:background="@drawable/ic_action_cancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
 		        android:gravity="center"	    
 		        android:layout_width="0dip"
 		        android:layout_weight="2"				    
-			    android:layout_height="match_parent"
+			    android:layout_height="wrap_content"
 			    android:visibility="invisible"/>		    
 		                
         </LinearLayout>

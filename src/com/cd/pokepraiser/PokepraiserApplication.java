@@ -9,21 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cd.pokepraiser.db.DatabaseHelper;
+import com.cd.pokepraiser.db.PokeDbHelper;
+import com.cd.pokepraiser.db.TeamDbHelper;
 
 public class PokepraiserApplication extends Application {
 
-	private DatabaseHelper dbHelper;
+	private PokeDbHelper pokedbHelper;
+	private TeamDbHelper teamdbHelper;
+	
 	private Typeface datFont = null;
 	
 	public void loadResources(){
 		if(datFont == null)
 			datFont = Typeface.createFromAsset(getAssets(), "pokemon_gb_typeface.ttf");
 		
-		dbHelper = new DatabaseHelper(this);			
+		pokedbHelper = new PokeDbHelper(this);			
+		teamdbHelper = new TeamDbHelper(this);
 		
 		try {
-			dbHelper.initializeDataBase();
+			pokedbHelper.initializeDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new Error("Unable to create database for PokePraiser");
@@ -31,31 +35,32 @@ public class PokepraiserApplication extends Application {
 	}
 	
 	public void closeResources(){
-		if(dbHelper != null){
-			dbHelper.close();
-		}
-	}
-	
-	public boolean isDbOpen(){
-		if(dbHelper == null){
-			return false;
-		}else{
-			if(dbHelper.getReadableDatabase().isOpen()){
-				return true;
-			}else{
-				return false;
-			}
-		}
-	}
-	
-	public DatabaseHelper getDatabaseReference(){
-		//If this works, huzzah for strange practices...
-		if(dbHelper == null){
-			dbHelper = new DatabaseHelper(this);			
+		if(pokedbHelper != null){
+			pokedbHelper.close();
 		}
 		
-		return dbHelper;
+		if(teamdbHelper != null){
+			teamdbHelper.close();
+		}
 	}
+	
+	public PokeDbHelper getPokedbDatabaseReference(){
+		//If this works, huzzah for strange practices...
+		if(pokedbHelper == null){
+			pokedbHelper = new PokeDbHelper(this);			
+		}
+		
+		return pokedbHelper;
+	}
+	
+	public TeamDbHelper getTeamdbDatabaseReference(){
+		//If this works, huzzah for strange practices...
+		if(teamdbHelper == null){
+			teamdbHelper = new TeamDbHelper(this);			
+		}
+		
+		return teamdbHelper;
+	}	
 	
 	public void applyTypeface(TextView someView){
 		loadTypeface();

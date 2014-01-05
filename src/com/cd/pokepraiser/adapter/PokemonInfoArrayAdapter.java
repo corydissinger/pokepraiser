@@ -58,7 +58,7 @@ public class PokemonInfoArrayAdapter extends ArrayAdapter<PokemonInfo> {
 		
 		icon.setImageResource(pokemonInfo.getIconDrawable());
 		dexNo.setText(Integer.toString(pokemonInfo.getDexNo()));
-		pokemonName.setText(pokemonInfo.getPokemonName());
+		pokemonName.setText(pokemonInfo.getName());
 		
 		typeOne.setImageResource(TypeUtils.getTypeDrawableId(pokemonInfo.getTypeOne()));
 		
@@ -106,7 +106,7 @@ public class PokemonInfoArrayAdapter extends ArrayAdapter<PokemonInfo> {
 	                for (int i=0; i<count; i++)
 	                {
 	                    final PokemonInfo pkmn = original.get(i);
-	                    final String value = pkmn.getPokemonName().toLowerCase();
+	                    final String value = pkmn.getName().toLowerCase();
 
 	                    if (value.startsWith(prefix))
 	                    {

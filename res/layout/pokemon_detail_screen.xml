@@ -48,6 +48,8 @@
 		        android:baselineAligned="false"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:paddingBottom="10sp"		        
+		        android:paddingTop="10sp"
 		        android:background="@color/white" >
 
 				<ImageView
@@ -99,19 +101,6 @@
 				android:orientation="vertical"
 				android:padding="10sp"				
 		        android:background="@color/white" >			
-					    
-		        <TextView 
-		        	android:id="@+id/abilityLabel"
-		            android:layout_height="wrap_content"
-			        android:layout_width="match_parent"	
-			        android:layout_marginLeft="30sp"
-			        android:text="@string/ability_label"  	
-			        android:textSize="18sp"	/>
-		        
-				<View
-		        	android:layout_width="0dp"			    
-			        android:layout_height="20sp"
-			        android:visibility="invisible"/>		        
 		        
 			    <LinearLayout 
 			        android:id="@+id/abilityOneCell"
@@ -126,7 +115,7 @@
 				        android:layout_marginLeft="40sp"		        
 				        android:gravity="right|center_vertical"
 				        android:textAppearance="?android:attr/textAppearanceLarge"
-				        android:textSize="12sp"
+				        android:textSize="14sp"
 				        android:text="@string/first_ability" />
 				    
 					<View
@@ -141,22 +130,18 @@
 			            android:layout_marginLeft="30sp"
 			            android:layout_marginRight="30sp"			            
 				        android:gravity="center"
-				        android:textSize="14sp"
+				        android:textSize="18sp"
 				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityOne" />						
 				    
 			    </LinearLayout>						
-	            
-				<View
-		        	android:layout_width="0dp"			    
-			        android:layout_height="10sp"
-			        android:visibility="invisible"/>		    
 			    
 			    <LinearLayout 
 			        android:id="@+id/abilityTwoCell"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
+			        android:layout_marginTop="15sp"
 					android:orientation="vertical" >
 	
 				    <TextView
@@ -166,7 +151,7 @@
 				        android:layout_marginLeft="40sp"			        
 				        android:gravity="right|center_vertical"
 				        android:textAppearance="?android:attr/textAppearanceLarge"
-				        android:textSize="12sp"
+				        android:textSize="14sp"
 				        android:text="@string/second_ability" />		        
 			        
 					<View
@@ -181,22 +166,18 @@
 			            android:layout_marginLeft="30sp"
 			            android:layout_marginRight="30sp"			        
 				        android:gravity="center"
-				        android:textSize="14sp"
+				        android:textSize="18sp"
 				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityTwo" />			
 			        				        
 			    </LinearLayout>
-	
-				<View
-		        	android:layout_width="0dp"			    
-			        android:layout_height="10sp"
-			        android:visibility="invisible"/>				    
 			    
 			    <LinearLayout 
 			        android:id="@+id/abilityHiddenCell"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
+			        android:layout_marginTop="15sp"			        
 					android:orientation="vertical" 
 					android:weightSum="12">				    
 	
@@ -207,7 +188,7 @@
 				        android:layout_marginLeft="40sp"		            		        
 				        android:gravity="right|center_vertical"
 				        android:text="@string/hidden_ability"
-				        android:textSize="12sp"  />					
+				        android:textSize="14sp"  />					
 					
 					<View
 			        	android:layout_width="0sp"			    
@@ -221,7 +202,7 @@
 			            android:layout_marginLeft="30sp"
 			            android:layout_marginRight="30sp"		            		        
 				        android:gravity="center"
-				        android:textSize="14sp" 
+				        android:textSize="18sp" 
 				        android:textColor="@color/clickable_text"
 				        android:clickable="true"
 				        android:onClick="openAbilityHidden" />				        

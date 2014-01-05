@@ -23,7 +23,11 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main, menu);
+    	if(this instanceof PokemonDetailActivity){
+    		getSupportMenuInflater().inflate(R.menu.pokemon_detail_menu, menu);
+    	}else{
+    		getSupportMenuInflater().inflate(R.menu.main, menu);
+    	}
         
         return super.onCreateOptionsMenu(menu);
     }
@@ -49,6 +53,14 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
             	i = new Intent(PokepraiserActivity.this, PokeSearchActivity.class);
             	startActivity(i);
             	return true;
+            case R.id.manage_teams:
+            	i = new Intent(PokepraiserActivity.this, TeamManagerActivity.class);
+            	startActivity(i);
+            	return true;            	
+            case R.id.action_team_add:
+            	((PokemonDetailActivity)this).openTeamAddDialog();
+            	return true;
+            	
             default:
                 return super.onOptionsItemSelected(item);
         }

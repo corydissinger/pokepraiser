@@ -34,7 +34,7 @@ public class AttacksListActivity extends PokepraiserActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attacks_list_screen);
         
-        attacksDataSource = new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+        attacksDataSource = new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
         
         attacksDataSource.open();
         theAttacks = attacksDataSource.getAttackInfoList();

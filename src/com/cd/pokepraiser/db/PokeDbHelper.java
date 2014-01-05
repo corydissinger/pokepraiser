@@ -1,5 +1,6 @@
 package com.cd.pokepraiser.db;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cd.pokepraiser.util.FileHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class PokeDbHelper extends SQLiteOpenHelper {
 	// The Android's default system path of your application database.
-	private static String FS				= System.getProperty("file.separator");
-	private static String DB_DIR 			= FS + "data" + FS + "data" + FS + "com.cd.pokepraiser" + FS + "databases" + FS;
+	private static String DB_DIR 			= File.separator + "data" + File.separator + "data" + File.separator + "com.cd.pokepraiser" + File.separator + "databases" + File.separator;
 	private static String DB_NAME 			= "pokedb.sqlite";
 	private static String DB_PATH 			= DB_DIR + DB_NAME;
 	private static String OLD_DB_PATH 		= DB_DIR + "old_" + DB_NAME;
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 
 	 * @param context
 	 */
-	public DatabaseHelper(Context context) {
+	public PokeDbHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.myContext = context;

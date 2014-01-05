@@ -11,16 +11,17 @@ import android.database.sqlite.SQLiteDatabase;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.data.PokemonSearchQuery;
-import com.cd.pokepraiser.db.DatabaseHelper;
+import com.cd.pokepraiser.data.TeamMemberAttributes;
+import com.cd.pokepraiser.db.PokeDbHelper;
 import com.cd.pokepraiser.db.queries.PokemonQueries;
 import com.cd.pokepraiser.db.util.PokemonSearchQueryBuilder;
 
 public class PokemonDataSource {
 	
 	private SQLiteDatabase db;
-	private DatabaseHelper dbHelper;
+	private PokeDbHelper dbHelper;
 	
-	public PokemonDataSource(DatabaseHelper dbHelper){
+	public PokemonDataSource(PokeDbHelper dbHelper){
 		this.dbHelper = dbHelper;
 	}
 	
@@ -44,9 +45,9 @@ public class PokemonDataSource {
 			final String safeResourceName	= cursor.getString(5).replace("-", "_");
 			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
 			
-			info.setPokemonId(cursor.getInt(0));
+			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
-			info.setPokemonName(cursor.getString(2));
+			info.setName(cursor.getString(2));
 			info.setTypeOne(cursor.getInt(3));
 			info.setTypeTwo(cursor.getInt(4));
 			info.setIconDrawable(drawableId);
@@ -109,9 +110,9 @@ public class PokemonDataSource {
 			final String safeResourceName	= cursor.getString(5).replace("-", "_");
 			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
 			
-			info.setPokemonId(cursor.getInt(0));
+			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
-			info.setPokemonName(cursor.getString(2));
+			info.setName(cursor.getString(2));
 			info.setTypeOne(cursor.getInt(3));
 			info.setTypeTwo(cursor.getInt(4));
 			info.setIconDrawable(drawableId);
@@ -136,9 +137,9 @@ public class PokemonDataSource {
 			final String safeResourceName	= cursor.getString(5).replace("-", "_");
 			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
 			
-			info.setPokemonId(cursor.getInt(0));
+			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
-			info.setPokemonName(cursor.getString(2));
+			info.setName(cursor.getString(2));
 			info.setTypeOne(cursor.getInt(3));
 			info.setTypeTwo(cursor.getInt(4));
 			info.setIconDrawable(drawableId);
@@ -163,9 +164,9 @@ public class PokemonDataSource {
 			final String safeResourceName	= cursor.getString(5).replace("-", "_");
 			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
 			
-			info.setPokemonId(cursor.getInt(0));
+			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
-			info.setPokemonName(cursor.getString(2));
+			info.setName(cursor.getString(2));
 			info.setTypeOne(cursor.getInt(3));
 			info.setTypeTwo(cursor.getInt(4));
 			info.setIconDrawable(drawableId);
@@ -175,5 +176,35 @@ public class PokemonDataSource {
 		
 		cursor.close();
 		return pokemonInfoList;
+	}
+	
+	public void addPokemonNames(final List<TeamMemberAttributes> teamMembers){
+		for(TeamMemberAttributes member : teamMembers){
+			Cursor cursor = db.rawQuery(PokemonQueries.GET_POKEMON_NAME, new String [] { Integer.toString(member.getPokemonId()) });
+			
+			if(!cursor.moveToFirst()){
+				cursor.close();
+				continue;
+			}
+			
+			final String pokemonName = cursor.getString(0);
+			cursor.close();
+			
+			member.setPokemonName(pokemonName);
+		}
+	}
+
+	public String getPokemonName(int selectedPokeId) {
+		Cursor cursor = db.rawQuery(PokemonQueries.GET_POKEMON_NAME, new String [] { Integer.toString(selectedPokeId) });
+		
+		if(!cursor.moveToFirst()){
+			cursor.close();
+			return "";
+		}
+		
+		final String pokemonName = cursor.getString(0);
+		cursor.close();
+		
+		return pokemonName;
 	}
 }

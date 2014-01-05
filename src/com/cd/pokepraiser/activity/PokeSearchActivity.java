@@ -25,7 +25,7 @@ import com.cd.pokepraiser.dialog.AbilitySearchDialog.AbilitySearchDialogListener
 import com.cd.pokepraiser.dialog.AttackSearchDialog;
 import com.cd.pokepraiser.dialog.AttackSearchDialog.AttackSearchDialogListener;
 import com.cd.pokepraiser.dialog.ErrorDialog;
-import com.cd.pokepraiser.dialog.PokemonSearchDialog;
+import com.cd.pokepraiser.dialog.PokemonSearchingDialog;
 import com.cd.pokepraiser.dialog.TypeSearchDialog;
 import com.cd.pokepraiser.dialog.TypeSearchDialog.TypeSearchDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
@@ -46,7 +46,7 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 	private AbilitySearchDialog mAbilitySearch;
 	private TypeSearchDialog 	mTypeSearch;
 	private AttackSearchDialog 	mAttackSearch;
-	private PokemonSearchDialog	mPokemonSearch;	
+	private PokemonSearchingDialog	mPokemonSearch;	
 	
 	private Button				mAbilitySearchButton;
 	
@@ -79,13 +79,13 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokemon_search_screen);
 
-        mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());        
+        mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        
         
         if(savedInstanceState == null){
         	mSearchQuery = new PokemonSearchQuery();
         	
-            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
             
             mAbilitiesDataSource.open();
             mAllAbilities = mAbilitiesDataSource.getAbilityList();
@@ -105,7 +105,7 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
         mAttackSearch		= new AttackSearchDialog(mAllAttacks);
         mAbilitySearch 		= new AbilitySearchDialog(mAllAbilities);
         mTypeSearch			= new TypeSearchDialog(mAllTypes);
-        mPokemonSearch		= new PokemonSearchDialog();
+        mPokemonSearch		= new PokemonSearchingDialog();
         
         mAbilitySearchButton 		= (Button) findViewById(R.id.abilitySearch);
         mTypeOneSearchButton 		= (Button) findViewById(R.id.typeOneSearch);

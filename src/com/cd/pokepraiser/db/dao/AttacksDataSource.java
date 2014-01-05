@@ -11,7 +11,7 @@ import com.cd.pokepraiser.data.AttackAttributes;
 import com.cd.pokepraiser.data.AttackInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.TypeInfo;
-import com.cd.pokepraiser.db.DatabaseHelper;
+import com.cd.pokepraiser.db.PokeDbHelper;
 import com.cd.pokepraiser.db.queries.AttacksQueries;
 import com.cd.pokepraiser.db.util.AttacksHelper;
 import com.cd.pokepraiser.util.TypeUtils;
@@ -19,9 +19,9 @@ import com.cd.pokepraiser.util.TypeUtils;
 public class AttacksDataSource {
 	
 	private SQLiteDatabase db;
-	private DatabaseHelper dbHelper;
+	private PokeDbHelper dbHelper;
 	
-	public AttacksDataSource(DatabaseHelper dbHelper){
+	public AttacksDataSource(PokeDbHelper dbHelper){
 		this.dbHelper = dbHelper;
 	}
 	

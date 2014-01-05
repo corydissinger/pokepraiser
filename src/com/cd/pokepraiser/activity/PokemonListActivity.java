@@ -25,9 +25,9 @@ public class PokemonListActivity extends PokepraiserActivity {
 	
 	private PokemonInfoArrayAdapter adapter;
 	
-	private EditText pokemonSearch;
+	private EditText mPokemonSearch;
 	
-	private ArrayList<PokemonInfo> thePokemon;
+	private ArrayList<PokemonInfo> mPokemon;
 	
     @SuppressWarnings("unchecked")
 	@Override
@@ -36,20 +36,24 @@ public class PokemonListActivity extends PokepraiserActivity {
         setContentView(R.layout.pokemon_list_screen);
         
         final Intent receivedIntent = getIntent();
-        thePokemon = (ArrayList<PokemonInfo>) receivedIntent.getSerializableExtra(ExtrasConstants.POKEMON_SEARCH);        
+        mPokemon = (ArrayList<PokemonInfo>) receivedIntent.getSerializableExtra(ExtrasConstants.POKEMON_SEARCH);        
         
-        if(thePokemon == null){
-            pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-            
-            pokemonDataSource.open();
-            thePokemon = pokemonDataSource.getPokemonList(getResources());
-            pokemonDataSource.close();        	
+        if(mPokemon == null){
+            if(savedInstanceState == null){
+                pokemonDataSource = new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+                
+                pokemonDataSource.open();
+                mPokemon = pokemonDataSource.getPokemonList(getResources());
+                pokemonDataSource.close();        	
+            }else{
+            	mPokemon = (ArrayList<PokemonInfo>) savedInstanceState.getSerializable(ExtrasConstants.POKEMON_ID);
+            }        	
         }
         
         ListView pokemonListContent = (ListView)findViewById(R.id.pokemonList);
-        pokemonSearch = (EditText)findViewById(R.id.searchPokemon);
+        mPokemonSearch = (EditText)findViewById(R.id.searchPokemon);
         
-        adapter = new PokemonInfoArrayAdapter(this, android.R.layout.simple_list_item_1, thePokemon);
+        adapter = new PokemonInfoArrayAdapter(this, android.R.layout.simple_list_item_1, mPokemon);
         pokemonListContent.setAdapter(adapter);
         
         pokemonListContent.setOnItemClickListener(new OnItemClickListener() {
@@ -58,12 +62,12 @@ public class PokemonListActivity extends PokepraiserActivity {
 				final PokemonInfo pokemonItem = (PokemonInfo) parent.getItemAtPosition(position);
 				
 	        	Intent i = new Intent(PokemonListActivity.this, PokemonDetailActivity.class);
-        		i.putExtra(ExtrasConstants.POKEMON_ID, pokemonItem.getPokemonId());
+        		i.putExtra(ExtrasConstants.POKEMON_ID, pokemonItem.getId());
 				startActivity(i);
 			}
         });
         
-        pokemonSearch.addTextChangedListener(new TextWatcher() {
+        mPokemonSearch.addTextChangedListener(new TextWatcher() {
             
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
@@ -82,5 +86,12 @@ public class PokemonListActivity extends PokepraiserActivity {
             }
         });        
     }	
+    
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+    	savedInstanceState.putSerializable(ExtrasConstants.POKEMON_ID, mPokemon);
+    	
+    	super.onSaveInstanceState(savedInstanceState);
+    }    
     
 }

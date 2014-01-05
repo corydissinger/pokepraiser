@@ -12,7 +12,8 @@
     <string name="all_abilities">All Abilities</string>    
     <string name="all_attacks">All Attacks</string>
     <string name="all_pokemon">All Pokemon</string>
-    <string name="all_types">All Types</string>    
+    <string name="all_types">All Types</string>
+    <string name="all_teams">All Teams</string>
     <string name="advanced_pokesearch">Advanced Pokesearch</string>        
     
     <string name="battle_desc_header">Battle Effect</string>
@@ -45,9 +46,6 @@
     <string name="first_ability">First:</string>
     <string name="second_ability">Second:</string>        
     <string name="hidden_ability">Hidden:</string>
-    <string name="search_pokemon">Search Pokemon...</string>
-    <string name="search_attacks">Search Attacks...</string>
-    <string name="search_abilities">Search Abilities...</string>
     <string name="learned_by">Learned By</string>
     <string name="hp_label">HP:</string>    
     <string name="attack_label">ATK:</string>
@@ -67,6 +65,25 @@
     <string name="level">LVL</string>
     <string name="tm_hm">TM/HM</string>           
 
+    <!-- Team Screens -->    
+    <string name="create_team_title">Create Team</string>
+    <string name="choose_name">Make a name for your team</string>
+    <string name="your_teams">Your Teams</string>
+    <string name="add_team">Add Team +</string>
+    <string name="delete_team_title">Delete Team</string>
+    <string name="delete_member_title">Delete Member</string>    
+    <string name="delete_team_confirm">You are about to permanently delete the team:&#160;</string>
+    <string name="delete_member_confirm">You are about to permanently delete the team member:&#160;</string>    
+    <string name="no_teams">No Teams yet!</string>
+	<string name="no_members">No Members yet!</string>             
+    <string name="add_pokemon">Add Pokemon +</string>
+    <string name="evs_label">EVs:&#160;</string>
+	<string name="at_fifty">at lvl 50:&#160;</string>    
+	<string name="at_hundred">at lvl 100:&#160;</string>       
+	<string name="max_stats_negative">Negative Nature</string>
+	<string name="max_stats_neutral">Neutral Nature</string>
+	<string name="max_stats_positive">Positive Nature</string>		    
+    
     <!-- Search Screen -->
     <string name="ability_label">Ability:</string>
     <string name="type_label">Type:</string>        
@@ -75,10 +92,18 @@
 	<string name="attack_three_label">Attack Three:</string>
 	<string name="attack_four_label">Attack Four:</string>	
 	<string name="searching">Searching</string>	
-    
+
+	<!-- Menu strings -->	
+    <string name="search_pokemon">Search Pokemon...</string>
+    <string name="search_attacks">Search Attacks...</string>
+    <string name="search_abilities">Search Abilities...</string>
+    <string name="manage_teams">Manage Teams...</string>	
+	
 	<!-- Common strings -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="edit">Edit</string>        
     <string name="cancel">Cancel</string>
     <string name="none">None</string>                
 

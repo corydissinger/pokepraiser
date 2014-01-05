@@ -2,6 +2,8 @@ package com.cd.pokepraiser.db.queries;
 
 public class PokemonQueries {
 
+	public static final String GET_POKEMON_NAME = "SELECT NAME FROM POKEMON WHERE _id = ?;";
+	
 	public static final String GET_ALL_POKEMON_INFO = 
 			"SELECT PKMN._id,"
 		  + "		PKMN.DEX_NO,"
@@ -101,4 +103,12 @@ public class PokemonQueries {
 	
 	public static final String ATTACK_WHERE = 
 		"PKMN_ATKS0.ATTACK_NO = ?";
+	
+	//TABLES, COLUMNS
+	
+	public static final String TABLE_POKEMON 	= "POKEMON";
+	
+	public static final String COLUMN_NAME		= "NAME";
+	public static final String COLUMN_ID		= "_id";	
+	
 }

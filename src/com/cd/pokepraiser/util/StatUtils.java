@@ -27,4 +27,13 @@ public class StatUtils {
 			return R.drawable.progress_red;
 		}
 	}
+
+	public static int calculateHPAtLevel(int baseStat, int evs, int ivs, int level){
+		return (((ivs + (2 * baseStat) + (evs / 4) + 100) * level) / 100) + 10;
+	}	
+	
+	//Nature is applied after this formula, see http://bulbapedia.bulbagarden.net/wiki/Stats#Permanent_stats
+	public static int calculateStatAtLevel(int baseStat, int evs, int ivs, int level){
+		return (((ivs + (2 * baseStat) + (evs / 4)) * level) / 100) + 5;
+	}
 }

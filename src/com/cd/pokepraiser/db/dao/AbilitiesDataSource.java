@@ -8,15 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.cd.pokepraiser.data.AbilityAttributes;
 import com.cd.pokepraiser.data.AbilityInfo;
-import com.cd.pokepraiser.db.DatabaseHelper;
+import com.cd.pokepraiser.db.PokeDbHelper;
 import com.cd.pokepraiser.db.queries.AbilitiesQueries;
 
 public class AbilitiesDataSource {
 	
 	private SQLiteDatabase db;
-	private DatabaseHelper dbHelper;
+	private PokeDbHelper dbHelper;
 	
-	public AbilitiesDataSource(DatabaseHelper dbHelper){
+	public AbilitiesDataSource(PokeDbHelper dbHelper){
 		this.dbHelper = dbHelper;
 	}
 	

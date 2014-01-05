@@ -72,6 +72,24 @@
             android:label="@string/app_name" >            
             
         </activity>        
+
+        <activity
+            android:name="com.cd.pokepraiser.activity.TeamManagerActivity"
+            android:label="@string/app_name" >            
+            
+        </activity>
+        
+        <activity
+            android:name="com.cd.pokepraiser.activity.TeamBuilderActivity"
+            android:label="@string/app_name" >            
+            
+        </activity>
+        
+        <activity
+            android:name="com.cd.pokepraiser.activity.TeamMemberActivity"
+            android:label="@string/app_name" >            
+            
+        </activity>        
         
     </application>
 

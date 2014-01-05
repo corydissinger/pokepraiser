@@ -36,7 +36,7 @@ public class AbilitiesListActivity extends PokepraiserActivity implements Abilit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.abilities_list_screen);
         
-        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
         
         abilitiesDataSource.open();
         theAbilities = abilitiesDataSource.getAbilityList();

@@ -45,8 +45,8 @@ public class AbilityDetailActivity extends PokepraiserActivity {
         
         if(savedInstanceState == null){
         	List<PokemonInfo> pokemonLearningAbility;        	
-	        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-	        pokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
+	        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+	        pokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
 	        
 	        abilitiesDataSource.open();
 	        abilityAttributes
@@ -128,7 +128,7 @@ public class AbilityDetailActivity extends PokepraiserActivity {
 			
 			icon.setImageResource(thePokemon.getIconDrawable());
 			dexNo.setText(Integer.toString(thePokemon.getDexNo()));
-			pokemonName.setText(thePokemon.getPokemonName());
+			pokemonName.setText(thePokemon.getName());
 			
 			typeOne.setImageResource(TypeUtils.getTypeDrawableId(thePokemon.getTypeOne()));
 			
@@ -147,7 +147,7 @@ public class AbilityDetailActivity extends PokepraiserActivity {
 				@Override
 				public void onClick(View v) {
 		        	Intent i = new Intent(AbilityDetailActivity.this, PokemonDetailActivity.class);
-	        		i.putExtra(ExtrasConstants.POKEMON_ID, thePokemon.getPokemonId());
+	        		i.putExtra(ExtrasConstants.POKEMON_ID, thePokemon.getId());
 					startActivity(i);
 				}
 	        });

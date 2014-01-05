@@ -1,5 +1,6 @@
 package com.cd.pokepraiser.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -20,14 +21,18 @@ import com.cd.pokepraiser.data.AbilityInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonDetail;
+import com.cd.pokepraiser.data.TeamInfo;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
 import com.cd.pokepraiser.db.dao.PokemonDataSource;
+import com.cd.pokepraiser.db.dao.TeamDataSource;
+import com.cd.pokepraiser.dialog.AddTeamMemberDialog;
+import com.cd.pokepraiser.dialog.AddTeamMemberDialog.AddTeamMemberDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.StatUtils;
 import com.cd.pokepraiser.util.TypeUtils;
 
-public class PokemonDetailActivity extends PokepraiserActivity {
+public class PokemonDetailActivity extends PokepraiserActivity implements AddTeamMemberDialogListener{
 
 	private static final int LEVEL_UP_ATTACKS_LIST = 0;
 	private static final int TM_HM_ATTACKS_LIST = 1;
@@ -37,13 +42,18 @@ public class PokemonDetailActivity extends PokepraiserActivity {
 	private static final int MOVE_TUTOR_ATTACKS_LIST = 5;	
 	
 	private static final String POKEMON_DETAIL 		= "pokeDetail";
+	private static final String TEAMS		 		= "t";	
 	
 	private PokemonDataSource mPokemonDataSource;
 	private AbilitiesDataSource mAbilitiesDataSource;	
 	private AttacksDataSource mAttacksDataSource;
+	private TeamDataSource mTeamDataSource;	
 
 	private PokemonDetail mPokemonDetail		= null;
-
+	private ArrayList<TeamInfo> mTeams			= null;
+	
+	private AddTeamMemberDialog	mTeamAdd;	
+	
 	private boolean isLevelUpListShown 		= false;
 	private boolean isTmHmListShown 		= false;
 	private boolean isEggListShown			= false;
@@ -64,10 +74,11 @@ public class PokemonDetailActivity extends PokepraiserActivity {
     	List<PokemonAttackInfo> pokemonAttacks;        
         
         if(savedInstanceState == null){
-            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());
-            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getDatabaseReference());        	
-        	
+            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        	
+			mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());
+            
 	        mPokemonDataSource.open();
 	        pokemonAttributes = mPokemonDataSource.getPokemonAttributes(pokemonId, getResources());
 	        mPokemonDataSource.close();        
@@ -83,16 +94,24 @@ public class PokemonDetailActivity extends PokepraiserActivity {
 			pokemonAttacks = mAttacksDataSource.getPokemonAttackInfoList(pokemonAttributes.getDexNo(), pokemonAttributes.getAltForm());
 			mAttacksDataSource.close();
 			
+			mTeamDataSource.openRead();
+			mTeams = (ArrayList<TeamInfo>) mTeamDataSource.getTeamInfo();
+			mTeamDataSource.close();			
+			
         	mPokemonDetail = new PokemonDetail();
         	mPokemonDetail.setPokemonAttributes(pokemonAttributes);
         	mPokemonDetail.setPokemonAbilities(pokemonAbilities);
         	mPokemonDetail.setPokemonAttacks(pokemonAttacks);
         }else{
         	mPokemonDetail		= savedInstanceState.getParcelable(POKEMON_DETAIL);
+        	mTeams				= (ArrayList<TeamInfo>) savedInstanceState.getSerializable(TEAMS);
+        	
         	pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
         	pokemonAbilities  	= mPokemonDetail.getPokemonAbilities();
         	pokemonAttacks		= mPokemonDetail.getPokemonAttacks();
         }
+        
+        mTeamAdd = new AddTeamMemberDialog(mTeams);
         
         TextView dexNo		 		= (TextView) findViewById(R.id.dexNo);
         TextView pokemonName		= (TextView) findViewById(R.id.pokemonName);
@@ -123,26 +142,6 @@ public class PokemonDetailActivity extends PokepraiserActivity {
         TextView spatk				= (TextView) findViewById(R.id.baseSpatk);
         TextView spdef				= (TextView) findViewById(R.id.baseSpdef);        
         TextView spe				= (TextView) findViewById(R.id.baseSpe);        
-        
-        TextView learnedAttacksLabel	= (TextView) findViewById(R.id.learnedAttacksLabel);
-        
-        TextView levelUpAttacksLabel	= (TextView) findViewById(R.id.levelUpAttacksLabel);        
-        TextView levelUpAttacksButton	= (TextView) findViewById(R.id.levelUpAttacksButton);
-        
-        TextView tmHmAttacksLabel	= (TextView) findViewById(R.id.tmHmAttacksLabel);        
-        TextView tmHmAttacksButton	= (TextView) findViewById(R.id.tmHmAttacksButton);
-        
-        TextView eggAttacksLabel	= (TextView) findViewById(R.id.eggAttacksLabel);        
-        TextView eggAttacksButton	= (TextView) findViewById(R.id.eggAttacksButton);
-        
-        TextView gvOnlyAttacksLabel	= (TextView) findViewById(R.id.gvOnlyAttacksLabel);        
-        TextView gvOnlyAttacksButton	= (TextView) findViewById(R.id.gvOnlyAttacksButton);        
-
-        TextView preEvoAttacksLabel	= (TextView) findViewById(R.id.preEvoAttacksLabel);        
-        TextView preEvoAttacksButton	= (TextView) findViewById(R.id.preEvoAttacksButton);
-        
-        TextView moveTutorAttacksLabel	= (TextView) findViewById(R.id.moveTutorAttacksLabel);        
-        TextView moveTutorAttacksButton	= (TextView) findViewById(R.id.moveTutorAttacksButton);        
         
         dexNo.setText(Integer.toString(pokemonAttributes.getDexNo()));
         pokemonName.setText(pokemonAttributes.getName());
@@ -189,41 +188,7 @@ public class PokemonDetailActivity extends PokepraiserActivity {
         spe.setText(Integer.toString(pokemonAttributes.getBsSpd()));        
         
         //Apply typeface
-		((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{dexNo,
-																				pokemonName,
-																				abilityLabel,
-																				abilityOne,
-																				abilityTwo,
-																				abilityHidden,
-																				abilityOneLabel,
-																				abilityTwoLabel,																			
-																				abilityHiddenLabel,
-																				hpLabel,
-																				atkLabel,
-																				defLabel,
-																				spatkLabel,
-																				spdefLabel,
-																				speLabel,
-																				hp,
-																				atk,
-																				def,
-																				spatk,
-																				spdef,
-																				spe,
-																				learnedAttacksLabel,
-																				levelUpAttacksLabel,
-																				levelUpAttacksButton,
-																				tmHmAttacksLabel,
-																				tmHmAttacksButton,
-																				eggAttacksLabel,
-																				eggAttacksButton,
-																				gvOnlyAttacksLabel,																				
-																				gvOnlyAttacksButton,
-																				preEvoAttacksLabel,
-																				preEvoAttacksButton,
-																				moveTutorAttacksLabel,
-																				moveTutorAttacksButton
-																				});
+		((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));
 		
 		//Most expensive operation by far, most likely.
 		inflatePokemonAttackLists();
@@ -232,6 +197,7 @@ public class PokemonDetailActivity extends PokepraiserActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
     	savedInstanceState.putParcelable(POKEMON_DETAIL, mPokemonDetail);
+    	savedInstanceState.putSerializable(TEAMS, mTeams);
     	
     	super.onSaveInstanceState(savedInstanceState);
     }
@@ -590,4 +556,15 @@ public class PokemonDetailActivity extends PokepraiserActivity {
 	    
     	return hideButton;
     }
+
+	public void openTeamAddDialog() {
+		mTeamAdd.show(getSupportFragmentManager(), null);
+	}
+
+	@Override
+	public void onTeamItemClick(AddTeamMemberDialog dialog) {
+		final TeamInfo selectedTeam = mTeams.get(dialog.getSelectedItem());
+
+		dialog.dismiss();
+	}
 }
