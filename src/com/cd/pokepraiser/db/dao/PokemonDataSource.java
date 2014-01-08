@@ -42,8 +42,7 @@ public class PokemonDataSource {
 			final PokemonInfo info = new PokemonInfo();
 			
 			//TODO: Never name Android resources with hyphens, use underscores!
-			final String safeResourceName	= cursor.getString(5).replace("-", "_");
-			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
+			final int drawableId 			= resources.getIdentifier(cursor.getString(5), "drawable", "com.cd.pokepraiser");
 			
 			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
@@ -83,10 +82,8 @@ public class PokemonDataSource {
 		pokemonDetail.setEggTwo(cursor.getInt(15));
 		pokemonDetail.setAltForm(cursor.getInt(18));
 
-		final int imgDrawableId 		= resources.getIdentifier("p" + cursor.getString(16), "drawable", "com.cd.pokepraiser");
-		
-		final String safeResourceName	= cursor.getString(17).replace("-", "_");		
-		final int icnDrawableId 		= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");		
+		final int imgDrawableId 		= resources.getIdentifier(cursor.getString(16), "drawable", "com.cd.pokepraiser");
+		final int icnDrawableId 		= resources.getIdentifier(cursor.getString(17), "drawable", "com.cd.pokepraiser");		
 		
 		pokemonDetail.setImgDrawable(imgDrawableId);
 		pokemonDetail.setIconDrawable(icnDrawableId);		
@@ -107,8 +104,7 @@ public class PokemonDataSource {
 			final PokemonInfo info = new PokemonInfo();
 			
 			//TODO: Never name Android resources with hyphens, use underscores!
-			final String safeResourceName	= cursor.getString(5).replace("-", "_");
-			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
+			final int drawableId 			= resources.getIdentifier(cursor.getString(5), "drawable", "com.cd.pokepraiser");
 			
 			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
@@ -134,8 +130,7 @@ public class PokemonDataSource {
 			final PokemonInfo info = new PokemonInfo();
 			
 			//TODO: Never name Android resources with hyphens, use underscores!
-			final String safeResourceName	= cursor.getString(5).replace("-", "_");
-			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
+			final int drawableId 			= resources.getIdentifier(cursor.getString(5), "drawable", "com.cd.pokepraiser");
 			
 			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));
@@ -161,8 +156,7 @@ public class PokemonDataSource {
 			final PokemonInfo info = new PokemonInfo();
 			
 			//TODO: Never name Android resources with hyphens, use underscores!
-			final String safeResourceName	= cursor.getString(5).replace("-", "_");
-			final int drawableId 			= resources.getIdentifier(safeResourceName, "drawable", "com.cd.pokepraiser");
+			final int drawableId 			= resources.getIdentifier(cursor.getString(5), "drawable", "com.cd.pokepraiser");
 			
 			info.setId(cursor.getInt(0));
 			info.setDexNo(cursor.getInt(1));

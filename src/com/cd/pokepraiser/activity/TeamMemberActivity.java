@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +24,7 @@ import com.cd.pokepraiser.data.AttackInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonDetail;
+import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
@@ -86,10 +88,7 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
         setContentView(R.layout.team_member_screen);		
 		
         final Intent receivedIntent = getIntent();
-        mMemberAttributes = (TeamMemberAttributes) receivedIntent.getSerializableExtra(ExtrasConstants.MEMBER_ID);
-		
-        if(mMemberAttributes == null)
-        	finish();
+        final int memberId = receivedIntent.getIntExtra(ExtrasConstants.MEMBER_ID, 0);
         
     	PokemonAttributes pokemonAttributes;
     	AbilityInfo []	  pokemonAbilities;
@@ -102,6 +101,13 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
             mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
             mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        	
 			
+            mTeamDataSource.openRead();
+            mMemberAttributes = mTeamDataSource.getTeamMember(memberId);
+            mTeamDataSource.close();
+
+            if(mMemberAttributes == null)
+            	finish();            
+            
 	        mPokemonDataSource.open();
 	        pokemonAttributes = mPokemonDataSource.getPokemonAttributes(mMemberAttributes.getPokemonId(), getResources());
 	        mPokemonDataSource.close();        
@@ -217,6 +223,11 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 				@Override
 				public void afterTextChanged(Editable s) {
 					final EditText editText = (EditText) getCurrentFocus();
+					
+					//If you set the text of an edit text before it is in the view, this will fire and have null because nothing is in focus!
+					if(editText == null)
+						return;
+					
 					final String newVal = s.toString();
 					
 					if(newVal.length() > 0){
@@ -234,11 +245,37 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		baseSpdef.setText(Integer.toString(pokemonAttributes.getBsSpdef()));
 		baseSpe.setText(Integer.toString(pokemonAttributes.getBsSpd()));
 		
+		mHpEvsEdit.setText(Integer.toString(mMemberAttributes.getHp()));
+		mAtkEvsEdit.setText(Integer.toString(mMemberAttributes.getAtk()));
+		mDefEvsEdit.setText(Integer.toString(mMemberAttributes.getDef()));
+		mSpatkEvsEdit.setText(Integer.toString(mMemberAttributes.getSpatk()));
+		mSpdefEvsEdit.setText(Integer.toString(mMemberAttributes.getSpdef()));
+		mSpeEvsEdit.setText(Integer.toString(mMemberAttributes.getSpe()));		
+		
+		mAbilityModifyButton.setText(getChosenAbility());
+
+		mAttackOneSearchButton.setText(getChosenAttack(1));
+		mAttackTwoSearchButton.setText(getChosenAttack(2));
+		mAttackThreeSearchButton.setText(getChosenAttack(3));
+		mAttackFourSearchButton.setText(getChosenAttack(4));		
+		
 		createStatTableFragments();
 		
         ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));		
 	}
 
+	@Override
+	protected void onResume(){
+		super.onResume();
+		
+    	mTeamDataSource.openRead();
+    	final TeamMemberAttributes memberExists = mTeamDataSource.getTeamMember(mMemberAttributes.getId());
+    	mTeamDataSource.close();
+    	
+    	if(memberExists == null)
+    		finish();
+	}	
+	
 	@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
     	savedInstanceState.putSerializable(ExtrasConstants.MEMBER_ID, mMemberAttributes);    	
@@ -256,30 +293,30 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		switch(originButtonId){                                                           
 			case R.id.attackOneSearch:         
 							mMemberAttributes.setMoveOne(selectedAttack.getAttackDbId());
-							updateMemberData();  
 							mAttackOneSearchButton.setText(selectedAttack.getName());     
-							mAttackOneCancel.setVisibility(View.VISIBLE);                 
+							mAttackOneCancel.setVisibility(View.VISIBLE);             
+							new UpdateTeamMemberDataTask().execute();
 							break;                                                        
 							                                                              
 			case R.id.attackTwoSearch:                                                    
 							mMemberAttributes.setMoveTwo(selectedAttack.getAttackDbId());
-							updateMemberData();  
 							mAttackTwoSearchButton.setText(selectedAttack.getName());     
-							mAttackTwoCancel.setVisibility(View.VISIBLE);					
+							mAttackTwoCancel.setVisibility(View.VISIBLE);
+							new UpdateTeamMemberDataTask().execute();
 							break;                                                        
 							                                                              
 			case R.id.attackThreeSearch:                                                  
 							mMemberAttributes.setMoveThree(selectedAttack.getAttackDbId());
-							updateMemberData();
 							mAttackThreeSearchButton.setText(selectedAttack.getName());   
-							mAttackThreeCancel.setVisibility(View.VISIBLE);					
+							mAttackThreeCancel.setVisibility(View.VISIBLE);
+							new UpdateTeamMemberDataTask().execute();
 							break;                                                        
 							                                                              
 			case R.id.attackFourSearch:                                                   
 							mMemberAttributes.setMoveFour(selectedAttack.getAttackDbId());
-							updateMemberData(); 
 							mAttackFourSearchButton.setText(selectedAttack.getName());    
-							mAttackFourCancel.setVisibility(View.VISIBLE);					
+							mAttackFourCancel.setVisibility(View.VISIBLE);
+							new UpdateTeamMemberDataTask().execute();
 							break;							                              
 		}                                                                                 
 		                                                                                  
@@ -293,7 +330,7 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		mMemberAttributes.setAbility(selectedAbility.getAbilityDbId());
 		mAbilityModifyButton.setText(selectedAbility.getName());
 		mAbilityCancel.setVisibility(View.VISIBLE);		
-		updateMemberData();
+		new UpdateTeamMemberDataTask().execute();
 		
 		dialog.dismiss();		
 	}	
@@ -315,35 +352,35 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 								v.setVisibility(View.INVISIBLE);
 								mAbilityModifyButton.setText(R.string.none);
 								mMemberAttributes.setAbility(-1);
-								updateMemberData();
+								new UpdateTeamMemberDataTask().execute();
 								break;
 				
 			case R.id.attackOneCancel:
 								v.setVisibility(View.INVISIBLE);
 								mAttackOneSearchButton.setText(R.string.none);
 								mMemberAttributes.setMoveOne(-1);
-								updateMemberData();
+								new UpdateTeamMemberDataTask().execute();
 								break;
 				
 			case R.id.attackTwoCancel:
 								v.setVisibility(View.INVISIBLE);
 								mAttackTwoSearchButton.setText(R.string.none);
 								mMemberAttributes.setMoveTwo(-1);
-								updateMemberData();
+								new UpdateTeamMemberDataTask().execute();
 								break;
 				
 			case R.id.attackThreeCancel:
 								v.setVisibility(View.INVISIBLE);
 								mAttackThreeSearchButton.setText(R.string.none);
 								mMemberAttributes.setMoveThree(-1);
-								updateMemberData();
+								new UpdateTeamMemberDataTask().execute();
 								break;
 				
 			case R.id.attackFourCancel:
 								v.setVisibility(View.INVISIBLE);
 								mAttackFourSearchButton.setText(R.string.none);
 								mMemberAttributes.setMoveFour(-1);
-								updateMemberData();
+								new UpdateTeamMemberDataTask().execute();
 								break;				
 		}	
 	}    
@@ -499,33 +536,45 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		
 		switch (id) {
 			case R.id.hpEvs:
+				mMemberAttributes.setHp(evs);
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[0]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[1]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[1]);
+				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.atkEvs:
+				mMemberAttributes.setAtk(evs);				
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[2]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[3]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[3]);
+				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.defEvs:
+				mMemberAttributes.setDef(evs);				
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[4]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[5]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[5]);
+				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.spatkEvs:
+				mMemberAttributes.setSpatk(evs);				
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[6]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[7]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[7]);
+				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.spdefEvs:
+				mMemberAttributes.setSpdef(evs);				
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[8]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[9]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[9]);
+				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.speEvs:
+				mMemberAttributes.setSpe(evs);				
 				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[10]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[11]);				
+				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[11]);	
+				new UpdateTeamMemberDataTask().execute();
 				break;				
 		}
 		
@@ -537,9 +586,56 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		}
 	}	
 	
-	private void updateMemberData() {
-		// TODO Auto-generated method stub
+	private String getChosenAttack(int i) {
+		switch(i){
+			case 1:
+				return findAttack(mMemberAttributes.getMoveOne());
+				
+			case 2:
+				return findAttack(mMemberAttributes.getMoveTwo());
+				
+			case 3:
+				return findAttack(mMemberAttributes.getMoveThree());
+				
+			case 4:
+				return findAttack(mMemberAttributes.getMoveFour());
+				
+			default:
+				return getString(R.string.none);				
+		}
+	}
+	
+	private String findAttack(int attackId){
+		for(PokemonAttackInfo attack : mPokemonDetail.getPokemonAttacks()){
+			if(attack.getAttackDbId() == attackId){
+				return attack.getName();
+			}
+		}
 		
+		return getString(R.string.none);
+	}
+
+	private String getChosenAbility() {
+		for(AbilityInfo ability : mPokemonDetail.getPokemonAbilities()){
+			if(ability.getAbilityDbId() == mMemberAttributes.getAbility()){
+				return ability.getName();
+			}
+		}
+		
+		return getString(R.string.none);
 	}	
 	
+    private class UpdateTeamMemberDataTask extends AsyncTask<Void, Void, Void> {
+    	
+		@Override
+		protected Void doInBackground(Void... params) {
+			mTeamDataSource.openWrite();
+			mTeamDataSource.updateTeamMember(mMemberAttributes);
+			mTeamDataSource.close();
+			
+			return null;
+		}    	
+    	
+    }
+    
 }

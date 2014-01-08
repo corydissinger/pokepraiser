@@ -146,6 +146,41 @@ public class TeamDataSource {
 		cursor.close();
 		return teamMemberList;
 	}
+	
+	public TeamMemberAttributes getTeamMember(int dbId) {
+		Cursor cursor = db.rawQuery(TeamQueries.GET_TEAM_MEMBER, new String[] { Integer.toString(dbId)} );
+		
+		if(cursor.getCount() == 0){
+			cursor.close();
+			return null;
+		}
+		
+		cursor.moveToNext();
+		
+		final TeamMemberAttributes member = new TeamMemberAttributes();
+	
+		member.setHp(cursor.getInt(0));
+		member.setAtk(cursor.getInt(1));
+		member.setDef(cursor.getInt(2));
+		member.setSpatk(cursor.getInt(3));
+		member.setSpdef(cursor.getInt(4));
+		member.setSpe(cursor.getInt(5));
+		
+		member.setMoveOne(cursor.getInt(6));
+		member.setMoveTwo(cursor.getInt(7));
+		member.setMoveThree(cursor.getInt(8));
+		member.setMoveFour(cursor.getInt(9));			
+		
+		member.setAbility(cursor.getInt(10));
+		member.setPokemonId(cursor.getInt(11));
+		member.setItem(cursor.getString(12));
+		member.setNature(cursor.getString(13));		
+		
+		member.setId(cursor.getInt(14));
+		
+		cursor.close();
+		return member;
+	}	
 
 	public int addTeamMember(int selectedPokeId, int teamId) {
 		final ContentValues values = new ContentValues();
@@ -160,5 +195,28 @@ public class TeamDataSource {
 		db.insert(TeamQueries.TABLE_TEAMS_MEMBERS, null, teamMembersValues);		
 		
 		return memberId;
+	}
+	
+	public void updateTeamMember(final TeamMemberAttributes memberAttributes){
+		final ContentValues values = new ContentValues();
+
+		values.put(TeamQueries.COLUMN_ABILITY, memberAttributes.getAbility());		
+		values.put(TeamQueries.COLUMN_ITEM, memberAttributes.getItem());
+		values.put(TeamQueries.COLUMN_NATURE, memberAttributes.getNature());
+		
+		values.put(TeamQueries.COLUMN_HP, memberAttributes.getHp());
+		values.put(TeamQueries.COLUMN_ATK, memberAttributes.getAtk());		
+		values.put(TeamQueries.COLUMN_DEF, memberAttributes.getDef());
+		values.put(TeamQueries.COLUMN_SPATK, memberAttributes.getSpatk());
+		values.put(TeamQueries.COLUMN_SPDEF, memberAttributes.getSpdef());
+		values.put(TeamQueries.COLUMN_SPE, memberAttributes.getSpe());
+		
+		values.put(TeamQueries.COLUMN_MOVE_ONE, memberAttributes.getMoveOne());
+		values.put(TeamQueries.COLUMN_MOVE_TWO, memberAttributes.getMoveTwo());
+		values.put(TeamQueries.COLUMN_MOVE_THREE, memberAttributes.getMoveThree());		
+		values.put(TeamQueries.COLUMN_MOVE_FOUR, memberAttributes.getMoveFour());
+		
+		long result = db.update(TeamQueries.TABLE_MEMBERS, values, "_id = ?", new String [] { Integer.toString(memberAttributes.getId()) });
+		result = 0;
 	}
 }

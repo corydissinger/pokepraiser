@@ -20,12 +20,13 @@ public class TeamMemberAttributes implements Serializable {
 	
 	private String nature;
 	
-	private int moveOne;
-	private int moveTwo;
-	private int moveThree;
-	private int moveFour;
+	private int moveOne = -1;
+	private int moveTwo = -1;
+	private int moveThree = -1;
+	private int moveFour = -1;
 	
-	private int ability;
+	private int ability = -1;
+	
 	private int pokemonId;
 	private String pokemonName;
 	private String item;

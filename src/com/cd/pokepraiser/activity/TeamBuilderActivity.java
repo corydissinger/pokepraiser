@@ -166,7 +166,7 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 		final TeamMemberAttributes teamMember = (TeamMemberAttributes) v.getTag();
 		
     	final Intent i = new Intent(TeamBuilderActivity.this, TeamMemberActivity.class);
-    	i.putExtra(ExtrasConstants.MEMBER_ID, teamMember);
+    	i.putExtra(ExtrasConstants.MEMBER_ID, teamMember.getId());
     	startActivity(i);
 	}
 

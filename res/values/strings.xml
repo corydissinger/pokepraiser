@@ -57,7 +57,7 @@
     <string name="level_up_label">Level Up</string>
     <string name="tm_hm_label">TM &amp; HM</string>
     <string name="egg_label">Egg Moves</string>
-	<string name="gv_only_label">Gen V Only</string>
+	<string name="gv_only_label">Transfer Only</string>
 	<string name="pre_evo_label">Pre Evolve</string>
 	<string name="move_tutor_label">Move Tutor</string>		                        
     <string name="show">Show</string>
