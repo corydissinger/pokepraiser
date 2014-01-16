@@ -39,19 +39,14 @@ public class TypeSearchDialog extends DialogFragment {
 		mTypes = allTypes;
 	}
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (TypeSearchDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement TypeSearchDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (TypeSearchDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement TypeSearchDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
 		View typesListView 		= theActivity.getLayoutInflater().inflate(R.layout.types_list_screen, null);		
@@ -82,6 +77,14 @@ public class TypeSearchDialog extends DialogFragment {
         return builder.create();
 	}
 
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+        super.onDestroyView();
+	 }	
+	
 	public int getSelectedItem() {
 		return selectedItem;
 	}

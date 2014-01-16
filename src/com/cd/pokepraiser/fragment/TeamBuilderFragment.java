@@ -1,16 +1,20 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.PokemonInfo;
@@ -24,8 +28,10 @@ import com.cd.pokepraiser.dialog.PokemonSearchDialog;
 import com.cd.pokepraiser.dialog.PokemonSearchDialog.PokemonSearchDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
 
-public class TeamBuilderActivity extends PokepraiserActivity implements PokemonSearchDialogListener, DeleteMemberDialogListener {
+public class TeamBuilderFragment extends SherlockFragment implements PokemonSearchDialogListener, DeleteMemberDialogListener {
 
+	public static final String TAG = "teamBuilder";
+	
 	private TeamInfo mTeamInfo;
 	private ArrayList<TeamMemberAttributes> mTeamMembers;
 	private ArrayList<PokemonInfo> mPokemon;
@@ -35,7 +41,8 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 	
 	private PokemonDataSource 	mPokemonDataSource;
 	private TeamDataSource 	  	mTeamDataSource;	
-	
+
+	private ViewGroup			mParentView;
 	private LinearLayout		mTeamMembersList;
 	private Button				mAddTeamMember;	
 	
@@ -43,14 +50,13 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 	@Override
 	public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.team_builder_screen);		
-		
-        final Intent receivedIntent = getIntent();
-        mTeamInfo			= (TeamInfo) receivedIntent.getSerializableExtra(ExtrasConstants.TEAM_INFO);
 		
 		if(savedInstanceState == null){
-            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mTeamDataSource		= new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());
+			savedInstanceState 	= getArguments();
+			mTeamInfo			= (TeamInfo) savedInstanceState.getSerializable(ExtrasConstants.TEAM_INFO);
+			
+            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+            mTeamDataSource		= new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());
             
             mTeamDataSource.openRead();
             mTeamMembers = mTeamDataSource.getTeamMembers(mTeamInfo.getDbId());
@@ -66,33 +72,35 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 			mPokemon = (ArrayList<PokemonInfo>) savedInstanceState.getSerializable(ExtrasConstants.POKEMON_ID);
 		}
 
-    	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());		
+    	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());		
 		
 		mPokemonSearch = new PokemonSearchDialog(mPokemon);
 		mDeleteMember  = new DeleteMemberDialog();
-		
-		mAddTeamMember			= (Button) findViewById(R.id.addPokemon);
-		mTeamMembersList		= (LinearLayout) findViewById(R.id.memberList);
-		TextView teamName 	= (TextView) findViewById(R.id.teamName);
-		
-		teamName.setText(mTeamInfo.getName());
-		
-        ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));		
 	}
 	
 	@Override
-	protected void onResume(){
-		super.onResume();
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentView = (ViewGroup)inflater.inflate(R.layout.team_builder_screen, container, false);
+
+		mAddTeamMember			= (Button) mParentView.findViewById(R.id.addPokemon);
+		mTeamMembersList		= (LinearLayout) mParentView.findViewById(R.id.memberList);
+		TextView teamName 		= (TextView) mParentView.findViewById(R.id.teamName);
 		
-    	mTeamDataSource.openRead();
-    	final boolean teamExists = mTeamDataSource.checkTeamExists(mTeamInfo.getDbId());
-    	mTeamDataSource.close();
-    	
-    	if(!teamExists)
-    		finish();
-    	
-        refreshMemberList();    	
-	}	
+		teamName.setText(mTeamInfo.getName());
+
+		mAddTeamMember.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openAddPokemonDialog(v);
+			}
+		});
+		
+		refreshMemberList(inflater);		
+		
+        ((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentView);		
+
+		return mParentView;
+	}
 	
 	@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -103,15 +111,13 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
     	super.onSaveInstanceState(savedInstanceState);
     }	
 	
-    private void refreshMemberList() {
+    private void refreshMemberList(LayoutInflater inflater) {
 		mTeamMembersList.removeAllViews();
 		
 		if(mTeamMembers.isEmpty()){
-			LayoutInflater inflater = getLayoutInflater();
-			
 			View noMembers 			= inflater.inflate(R.layout.members_empty, null);
 
-			((PokepraiserApplication)getApplication()).overrideFonts(noMembers);			
+			((PokepraiserApplication)getActivity().getApplication()).overrideFonts(noMembers);			
 			
 			mTeamMembersList.addView(noMembers);
 		}else{
@@ -122,7 +128,6 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 			}
 			
 			for(TeamMemberAttributes memberAttributes : mTeamMembers){
-				LayoutInflater inflater = getLayoutInflater();
 				View memberRow			= inflater.inflate(R.layout.team_member_manage_row, null);
 		
 				final TextView memberName 	= (TextView) memberRow.findViewById(R.id.memberName);
@@ -148,30 +153,35 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 					}
 				});			
 				
-				((PokepraiserApplication)getApplication()).overrideFonts(memberRow);
-				
 				mTeamMembersList.addView(memberRow);
 			}
-		}		
+		}
+		
+		((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mTeamMembersList);		
 	}
 
 	protected void handleDeleteMemberClick(View v) {
 		final TeamMemberAttributes teamMember = (TeamMemberAttributes) v.getTag();
 		
 		mDeleteMember.setTeamMemberAttributes(teamMember);
-		mDeleteMember.show(getSupportFragmentManager(), null);
+		mDeleteMember.setTargetFragment(this, 0);
+		mDeleteMember.show(getChildFragmentManager(), null);
 	}
 
 	protected void handleEditMemberClick(View v) {
 		final TeamMemberAttributes teamMember = (TeamMemberAttributes) v.getTag();
 		
-    	final Intent i = new Intent(TeamBuilderActivity.this, TeamMemberActivity.class);
-    	i.putExtra(ExtrasConstants.MEMBER_ID, teamMember.getId());
-    	startActivity(i);
+        Fragment frag = new TeamMemberFragment();
+        Bundle args = new Bundle();
+        args.putInt(ExtrasConstants.MEMBER_ID, teamMember.getId());
+        frag.setArguments(args);
+        
+        ((PokepraiserActivity)getActivity()).changeFragment(frag, TeamMemberFragment.TAG);
 	}
 
 	public void openAddPokemonDialog(View v){
-		mPokemonSearch.show(getSupportFragmentManager(), null);
+		mPokemonSearch.setTargetFragment(this, 0);
+		mPokemonSearch.show(getChildFragmentManager(), null);
 	}
 
 	@Override
@@ -192,7 +202,7 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 		
         mTeamMembers.add(newMember);
         
-        refreshMemberList();
+        refreshMemberList(getActivity().getLayoutInflater());
         
 		dialog.dismiss();
 	}
@@ -207,7 +217,7 @@ public class TeamBuilderActivity extends PokepraiserActivity implements PokemonS
 
 		mTeamMembers.remove(teamMember);
 		
-		refreshMemberList();		
+		refreshMemberList(getActivity().getLayoutInflater());		
 		dialog.dismiss();		
 	}
 }

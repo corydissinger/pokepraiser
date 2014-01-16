@@ -1,15 +1,19 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.TeamInfo;
@@ -20,8 +24,10 @@ import com.cd.pokepraiser.dialog.DeleteTeamDialog;
 import com.cd.pokepraiser.dialog.DeleteTeamDialog.DeleteTeamDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
 
-public class TeamManagerActivity extends PokepraiserActivity implements AddTeamDialogListener, DeleteTeamDialogListener{
+public class TeamManagerFragment extends SherlockFragment implements AddTeamDialogListener, DeleteTeamDialogListener{
 
+	public static final String TAG					= "teamManager";
+	
 	private static final String TEAMS		 		= "t";	
 
 	private TeamDataSource mTeamDataSource;	
@@ -31,36 +37,47 @@ public class TeamManagerActivity extends PokepraiserActivity implements AddTeamD
 	private AddTeamDialog mAddTeamDialog		= null;
 	private DeleteTeamDialog mDeleteTeamDialog	= null;	
 	
+	private ViewGroup mParentView				= null;
 	private LinearLayout mTeamList				= null;
 	
 	@SuppressWarnings("unchecked")
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.team_manager_screen);
         
         if(savedInstanceState != null){
         	mTeams = (ArrayList<TeamInfo>) savedInstanceState.getSerializable(TEAMS);
+        }else{
+        	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());        
+
+        	mTeamDataSource.openRead();
+        	mTeams = new ArrayList<TeamInfo>(mTeamDataSource.getTeamInfo());
+        	mTeamDataSource.close();        	
         }
-        
-    	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());        
-        
+    	
         mAddTeamDialog 		= new AddTeamDialog();
         mDeleteTeamDialog 	= new DeleteTeamDialog();
-        mTeamList			= (LinearLayout) findViewById(R.id.teamList);
-        
-        ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));        
 	}
 	
 	@Override
-	protected void onResume(){
-		super.onResume();
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentView = (ViewGroup)inflater.inflate(R.layout.team_manager_screen, container, false);
 		
-    	mTeamDataSource.openRead();
-    	mTeams = new ArrayList<TeamInfo>(mTeamDataSource.getTeamInfo());
-    	mTeamDataSource.close();
-    	
-        refreshTeamList();    	
+        mTeamList			= (LinearLayout) mParentView.findViewById(R.id.teamList);
+        Button addTeam		= (Button) mParentView.findViewById(R.id.addTeam);
+        
+        addTeam.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				openAddTeamDialog(v);
+			}
+        });
+        
+        refreshTeamList(inflater);
+
+        ((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentView);        
+        
+        return mParentView;
 	}
 
     @Override
@@ -71,23 +88,19 @@ public class TeamManagerActivity extends PokepraiserActivity implements AddTeamD
     }	
 	
     public void openAddTeamDialog(View v){
-    	mAddTeamDialog.show(getSupportFragmentManager(), null);
+    	mAddTeamDialog.setTargetFragment(this, 0);
+    	mAddTeamDialog.show(getChildFragmentManager(), null);
     }
 
-	private void refreshTeamList() {
+	private void refreshTeamList(LayoutInflater inflater) {
 		mTeamList.removeAllViews();
 		
 		if(mTeams.isEmpty()){
-			LayoutInflater inflater = getLayoutInflater();
-			
 			View noTeams 			= inflater.inflate(R.layout.team_empty, null);
 
-			((PokepraiserApplication)getApplication()).overrideFonts(noTeams);			
-			
 			mTeamList.addView(noTeams);
 		}else{
 			for(TeamInfo teamInfo : mTeams){
-				LayoutInflater inflater = getLayoutInflater();
 				View teamRow			= inflater.inflate(R.layout.team_info_manage_row, null);
 		
 				final TextView teamName 	= (TextView) teamRow.findViewById(R.id.teamName);
@@ -116,25 +129,29 @@ public class TeamManagerActivity extends PokepraiserActivity implements AddTeamD
 					}
 				});			
 				
-				((PokepraiserApplication)getApplication()).overrideFonts(teamRow);
-				
 				mTeamList.addView(teamRow);
 			}
 		}
+		
+		((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mTeamList);
 	}
 
 	public void handleTeamDeleteClick(View v) {
 		final TeamInfo teamInfo = (TeamInfo) v.getTag();
 		mDeleteTeamDialog.setTeamInfo(teamInfo);
-		mDeleteTeamDialog.show(getSupportFragmentManager(), null);
+		mDeleteTeamDialog.setTargetFragment(this, 0);
+		mDeleteTeamDialog.show(getChildFragmentManager(), null);
 	}
 
 	public void handleEditTeamClick(View v){
 		final TeamInfo teamInfo = (TeamInfo) v.getTag();
 		
-    	final Intent i = new Intent(TeamManagerActivity.this, TeamBuilderActivity.class);
-    	i.putExtra(ExtrasConstants.TEAM_INFO, teamInfo);
-    	startActivity(i);		
+        Fragment frag = new TeamBuilderFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ExtrasConstants.TEAM_INFO, teamInfo);
+        frag.setArguments(args);
+        
+        ((PokepraiserActivity)getActivity()).changeFragment(frag, TeamBuilderFragment.TAG);		
 	}
 	
 	public void onTeamAdd(AddTeamDialog dialog) {
@@ -146,7 +163,7 @@ public class TeamManagerActivity extends PokepraiserActivity implements AddTeamD
 
 		mTeams.add(newTeam);		
 		
-		refreshTeamList();
+		refreshTeamList(getActivity().getLayoutInflater());
 		dialog.dismiss();
 	}	
 	
@@ -160,7 +177,7 @@ public class TeamManagerActivity extends PokepraiserActivity implements AddTeamD
 
 		mTeams.remove(team);
 		
-		refreshTeamList();		
+		refreshTeamList(getActivity().getLayoutInflater());		
 		dialog.dismiss();
 	}	
 }

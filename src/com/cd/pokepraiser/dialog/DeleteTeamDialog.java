@@ -27,19 +27,14 @@ public class DeleteTeamDialog extends DialogFragment {
 	
 	public DeleteTeamDialog(){}
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (DeleteTeamDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement DeleteTeamDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (DeleteTeamDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement DeleteTeamDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
         AlertDialog.Builder builder = new AlertDialog.Builder(theActivity);
@@ -61,6 +56,14 @@ public class DeleteTeamDialog extends DialogFragment {
         return builder.create();
 	}
 
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+         super.onDestroyView();
+	 }	
+	
 	public TeamInfo getTeamInfo() {
 		return teamInfo;
 	}

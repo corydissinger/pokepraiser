@@ -41,4 +41,11 @@ public class ErrorDialog extends DialogFragment {
         return builder.create();
 	}	
 	
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+         super.onDestroyView();
+	 }	
 }

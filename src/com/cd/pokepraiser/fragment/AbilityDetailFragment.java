@@ -1,19 +1,21 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.AbilityAttributes;
@@ -24,56 +26,62 @@ import com.cd.pokepraiser.db.dao.PokemonDataSource;
 import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.TypeUtils;
 
-public class AbilityDetailActivity extends PokepraiserActivity {
+public class AbilityDetailFragment extends SherlockFragment {
 
-	private static final String ABILITY_DETAIL	= "abilityDetail";
+	public static final String TAG				= "abilityDetail";
+	private static final String ABILITY_DETAIL	= "z";
 	
-	private AbilitiesDataSource abilitiesDataSource;
-	private PokemonDataSource pokemonDataSource;
+	private AbilitiesDataSource mAbilitiesDataSource;
+	private PokemonDataSource mPokemonDataSource;
 
 	private AbilityDetail mAbilityDetail;
 	
+	private ViewGroup mParentView;
+	
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ability_detail_screen);
-        
-        final Intent receivedIntent = getIntent();
-        final int abilityId			= receivedIntent.getIntExtra(ExtrasConstants.ABILITY_ID, 0);        
-
-    	AbilityAttributes abilityAttributes;
         
         if(savedInstanceState == null){
+        	savedInstanceState = getArguments();
+            final int abilityId			= savedInstanceState.getInt(ExtrasConstants.ABILITY_ID);        	
+            AbilityAttributes abilityAttributes;        
+            
         	List<PokemonInfo> pokemonLearningAbility;        	
-	        abilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-	        pokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+	        mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+	        mPokemonDataSource	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
 	        
-	        abilitiesDataSource.open();
+	        mAbilitiesDataSource.open();
 	        abilityAttributes
-	        	= abilitiesDataSource.getAbilityAttributes(abilityId);
-	        abilitiesDataSource.close();        
+	        	= mAbilitiesDataSource.getAbilityAttributes(abilityId);
+	        mAbilitiesDataSource.close();        
 	        
-	        pokemonDataSource.open();
+	        mPokemonDataSource.open();
 	        pokemonLearningAbility	
-	        	= pokemonDataSource.getPokemonLearningAbility(abilityId, getResources());
-	        pokemonDataSource.close();
+	        	= mPokemonDataSource.getPokemonLearningAbility(abilityId, getResources());
+	        mPokemonDataSource.close();
 	        
 	        mAbilityDetail = new AbilityDetail();
 	        mAbilityDetail.setAbilityAttributes(abilityAttributes);
 	        mAbilityDetail.setPokemonLearningAbility(pokemonLearningAbility);
         }else{
         	mAbilityDetail = savedInstanceState.getParcelable(ABILITY_DETAIL);
-        	abilityAttributes = mAbilityDetail.getAbilityAttributes();
         }
+    }
+    
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentView = (ViewGroup)inflater.inflate(R.layout.ability_detail_screen, container, false);		
+		AbilityAttributes abilityAttributes = mAbilityDetail.getAbilityAttributes();
+		
+        TextView abilityName 		= (TextView) mParentView.findViewById(R.id.abilityName);
+        TextView battleEffectLabel 	= (TextView) mParentView.findViewById(R.id.battleEffectLabel);        
+        TextView battleEffect		= (TextView) mParentView.findViewById(R.id.battleEffect);
 
-        TextView abilityName 		= (TextView) findViewById(R.id.abilityName);
-        TextView battleEffectLabel 	= (TextView) findViewById(R.id.battleEffectLabel);        
-        TextView battleEffect		= (TextView) findViewById(R.id.battleEffect);
-
-        TextView worldEffectLabel	= (TextView) findViewById(R.id.worldEffectLabel);
-        TextView worldEffect		= (TextView) findViewById(R.id.worldEffect);
+        TextView worldEffectLabel	= (TextView) mParentView.findViewById(R.id.worldEffectLabel);
+        TextView worldEffect		= (TextView) mParentView.findViewById(R.id.worldEffect);
         
-        TextView learningLabel		= (TextView) findViewById(R.id.learningLabel);
+        TextView learningLabel		= (TextView) mParentView.findViewById(R.id.learningLabel);
         
         //Apply data to ability detail views
         
@@ -86,22 +94,24 @@ public class AbilityDetailActivity extends PokepraiserActivity {
         	((ViewManager)worldEffectLabel.getParent()).removeView(worldEffectLabel);        	
         	((ViewManager)worldEffect.getParent()).removeView(worldEffect);
         	
-        	((PokepraiserApplication)getApplication()).applyTypeface(worldEffectLabel);
-        	((PokepraiserApplication)getApplication()).applyTypeface(worldEffect);
+        	((PokepraiserApplication)getActivity().getApplication()).applyTypeface(worldEffectLabel);
+        	((PokepraiserApplication)getActivity().getApplication()).applyTypeface(worldEffect);
         }
         
         //Apply detail to pokemon learning ability
 
-        buildPokemonList();
+        buildPokemonList(inflater);
         
         //Apply typeface
-        ((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{abilityName,
+        ((PokepraiserApplication)getActivity().getApplication()).applyTypeface(new TextView[]{abilityName,
         																		battleEffectLabel,
         																		battleEffect,
         																		worldEffectLabel,
         																		worldEffect,
-        																		learningLabel});        
-    }
+        																		learningLabel});		
+		
+		return mParentView;
+	}
     
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -110,13 +120,12 @@ public class AbilityDetailActivity extends PokepraiserActivity {
     	super.onSaveInstanceState(savedInstanceState);
     }    
     
-	public void buildPokemonList(){
-        LinearLayout learningList = (LinearLayout) findViewById(R.id.learningList);
+	public void buildPokemonList(LayoutInflater inflater){
+        LinearLayout learningList = (LinearLayout) mParentView.findViewById(R.id.learningList);
 		
 		for(int i = 0; i < mAbilityDetail.getPokemonLearningAbility().size(); i++){
 			final PokemonInfo thePokemon = mAbilityDetail.getPokemonLearningAbility().get(i);
 			
-			LayoutInflater inflater = getLayoutInflater();
 			View view 				= inflater.inflate(R.layout.pokemon_info_row, null);
 		
 			ImageView icon			= (ImageView) view.findViewById(R.id.pokemonIcon);
@@ -136,19 +145,23 @@ public class AbilityDetailActivity extends PokepraiserActivity {
 				typeTwo.setImageResource(TypeUtils.getTypeDrawableId(thePokemon.getTypeTwo()));
 			}else{
 		    	LinearLayout typeCell = (LinearLayout) view.findViewById(R.id.typeCell);
-		    	typeCell.removeView(findViewById(R.id.typeSpacer));
+		    	typeCell.removeView(mParentView.findViewById(R.id.typeSpacer));
 				typeCell.removeView(typeTwo);			
 			}
 			
-			((PokepraiserApplication)getApplication()).applyTypeface(pokemonName);
-			((PokepraiserApplication)getApplication()).applyTypeface(dexNo);
+			((PokepraiserApplication)getActivity().getApplication()).applyTypeface(pokemonName);
+			((PokepraiserApplication)getActivity().getApplication()).applyTypeface(dexNo);
 			
 			view.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-		        	Intent i = new Intent(AbilityDetailActivity.this, PokemonDetailActivity.class);
-	        		i.putExtra(ExtrasConstants.POKEMON_ID, thePokemon.getId());
-					startActivity(i);
+					PokemonDetailFragment newFrag = new PokemonDetailFragment();
+					Bundle args = new Bundle();
+					
+					args.putInt(ExtrasConstants.POKEMON_ID, thePokemon.getId());
+					newFrag.setArguments(args);
+					
+					((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);					
 				}
 	        });
 

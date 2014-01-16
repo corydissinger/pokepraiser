@@ -1,20 +1,27 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.AbilityInfo;
@@ -32,8 +39,10 @@ import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.StatUtils;
 import com.cd.pokepraiser.util.TypeUtils;
 
-public class PokemonDetailActivity extends PokepraiserActivity implements AddTeamMemberDialogListener{
+public class PokemonDetailFragment extends SherlockFragment implements AddTeamMemberDialogListener{
 
+	public static String TAG						= "pokeDetail";
+	
 	private static final int LEVEL_UP_ATTACKS_LIST = 0;
 	private static final int TM_HM_ATTACKS_LIST = 1;
 	private static final int EGG_ATTACKS_LIST = 2;
@@ -60,38 +69,35 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
 	private boolean isGvOnlyListShown		= false;
 	private boolean isPreEvoListShown		= false;
 	private boolean isMoveTutorListShown	= false;	
+
+	private ViewGroup mParentView			= null;
 	
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pokemon_detail_screen);
-        
-        final Intent receivedIntent = getIntent();
-        final int pokemonId			= receivedIntent.getIntExtra(ExtrasConstants.POKEMON_ID, 0);        
-        
-    	PokemonAttributes pokemonAttributes;
-    	AbilityInfo []	  pokemonAbilities;
-    	List<PokemonAttackInfo> pokemonAttacks;        
         
         if(savedInstanceState == null){
-            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        	
-			mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());
+        	savedInstanceState 			= getArguments();
+        	final int pokemonId			= savedInstanceState.getInt(ExtrasConstants.POKEMON_ID);
+        	
+            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());        	
+			mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());
             
 	        mPokemonDataSource.open();
-	        pokemonAttributes = mPokemonDataSource.getPokemonAttributes(pokemonId, getResources());
+	        PokemonAttributes pokemonAttributes = mPokemonDataSource.getPokemonAttributes(pokemonId, getResources());
 	        mPokemonDataSource.close();        
 	        
 	        mAbilitiesDataSource.open();
-	        pokemonAbilities 
+	        AbilityInfo [] pokemonAbilities 
 	        	= mAbilitiesDataSource.getAbilitiesLearnedBy(new int []{pokemonAttributes.getAbOne(),
 	        														   pokemonAttributes.getAbTwo(),
 	        														   pokemonAttributes.getAbHa()});
 	        mAbilitiesDataSource.close();
 	        
 			mAttacksDataSource.open();
-			pokemonAttacks = mAttacksDataSource.getPokemonAttackInfoList(pokemonAttributes.getDexNo(), pokemonAttributes.getAltForm());
+			List<PokemonAttackInfo> pokemonAttacks = mAttacksDataSource.getPokemonAttackInfoList(pokemonAttributes.getDexNo(), pokemonAttributes.getAltForm());
 			mAttacksDataSource.close();
 			
 			mTeamDataSource.openRead();
@@ -105,43 +111,50 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
         }else{
         	mPokemonDetail		= savedInstanceState.getParcelable(POKEMON_DETAIL);
         	mTeams				= (ArrayList<TeamInfo>) savedInstanceState.getSerializable(TEAMS);
-        	
-        	pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
-        	pokemonAbilities  	= mPokemonDetail.getPokemonAbilities();
-        	pokemonAttacks		= mPokemonDetail.getPokemonAttacks();
         }
         
         mTeamAdd = new AddTeamMemberDialog(mTeams);
         
-        TextView dexNo		 		= (TextView) findViewById(R.id.dexNo);
-        TextView pokemonName		= (TextView) findViewById(R.id.pokemonName);
-        
-        ImageView pokemonPicture	= (ImageView) findViewById(R.id.pokemonPicture);
-        
-        ImageView typeOne			= (ImageView) findViewById(R.id.typeOne);
-        ImageView typeTwo			= (ImageView) findViewById(R.id.typeTwo);        
+        setHasOptionsMenu(true);
+    }
+  
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentView = (ViewGroup)inflater.inflate(R.layout.pokemon_detail_screen, container, false);
 
-        TextView abilityLabel		= (TextView) findViewById(R.id.abilityLabel);        
-        TextView abilityOneLabel	= (TextView) findViewById(R.id.abilityOneLabel);        
-        TextView abilityTwoLabel	= (TextView) findViewById(R.id.abilityTwoLabel);        
-        TextView abilityHiddenLabel	= (TextView) findViewById(R.id.abilityHiddenLabel);
-        TextView abilityOne			= (TextView) findViewById(R.id.abilityOne);
-        TextView abilityTwo			= (TextView) findViewById(R.id.abilityTwo);        
-        TextView abilityHidden		= (TextView) findViewById(R.id.abilityHidden);        
+    	PokemonAttributes pokemonAttributes		= mPokemonDetail.getPokemonAttributes();
+    	AbilityInfo []	  pokemonAbilities		= mPokemonDetail.getPokemonAbilities();
+    	List<PokemonAttackInfo> pokemonAttacks	= mPokemonDetail.getPokemonAttacks();		
+		
+        TextView dexNo		 		= (TextView) mParentView.findViewById(R.id.dexNo);
+        TextView pokemonName		= (TextView) mParentView.findViewById(R.id.pokemonName);
         
-        TextView hpLabel			= (TextView) findViewById(R.id.baseHpLabel);
-        TextView atkLabel			= (TextView) findViewById(R.id.baseAtkLabel);
-        TextView defLabel			= (TextView) findViewById(R.id.baseDefLabel);
-        TextView spatkLabel			= (TextView) findViewById(R.id.baseSpatkLabel);
-        TextView spdefLabel			= (TextView) findViewById(R.id.baseSpdefLabel);
-        TextView speLabel			= (TextView) findViewById(R.id.baseSpeLabel);        
+        ImageView pokemonPicture	= (ImageView) mParentView.findViewById(R.id.pokemonPicture);
+        
+        ImageView typeOne			= (ImageView) mParentView.findViewById(R.id.typeOne);
+        ImageView typeTwo			= (ImageView) mParentView.findViewById(R.id.typeTwo);        
 
-        TextView hp					= (TextView) findViewById(R.id.baseHp);
-        TextView atk				= (TextView) findViewById(R.id.baseAtk);
-        TextView def				= (TextView) findViewById(R.id.baseDef);        
-        TextView spatk				= (TextView) findViewById(R.id.baseSpatk);
-        TextView spdef				= (TextView) findViewById(R.id.baseSpdef);        
-        TextView spe				= (TextView) findViewById(R.id.baseSpe);        
+        TextView abilityLabel		= (TextView) mParentView.findViewById(R.id.abilityLabel);        
+        TextView abilityOneLabel	= (TextView) mParentView.findViewById(R.id.abilityOneLabel);        
+        TextView abilityTwoLabel	= (TextView) mParentView.findViewById(R.id.abilityTwoLabel);        
+        TextView abilityHiddenLabel	= (TextView) mParentView.findViewById(R.id.abilityHiddenLabel);
+        TextView abilityOne			= (TextView) mParentView.findViewById(R.id.abilityOne);
+        TextView abilityTwo			= (TextView) mParentView.findViewById(R.id.abilityTwo);        
+        TextView abilityHidden		= (TextView) mParentView.findViewById(R.id.abilityHidden);        
+        
+        TextView hpLabel			= (TextView) mParentView.findViewById(R.id.baseHpLabel);
+        TextView atkLabel			= (TextView) mParentView.findViewById(R.id.baseAtkLabel);
+        TextView defLabel			= (TextView) mParentView.findViewById(R.id.baseDefLabel);
+        TextView spatkLabel			= (TextView) mParentView.findViewById(R.id.baseSpatkLabel);
+        TextView spdefLabel			= (TextView) mParentView.findViewById(R.id.baseSpdefLabel);
+        TextView speLabel			= (TextView) mParentView.findViewById(R.id.baseSpeLabel);        
+
+        TextView hp					= (TextView) mParentView.findViewById(R.id.baseHp);
+        TextView atk				= (TextView) mParentView.findViewById(R.id.baseAtk);
+        TextView def				= (TextView) mParentView.findViewById(R.id.baseDef);        
+        TextView spatk				= (TextView) mParentView.findViewById(R.id.baseSpatk);
+        TextView spdef				= (TextView) mParentView.findViewById(R.id.baseSpdef);        
+        TextView spe				= (TextView) mParentView.findViewById(R.id.baseSpe);        
         
         dexNo.setText(Integer.toString(pokemonAttributes.getDexNo()));
         pokemonName.setText(pokemonAttributes.getName());
@@ -157,24 +170,48 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
         
         //Make the ability names
         abilityOne.setText(pokemonAbilities[0].getName());
-
+        abilityOne.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				openAbilityOne(v);
+			}
+        });
+        
         if(pokemonAbilities.length == 1){
-        	final LinearLayout abilityTwoLayout = (LinearLayout) findViewById(R.id.abilityTwoCell);
+        	final LinearLayout abilityTwoLayout = (LinearLayout) mParentView.findViewById(R.id.abilityTwoCell);
         	((LinearLayout)abilityTwoLayout.getParent()).removeView(abilityTwoLayout);
         	
-        	final LinearLayout abilityHiddenLayout = (LinearLayout) findViewById(R.id.abilityHiddenCell);
+        	final LinearLayout abilityHiddenLayout = (LinearLayout) mParentView.findViewById(R.id.abilityHiddenCell);
         	((LinearLayout)abilityHiddenLayout.getParent()).removeView(abilityHiddenLayout);
         	
         }else if(pokemonAbilities.length == 2){
-        	final LinearLayout abilityTwoLayout = (LinearLayout) findViewById(R.id.abilityTwoCell);
+        	final LinearLayout abilityTwoLayout = (LinearLayout) mParentView.findViewById(R.id.abilityTwoCell);
         	((LinearLayout)abilityTwoLayout.getParent()).removeView(abilityTwoLayout);
 
             abilityHidden.setText(pokemonAbilities[1].getName());
-            
+            abilityHidden.setOnClickListener(new View.OnClickListener(){
+    			@Override
+    			public void onClick(View v) {
+    				openAbilityHidden(v);
+    			}            	
+            });
         }else{
             abilityTwo.setText(pokemonAbilities[1].getName());        	
             abilityHidden.setText(pokemonAbilities[2].getName());
             
+            abilityTwo.setOnClickListener(new View.OnClickListener(){
+    			@Override
+    			public void onClick(View v) {
+    				openAbilityTwo(v);
+    			}            	
+            });
+            
+            abilityHidden.setOnClickListener(new View.OnClickListener(){
+    			@Override
+    			public void onClick(View v) {
+    				openAbilityHidden(v);
+    			}            	
+            });
         }
         
         //Set the base stat values
@@ -188,11 +225,13 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
         spe.setText(Integer.toString(pokemonAttributes.getBsSpd()));        
         
         //Apply typeface
-		((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));
+		((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentView);
 		
 		//Most expensive operation by far, most likely.
-		inflatePokemonAttackLists();
-    }
+		inflatePokemonAttackLists();		
+		
+		return mParentView;
+	}
     
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -202,20 +241,33 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	super.onSaveInstanceState(savedInstanceState);
     }
     
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	inflater.inflate(R.menu.main, menu);
+    }
+    
     public void openAbilityOne(View v){
 		final AbilityInfo abilityItem = mPokemonDetail.getPokemonAbilities()[0];
 		
-    	Intent i = new Intent(PokemonDetailActivity.this, AbilityDetailActivity.class);
-		i.putExtra(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
-		startActivity(i);    	
+		AbilityDetailFragment newFrag = new AbilityDetailFragment();
+		Bundle args = new Bundle();
+		
+		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
+		newFrag.setArguments(args);
+		
+		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);
     }
     
     public void openAbilityTwo(View v){
 		final AbilityInfo abilityItem = mPokemonDetail.getPokemonAbilities()[1];
 		
-    	Intent i = new Intent(PokemonDetailActivity.this, AbilityDetailActivity.class);
-		i.putExtra(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
-		startActivity(i);    	
+		AbilityDetailFragment newFrag = new AbilityDetailFragment();
+		Bundle args = new Bundle();
+		
+		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
+		newFrag.setArguments(args);
+		
+		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);    	
     }
     
     public void openAbilityHidden(View v){
@@ -227,9 +279,13 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
 			abilityItem = mPokemonDetail.getPokemonAbilities()[2];
 		}
 		
-    	Intent i = new Intent(PokemonDetailActivity.this, AbilityDetailActivity.class);
-		i.putExtra(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
-		startActivity(i);    	
+		AbilityDetailFragment newFrag = new AbilityDetailFragment();
+		Bundle args = new Bundle();
+		
+		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
+		newFrag.setArguments(args);
+		
+		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);    	
     }        
     
     public void toggleAttackList(View v){
@@ -339,12 +395,12 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     private void applyProgressAndColorToBars(){
     	final PokemonAttributes pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
     	
-    	ProgressBar hpBar			= (ProgressBar)findViewById(R.id.baseHpBar);
-    	ProgressBar atkBar			= (ProgressBar)findViewById(R.id.baseAtkBar);    	
-    	ProgressBar defBar			= (ProgressBar)findViewById(R.id.baseDefBar);
-    	ProgressBar spatkBar		= (ProgressBar)findViewById(R.id.baseSpatkBar);
-    	ProgressBar spdefBar		= (ProgressBar)findViewById(R.id.baseSpdefBar);
-    	ProgressBar speBar			= (ProgressBar)findViewById(R.id.baseSpeBar);
+    	ProgressBar hpBar			= (ProgressBar) mParentView.findViewById(R.id.baseHpBar);
+    	ProgressBar atkBar			= (ProgressBar) mParentView.findViewById(R.id.baseAtkBar);    	
+    	ProgressBar defBar			= (ProgressBar) mParentView.findViewById(R.id.baseDefBar);
+    	ProgressBar spatkBar		= (ProgressBar) mParentView.findViewById(R.id.baseSpatkBar);
+    	ProgressBar spdefBar		= (ProgressBar) mParentView.findViewById(R.id.baseSpdefBar);
+    	ProgressBar speBar			= (ProgressBar) mParentView.findViewById(R.id.baseSpeBar);
 
     	final int hpStatPctl		= StatUtils.getRoughPercentile(pokemonAttributes.getBsHp());
     	final int atkStatPctl		= StatUtils.getRoughPercentile(pokemonAttributes.getBsAtk());
@@ -353,12 +409,12 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	final int spdefStatPctl		= StatUtils.getRoughPercentile(pokemonAttributes.getBsSpdef());
     	final int speStatPctl		= StatUtils.getRoughPercentile(pokemonAttributes.getBsSpd());    	
     	
-    	hpBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(hpStatPctl)));
-    	atkBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(atkStatPctl)));
-    	defBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(defStatPctl)));
-    	spatkBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(spatkStatPctl)));
-    	spdefBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(spdefStatPctl)));
-    	speBar.setProgressDrawable(getApplication().getResources().getDrawable(StatUtils.getProgressColor(speStatPctl)));
+    	hpBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(hpStatPctl)));
+    	atkBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(atkStatPctl)));
+    	defBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(defStatPctl)));
+    	spatkBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(spatkStatPctl)));
+    	spdefBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(spdefStatPctl)));
+    	speBar.setProgressDrawable(getActivity().getApplication().getResources().getDrawable(StatUtils.getProgressColor(speStatPctl)));
     	
     	hpBar.setProgress(hpStatPctl);
     	atkBar.setProgress(atkStatPctl);
@@ -376,12 +432,12 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	boolean showPreEvoList			= false;
     	boolean showMoveTutorList		= false;    	
     	
-    	LinearLayout levelUpList		= (LinearLayout) findViewById(R.id.levelUpAttacksList);
-    	LinearLayout tmHmList			= (LinearLayout) findViewById(R.id.tmHmAttacksList);
-    	LinearLayout eggList			= (LinearLayout) findViewById(R.id.eggAttacksList);
-    	LinearLayout gvOnlyList			= (LinearLayout) findViewById(R.id.gvOnlyAttacksList);
-    	LinearLayout preEvoList			= (LinearLayout) findViewById(R.id.preEvoAttacksList);
-    	LinearLayout moveTutorList		= (LinearLayout) findViewById(R.id.moveTutorAttacksList);    	
+    	LinearLayout levelUpList		= (LinearLayout) mParentView.findViewById(R.id.levelUpAttacksList);
+    	LinearLayout tmHmList			= (LinearLayout) mParentView.findViewById(R.id.tmHmAttacksList);
+    	LinearLayout eggList			= (LinearLayout) mParentView.findViewById(R.id.eggAttacksList);
+    	LinearLayout gvOnlyList			= (LinearLayout) mParentView.findViewById(R.id.gvOnlyAttacksList);
+    	LinearLayout preEvoList			= (LinearLayout) mParentView.findViewById(R.id.preEvoAttacksList);
+    	LinearLayout moveTutorList		= (LinearLayout) mParentView.findViewById(R.id.moveTutorAttacksList);    	
     	
     	LinearLayout attacksList		= (LinearLayout) levelUpList.getParent();
     	LinearLayout scrollableParent	= (LinearLayout) attacksList.getParent();    	
@@ -390,32 +446,32 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     		switch(pokemonAttack.getLearnedType()){
     		
 	    		case LEVEL_UP_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(levelUpList, pokemonAttack, true, getString(R.string.level));
+	    			inflatePokemonAttackInfo(levelUpList, pokemonAttack, true, getString(R.string.level), getActivity().getLayoutInflater());
 	    			showLevelUpList = true;
 	    			break;
 
 	    		case TM_HM_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(tmHmList, pokemonAttack, true, getString(R.string.tm_hm));
+	    			inflatePokemonAttackInfo(tmHmList, pokemonAttack, true, getString(R.string.tm_hm), getActivity().getLayoutInflater());
 	    			showTmHmList = true;
 	    			break;
 	    			
 	    		case EGG_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(eggList, pokemonAttack, false, "");
+	    			inflatePokemonAttackInfo(eggList, pokemonAttack, false, "", getActivity().getLayoutInflater());
 	    			showEggList = true;
 	    			break;
 	    			
 	    		case GV_ONLY_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(gvOnlyList, pokemonAttack, false, "");
+	    			inflatePokemonAttackInfo(gvOnlyList, pokemonAttack, false, "", getActivity().getLayoutInflater());
 	    			showGvOnlyList = true;
 	    			break;
 	    			
 	    		case PRE_EVO_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(preEvoList, pokemonAttack, false, "");
+	    			inflatePokemonAttackInfo(preEvoList, pokemonAttack, false, "", getActivity().getLayoutInflater());
 	    			showPreEvoList = true;
 	    			break;
 	    			
 	    		case MOVE_TUTOR_ATTACKS_LIST: 
-	    			inflatePokemonAttackInfo(moveTutorList, pokemonAttack, false, "");
+	    			inflatePokemonAttackInfo(moveTutorList, pokemonAttack, false, "", getActivity().getLayoutInflater());
 	    			showMoveTutorList = true;
 	    			break;	    			
 	    			
@@ -426,6 +482,16 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showLevelUpList){
         	levelUpList.addView(generateHideButton());
+        	
+        	Button levelUp = (Button) mParentView.findViewById(R.id.levelUpAttacksButton);
+        	
+        	levelUp.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});
+        	
     	}else{
     		LinearLayout levelUpAttacksLayout 	= (LinearLayout) levelUpList.getParent();
     		
@@ -434,6 +500,15 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showTmHmList){
     		tmHmList.addView(generateHideButton());
+    		
+        	Button tmHm = (Button) mParentView.findViewById(R.id.tmHmAttacksButton);
+        	
+        	tmHm.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});    		
     	}else{
     		LinearLayout tmHmAttacksLayout 	= (LinearLayout) tmHmList.getParent();
     		
@@ -442,6 +517,16 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showEggList){
     		eggList.addView(generateHideButton());
+    		
+        	Button eggs = (Button) mParentView.findViewById(R.id.eggAttacksButton);
+        	
+        	eggs.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});    		
+    		
     	}else{
     		LinearLayout eggAttacksLayout 	= (LinearLayout) eggList.getParent();
     		
@@ -450,6 +535,16 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showGvOnlyList){
     		gvOnlyList.addView(generateHideButton());
+    		
+        	Button gvOnly = (Button) mParentView.findViewById(R.id.gvOnlyAttacksButton);
+        	
+        	gvOnly.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});    		
+    		
     	}else{
     		LinearLayout gvOnlyAttacksLayout 	= (LinearLayout) gvOnlyList.getParent();
     		
@@ -458,6 +553,16 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showPreEvoList){
     		preEvoList.addView(generateHideButton());
+    		
+        	Button preEvo = (Button) mParentView.findViewById(R.id.preEvoAttacksButton);
+        	
+        	preEvo.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});    		
+    		
     	}else{
     		LinearLayout preEvoAttacksLayout 	= (LinearLayout) preEvoList.getParent();
     		
@@ -466,6 +571,16 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     	
     	if(showMoveTutorList){
     		moveTutorList.addView(generateHideButton());
+    		
+        	Button moveTutor = (Button) mParentView.findViewById(R.id.moveTutorAttacksButton);
+        	
+        	moveTutor.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					toggleAttackList(v);
+				}
+        	});    		
+    		
     	}else{
     		LinearLayout moveTutorAttacksLayout 	= (LinearLayout) moveTutorList.getParent();
     		
@@ -476,9 +591,9 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
     private void inflatePokemonAttackInfo(LinearLayout theParent, 	
     									  final PokemonAttackInfo thePokemonAttackInfo, 
     									  final boolean isLevelShown,
-    									  final String levelTmLabelText){
+    									  final String levelTmLabelText,
+    									  LayoutInflater inflater){
     	
-		LayoutInflater inflater				= getLayoutInflater();
 		LinearLayout rowView 				= (LinearLayout)inflater.inflate(R.layout.pokemon_attack_info_row, null);
 		
 		final Drawable drawableType		=  getResources().getDrawable(thePokemonAttackInfo.getTypeDrawableId());
@@ -497,7 +612,7 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
 		TextView baseAccuracyLabel		= (TextView) rowView.findViewById(R.id.baseAccuracyLabel);
 		TextView basePPLabel			= (TextView) rowView.findViewById(R.id.basePPLabel);			
 		
-		((PokepraiserApplication)getApplication()).applyTypeface(new TextView[]{levelTm,
+		((PokepraiserApplication)getActivity().getApplication()).applyTypeface(new TextView[]{levelTm,
 																				levelTmLabel,
 																				basePowerLabel,
 																				baseAccuracyLabel,
@@ -525,17 +640,44 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
 		rowView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-	        	Intent i = new Intent(PokemonDetailActivity.this, AttacksDetailActivity.class);
-        		i.putExtra(ExtrasConstants.ATTACK_ID, thePokemonAttackInfo.getAttackDbId());
-				startActivity(i);
+				AttackDetailFragment newFrag = new AttackDetailFragment();
+				Bundle args = new Bundle();
+				
+				args.putInt(ExtrasConstants.ATTACK_ID, thePokemonAttackInfo.getAttackDbId());
+				newFrag.setArguments(args);
+				
+				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);				
 			}
         });
+		
+		rowView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView attackName 		= (TextView) v.findViewById(R.id.attackName);
+				
+				final int blueResource		= getResources().getColor(R.color.medium_blue);
+				final int blackResource		= getResources().getColor(R.color.black);					
+				
+                switch (event.getAction()) {
+
+	                case MotionEvent.ACTION_DOWN:
+	                	attackName.setTextColor(blueResource);
+	                    break;
+	                case MotionEvent.ACTION_UP:
+	                	attackName.setTextColor(blackResource);
+	                    break;
+                }
+                
+				return false;
+			}
+		});
 		
 		theParent.addView(rowView);
     }
     
     private Button generateHideButton(){
-    	Button hideButton = new Button(this);
+    	Button hideButton = new Button(getActivity());
 	    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, //W H 
 	    																 LinearLayout.LayoutParams.WRAP_CONTENT);
 	    
@@ -545,26 +687,30 @@ public class PokemonDetailActivity extends PokepraiserActivity implements AddTea
 	    hideButton.setTextSize(14);
 	    
 	    hideButton.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				toggleAttackList(v);
 			}
 		});
 	    
-	    ((PokepraiserApplication)getApplication()).applyTypeface(hideButton);
+	    ((PokepraiserApplication)getActivity().getApplication()).applyTypeface(hideButton);
 	    
     	return hideButton;
     }
 
 	public void openTeamAddDialog() {
-		mTeamAdd.show(getSupportFragmentManager(), null);
+		mTeamAdd.setTargetFragment(this, 0);
+		mTeamAdd.show(getChildFragmentManager(), null);
 	}
 
 	@Override
 	public void onTeamItemClick(AddTeamMemberDialog dialog) {
 		final TeamInfo selectedTeam = mTeams.get(dialog.getSelectedItem());
 
+		mTeamDataSource.openWrite();
+		mTeamDataSource.addTeamMember(mPokemonDetail.getPokemonAttributes().getPokemonId(), selectedTeam.getDbId());
+		mTeamDataSource.close();
+		
 		dialog.dismiss();
 	}
 }

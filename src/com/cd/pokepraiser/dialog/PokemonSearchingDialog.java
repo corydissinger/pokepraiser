@@ -48,4 +48,12 @@ public class PokemonSearchingDialog extends DialogFragment {
         
         return dialog;
 	}
+	
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+        super.onDestroyView();
+	 }	
 }

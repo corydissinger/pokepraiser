@@ -41,19 +41,14 @@ public class AttackSearchDialog extends DialogFragment {
 		mAttacks = allAttacks;
 	}
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (AttackSearchDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement AttackSearchDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (AttackSearchDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement AttackSearchDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
 		View attackListView 		= theActivity.getLayoutInflater().inflate(R.layout.attacks_list_screen, null);
@@ -104,6 +99,14 @@ public class AttackSearchDialog extends DialogFragment {
         return builder.create();
 	}
 
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+         super.onDestroyView();
+	 }	
+	
 	public int getSelectedItem() {
 		return selectedItem;
 	}

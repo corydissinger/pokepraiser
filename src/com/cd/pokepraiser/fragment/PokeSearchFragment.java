@@ -1,15 +1,18 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.io.Serializable;
 import java.util.List;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.AbilityInfo;
@@ -30,10 +33,12 @@ import com.cd.pokepraiser.dialog.TypeSearchDialog;
 import com.cd.pokepraiser.dialog.TypeSearchDialog.TypeSearchDialogListener;
 import com.cd.pokepraiser.util.ExtrasConstants;
 
-public class PokeSearchActivity extends PokepraiserActivity implements AbilitySearchDialogListener, 
+public class PokeSearchFragment extends SherlockFragment implements AbilitySearchDialogListener, 
 																	   TypeSearchDialogListener, 
 																	   AttackSearchDialogListener{
 
+	public static final String TAG = "pokeSearch";
+	
 	private AbilitiesDataSource mAbilitiesDataSource;	
 	private AttacksDataSource mAttacksDataSource;	
 	private PokemonDataSource mPokemonDataSource;
@@ -47,6 +52,8 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 	private TypeSearchDialog 	mTypeSearch;
 	private AttackSearchDialog 	mAttackSearch;
 	private PokemonSearchingDialog	mPokemonSearch;	
+
+	private ViewGroup			mParentView;
 	
 	private Button				mAbilitySearchButton;
 	
@@ -75,17 +82,16 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 	
     @SuppressWarnings("unchecked")
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pokemon_search_screen);
 
-        mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        
+        mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());        
         
         if(savedInstanceState == null){
         	mSearchQuery = new PokemonSearchQuery();
         	
-            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
+            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
             
             mAbilitiesDataSource.open();
             mAllAbilities = mAbilitiesDataSource.getAbilityList();
@@ -106,24 +112,68 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
         mAbilitySearch 		= new AbilitySearchDialog(mAllAbilities);
         mTypeSearch			= new TypeSearchDialog(mAllTypes);
         mPokemonSearch		= new PokemonSearchingDialog();
+    }
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentView = (ViewGroup)inflater.inflate(R.layout.pokemon_search_screen, container, false);
+
+        mAbilitySearchButton 		= (Button) mParentView.findViewById(R.id.abilitySearch);
+        mTypeOneSearchButton 		= (Button) mParentView.findViewById(R.id.typeOneSearch);
+        mTypeTwoSearchButton 		= (Button) mParentView.findViewById(R.id.typeTwoSearch);
+        mAttackOneSearchButton		= (Button) mParentView.findViewById(R.id.attackOneSearch);
+        mAttackTwoSearchButton		= (Button) mParentView.findViewById(R.id.attackTwoSearch);
+        mAttackThreeSearchButton	= (Button) mParentView.findViewById(R.id.attackThreeSearch);
+        mAttackFourSearchButton		= (Button) mParentView.findViewById(R.id.attackFourSearch);
         
-        mAbilitySearchButton 		= (Button) findViewById(R.id.abilitySearch);
-        mTypeOneSearchButton 		= (Button) findViewById(R.id.typeOneSearch);
-        mTypeTwoSearchButton 		= (Button) findViewById(R.id.typeTwoSearch);
-        mAttackOneSearchButton		= (Button) findViewById(R.id.attackOneSearch);
-        mAttackTwoSearchButton		= (Button) findViewById(R.id.attackTwoSearch);
-        mAttackThreeSearchButton	= (Button) findViewById(R.id.attackThreeSearch);
-        mAttackFourSearchButton		= (Button) findViewById(R.id.attackFourSearch);        
+        Button searchPokemon		= (Button) mParentView.findViewById(R.id.search);
         
-        mAbilityCancel				= (ImageView) findViewById(R.id.abilityCancel);
+        mAbilitySearchButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				openAbilitySearchDialog(v);
+			}
+        	
+        });
+
+        final Button [] typeButtons = new Button [] { mTypeOneSearchButton, mTypeTwoSearchButton };
+        final Button [] attackButtons = new Button [] { mAttackOneSearchButton, mAttackTwoSearchButton, mAttackThreeSearchButton, mAttackFourSearchButton };
         
-        mTypeOneCancel				= (ImageView) findViewById(R.id.typeOneCancel);
-        mTypeTwoCancel				= (ImageView) findViewById(R.id.typeTwoCancel);
+        for(Button typeButton : typeButtons){
+        	typeButton.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					openTypeSearchDialog(v);					
+				}
+        	});
+        }
         
-        mAttackOneCancel			= (ImageView) findViewById(R.id.attackOneCancel);
-        mAttackTwoCancel			= (ImageView) findViewById(R.id.attackTwoCancel);
-        mAttackThreeCancel			= (ImageView) findViewById(R.id.attackThreeCancel);
-        mAttackFourCancel			= (ImageView) findViewById(R.id.attackFourCancel);        
+        for(Button attackButton : attackButtons){
+        	attackButton.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					openAttackSearchDialog(v);					
+				}        		
+        	});
+        }
+        
+        searchPokemon.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				searchPokemon(v);
+			}
+        	
+        });
+        
+        mAbilityCancel				= (ImageView) mParentView.findViewById(R.id.abilityCancel);
+        
+        mTypeOneCancel				= (ImageView) mParentView.findViewById(R.id.typeOneCancel);
+        mTypeTwoCancel				= (ImageView) mParentView.findViewById(R.id.typeTwoCancel);
+        
+        mAttackOneCancel			= (ImageView) mParentView.findViewById(R.id.attackOneCancel);
+        mAttackTwoCancel			= (ImageView) mParentView.findViewById(R.id.attackTwoCancel);
+        mAttackThreeCancel			= (ImageView) mParentView.findViewById(R.id.attackThreeCancel);
+        mAttackFourCancel			= (ImageView) mParentView.findViewById(R.id.attackFourCancel);        
         
         final ImageView [] theClickableImages = new ImageView[]{mAbilityCancel, 
         														mTypeOneCancel, 
@@ -140,12 +190,14 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 					handleCancelClick(v);
 				}
 			});
-        }
+        }		
+		
+        ((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentView);		
+		
+        applyUserValues();        
         
-        ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(R.id.searchParent));
-        
-        applyUserValues();
-    }
+		return mParentView;
+	}
     
     private void applyUserValues() {
     	if(!mSearchQuery.isEmpty()){
@@ -199,22 +251,25 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
     }    
     
     public void openAbilitySearchDialog(View v){
-    	mAbilitySearch.show(getSupportFragmentManager(), null);
+    	mAbilitySearch.setTargetFragment(this, 0);
+    	mAbilitySearch.show(getChildFragmentManager(), null);
     }
     
     public void openTypeSearchDialog(View v){
+    	mTypeSearch.setTargetFragment(this, 0);
     	mTypeSearch.setOriginButton(v.getId());
-    	mTypeSearch.show(getSupportFragmentManager(), null);
+    	mTypeSearch.show(getChildFragmentManager(), null);
     }    
 
     public void openAttackSearchDialog(View v){
+    	mAttackSearch.setTargetFragment(this, 0);
     	mAttackSearch.setOriginButton(v.getId());
-    	mAttackSearch.show(getSupportFragmentManager(), null);
+    	mAttackSearch.show(getChildFragmentManager(), null);
     }    
     
     public void searchPokemon(View v){
     	if(mSearchQuery.isEmpty())
-    		new ErrorDialog(R.string.search_not_found).show(getSupportFragmentManager(), null);    		
+    		new ErrorDialog(R.string.search_not_found).show(getChildFragmentManager(), null);    		
     	else
     		new SearchTask().execute();
     }
@@ -336,7 +391,8 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 
 		@Override
 		protected void onPreExecute() {
-			mPokemonSearch.show(getSupportFragmentManager(), null);
+			mPokemonSearch.setTargetFragment(PokeSearchFragment.this, 0);
+			mPokemonSearch.show(getChildFragmentManager(), null);
 		}
 		
 		@Override
@@ -351,11 +407,15 @@ public class PokeSearchActivity extends PokepraiserActivity implements AbilitySe
 			mPokemonSearch.dismiss();
 			
 			if(pokemonInfo.size() > 0){
-		    	Intent i = new Intent(PokeSearchActivity.this, PokemonListActivity.class);
-				i.putExtra(ExtrasConstants.POKEMON_SEARCH, (Serializable)pokemonInfo);
-				startActivity(i);
+				PokemonListFragment newFrag = new PokemonListFragment();
+				Bundle args = new Bundle();
+				
+				args.putSerializable(ExtrasConstants.POKEMON_SEARCH, (Serializable)pokemonInfo);
+				newFrag.setArguments(args);
+				
+				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);				
 			}else{
-				new ErrorDialog(R.string.search_not_found).show(getSupportFragmentManager(), null);
+				new ErrorDialog(R.string.search_not_found).show(getChildFragmentManager(), null);
 			}
 		}
 	}

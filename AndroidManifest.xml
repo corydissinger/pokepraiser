@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PokepraiserTheme" >
         
         <activity
-            android:name="com.cd.pokepraiser.activity.LoadingScreenActivity"
+            android:name="com.cd.pokepraiser.PokepraiserActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,72 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.cd.pokepraiser.activity.MainMenuScreenActiviy"
-            android:label="@string/app_name" >
-            
-        </activity>        
-
-        <activity
-            android:name="com.cd.pokepraiser.activity.AbilitiesListActivity"
-            android:label="@string/app_name" >
-            
-        </activity>
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.AbilityDetailActivity"
-            android:label="@string/app_name" >
-            
-        </activity>        
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.AttacksListActivity"
-            android:label="@string/app_name" >
-            
-        </activity>
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.AttacksDetailActivity"
-            android:label="@string/app_name" >
-            
-        </activity>           
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.PokemonListActivity"
-            android:label="@string/app_name" >
-            
-        </activity>
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.PokemonDetailActivity"
-            android:label="@string/app_name" >
-
-        </activity>            
-            
-        <activity
-            android:name="com.cd.pokepraiser.activity.PokeSearchActivity"
-            android:label="@string/app_name" >            
-            
-        </activity>        
-
-        <activity
-            android:name="com.cd.pokepraiser.activity.TeamManagerActivity"
-            android:label="@string/app_name" >            
-            
-        </activity>
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.TeamBuilderActivity"
-            android:label="@string/app_name" >            
-            
-        </activity>
-        
-        <activity
-            android:name="com.cd.pokepraiser.activity.TeamMemberActivity"
-            android:label="@string/app_name" >            
-            
-        </activity>        
         
     </application>
 

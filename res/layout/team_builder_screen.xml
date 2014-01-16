@@ -41,8 +41,7 @@
 		        android:gravity="center"
 		        android:text="@string/add_pokemon"
 		        android:textSize="18sp"
-		        android:clickable="true"
-		        android:onClick="openAddPokemonDialog" />            
+		        android:clickable="true" />            
             
         </LinearLayout>	    		
 

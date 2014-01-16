@@ -1,22 +1,25 @@
-package com.cd.pokepraiser.activity;
+package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.AbilityInfo;
@@ -24,7 +27,6 @@ import com.cd.pokepraiser.data.AttackInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonDetail;
-import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
@@ -35,13 +37,14 @@ import com.cd.pokepraiser.dialog.AbilitySearchDialog.AbilitySearchDialogListener
 import com.cd.pokepraiser.dialog.AttackSearchDialog;
 import com.cd.pokepraiser.dialog.AttackSearchDialog.AttackSearchDialogListener;
 import com.cd.pokepraiser.filter.EVFilter;
-import com.cd.pokepraiser.fragment.MemberStatsTable;
 import com.cd.pokepraiser.util.AttackUtils;
 import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.TypeUtils;
 
-public class TeamMemberActivity extends PokepraiserActivity implements AbilitySearchDialogListener, AttackSearchDialogListener{
+public class TeamMemberFragment extends SherlockFragment implements AbilitySearchDialogListener, AttackSearchDialogListener{
 
+	public static final String TAG = "memberFragment";
+	
 	private TeamMemberAttributes 	mMemberAttributes;
 	private PokemonDetail			mPokemonDetail;
 	private ArrayList<AttackInfo>	mAttackInfoList;
@@ -53,6 +56,8 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 
 	private AbilitySearchDialog mAbilitySearch;
 	private AttackSearchDialog 	mAttackSearch;	
+	
+	private ViewGroup			mParentContainer;
 	
 	private Button				mAbilityModifyButton;
 	private ImageView			mAbilityCancel;
@@ -85,42 +90,39 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 	@Override
 	public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.team_member_screen);		
-		
-        final Intent receivedIntent = getIntent();
-        final int memberId = receivedIntent.getIntExtra(ExtrasConstants.MEMBER_ID, 0);
+		Activity parent = getActivity();
         
-    	PokemonAttributes pokemonAttributes;
-    	AbilityInfo []	  pokemonAbilities;
-    	List<PokemonAttackInfo> pokemonAttacks;        
-
-		mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getApplication()).getTeamdbDatabaseReference());    	
+		mTeamDataSource = new TeamDataSource(((PokepraiserApplication)parent.getApplication()).getTeamdbDatabaseReference());    	
     	
-		if(savedInstanceState == null){
-            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());
-            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)getApplication()).getPokedbDatabaseReference());        	
+		if(savedInstanceState != null){
+			mMemberAttributes = (TeamMemberAttributes) savedInstanceState.getSerializable(ExtrasConstants.MEMBER_ID);
+			mPokemonDetail = (PokemonDetail) savedInstanceState.getParcelable(ExtrasConstants.POKEMON_ID);
+			mAttackInfoList = (ArrayList<AttackInfo>) savedInstanceState.getSerializable(ExtrasConstants.ATTACK_ID);
+		}else{
+			Bundle bundle = getArguments();
+			final int memberId = bundle.getInt(ExtrasConstants.MEMBER_ID);
+			
+            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());
+            mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());
+            mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());        	
 			
             mTeamDataSource.openRead();
             mMemberAttributes = mTeamDataSource.getTeamMember(memberId);
             mTeamDataSource.close();
-
-            if(mMemberAttributes == null)
-            	finish();            
             
 	        mPokemonDataSource.open();
-	        pokemonAttributes = mPokemonDataSource.getPokemonAttributes(mMemberAttributes.getPokemonId(), getResources());
+	        PokemonAttributes pokemonAttributes = mPokemonDataSource.getPokemonAttributes(mMemberAttributes.getPokemonId(), getResources());
 	        mPokemonDataSource.close();        
 	        
 	        mAbilitiesDataSource.open();
-	        pokemonAbilities 
+	        AbilityInfo [] pokemonAbilities 
 	        	= mAbilitiesDataSource.getAbilitiesLearnedBy(new int []{pokemonAttributes.getAbOne(),
 	        														   pokemonAttributes.getAbTwo(),
 	        														   pokemonAttributes.getAbHa()});
 	        mAbilitiesDataSource.close();
 	        
 			mAttacksDataSource.open();
-			pokemonAttacks = mAttacksDataSource.getPokemonAttackInfoList(pokemonAttributes.getDexNo(), pokemonAttributes.getAltForm());
+			List<PokemonAttackInfo> pokemonAttacks = mAttacksDataSource.getPokemonAttackInfoList(pokemonAttributes.getDexNo(), pokemonAttributes.getAltForm());
 			mAttacksDataSource.close();
             
 			mAttackInfoList = new ArrayList<AttackInfo>(AttackUtils.convertPokemonAttackInfoToAttackInfo(pokemonAttacks));
@@ -128,53 +130,55 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
         	mPokemonDetail = new PokemonDetail();
         	mPokemonDetail.setPokemonAttributes(pokemonAttributes);
         	mPokemonDetail.setPokemonAbilities(pokemonAbilities);
-        	mPokemonDetail.setPokemonAttacks(pokemonAttacks);            
-		}else{
-			mMemberAttributes = (TeamMemberAttributes) savedInstanceState.getSerializable(ExtrasConstants.MEMBER_ID);
-			mPokemonDetail = (PokemonDetail) savedInstanceState.getParcelable(ExtrasConstants.POKEMON_ID);
-			mAttackInfoList = (ArrayList<AttackInfo>) savedInstanceState.getSerializable(ExtrasConstants.ATTACK_ID);
-			
-        	pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
-        	pokemonAbilities  	= mPokemonDetail.getPokemonAbilities();
-		}
+        	mPokemonDetail.setPokemonAttacks(pokemonAttacks);			
+		}		
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		mParentContainer = (ViewGroup) inflater.inflate(R.layout.team_member_screen, container, false);	
+
+		PokemonAttributes pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
+		AbilityInfo [] pokemonAbilities			= mPokemonDetail.getPokemonAbilities();
+		List<PokemonAttackInfo> pokemonAttacks	= mPokemonDetail.getPokemonAttacks();		
 		
 		mAbilitySearch				= new AbilitySearchDialog(Arrays.asList(pokemonAbilities));
 		mAttackSearch				= new AttackSearchDialog(mAttackInfoList);
 		
-        mAbilityCancel				= (ImageView) findViewById(R.id.abilityCancel);		
-        mAbilityModifyButton 		= (Button) findViewById(R.id.abilitySearch);		
+        mAbilityCancel				= (ImageView) mParentContainer.findViewById(R.id.abilityCancel);		
+        mAbilityModifyButton 		= (Button) mParentContainer.findViewById(R.id.abilitySearch);		
 		
-        mAttackOneSearchButton		= (Button) findViewById(R.id.attackOneSearch);
-        mAttackTwoSearchButton		= (Button) findViewById(R.id.attackTwoSearch);
-        mAttackThreeSearchButton	= (Button) findViewById(R.id.attackThreeSearch);
-        mAttackFourSearchButton		= (Button) findViewById(R.id.attackFourSearch);		
+        mAttackOneSearchButton		= (Button) mParentContainer.findViewById(R.id.attackOneSearch);
+        mAttackTwoSearchButton		= (Button) mParentContainer.findViewById(R.id.attackTwoSearch);
+        mAttackThreeSearchButton	= (Button) mParentContainer.findViewById(R.id.attackThreeSearch);
+        mAttackFourSearchButton		= (Button) mParentContainer.findViewById(R.id.attackFourSearch);		
 		
-        mAttackOneCancel			= (ImageView) findViewById(R.id.attackOneCancel);
-        mAttackTwoCancel			= (ImageView) findViewById(R.id.attackTwoCancel);
-        mAttackThreeCancel			= (ImageView) findViewById(R.id.attackThreeCancel);
-        mAttackFourCancel			= (ImageView) findViewById(R.id.attackFourCancel);		
+        mAttackOneCancel			= (ImageView) mParentContainer.findViewById(R.id.attackOneCancel);
+        mAttackTwoCancel			= (ImageView) mParentContainer.findViewById(R.id.attackTwoCancel);
+        mAttackThreeCancel			= (ImageView) mParentContainer.findViewById(R.id.attackThreeCancel);
+        mAttackFourCancel			= (ImageView) mParentContainer.findViewById(R.id.attackFourCancel);		
 		
-        mHpEvsEdit					= (EditText) findViewById(R.id.hpEvs);
-        mAtkEvsEdit					= (EditText) findViewById(R.id.atkEvs);
-        mDefEvsEdit					= (EditText) findViewById(R.id.defEvs);
-        mSpatkEvsEdit				= (EditText) findViewById(R.id.spatkEvs);
-        mSpdefEvsEdit				= (EditText) findViewById(R.id.spdefEvs);
-        mSpeEvsEdit					= (EditText) findViewById(R.id.speEvs);        
+        mHpEvsEdit					= (EditText) mParentContainer.findViewById(R.id.hpEvs);
+        mAtkEvsEdit					= (EditText) mParentContainer.findViewById(R.id.atkEvs);
+        mDefEvsEdit					= (EditText) mParentContainer.findViewById(R.id.defEvs);
+        mSpatkEvsEdit				= (EditText) mParentContainer.findViewById(R.id.spatkEvs);
+        mSpdefEvsEdit				= (EditText) mParentContainer.findViewById(R.id.spdefEvs);
+        mSpeEvsEdit					= (EditText) mParentContainer.findViewById(R.id.speEvs);        
         
-        TextView dexNo		 		= (TextView) findViewById(R.id.dexNo);
-        TextView pokemonName		= (TextView) findViewById(R.id.pokemonName);
+        TextView dexNo		 		= (TextView) mParentContainer.findViewById(R.id.dexNo);
+        TextView pokemonName		= (TextView) mParentContainer.findViewById(R.id.pokemonName);
         
-        ImageView pokemonPicture	= (ImageView) findViewById(R.id.pokemonPicture);
+        ImageView pokemonPicture	= (ImageView) mParentContainer.findViewById(R.id.pokemonPicture);
         
-        ImageView typeOne			= (ImageView) findViewById(R.id.typeOne);
-        ImageView typeTwo			= (ImageView) findViewById(R.id.typeTwo);
+        ImageView typeOne			= (ImageView) mParentContainer.findViewById(R.id.typeOne);
+        ImageView typeTwo			= (ImageView) mParentContainer.findViewById(R.id.typeTwo);
         
-        TextView baseHp			= (TextView) findViewById(R.id.baseHp);
-        TextView baseAtk		= (TextView) findViewById(R.id.baseAtk);
-        TextView baseDef		= (TextView) findViewById(R.id.baseDef);
-        TextView baseSpatk		= (TextView) findViewById(R.id.baseSpatk);
-        TextView baseSpdef		= (TextView) findViewById(R.id.baseSpdef);
-        TextView baseSpe		= (TextView) findViewById(R.id.baseSpe);        
+        TextView baseHp			= (TextView) mParentContainer.findViewById(R.id.baseHp);
+        TextView baseAtk		= (TextView) mParentContainer.findViewById(R.id.baseAtk);
+        TextView baseDef		= (TextView) mParentContainer.findViewById(R.id.baseDef);
+        TextView baseSpatk		= (TextView) mParentContainer.findViewById(R.id.baseSpatk);
+        TextView baseSpdef		= (TextView) mParentContainer.findViewById(R.id.baseSpdef);
+        TextView baseSpe		= (TextView) mParentContainer.findViewById(R.id.baseSpe);        
         
         dexNo.setText(Integer.toString(pokemonAttributes.getDexNo()));
         pokemonName.setText(pokemonAttributes.getName());
@@ -222,11 +226,13 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 				
 				@Override
 				public void afterTextChanged(Editable s) {
-					final EditText editText = (EditText) getCurrentFocus();
+					final Object temp = getActivity().getCurrentFocus();
 					
 					//If you set the text of an edit text before it is in the view, this will fire and have null because nothing is in focus!
-					if(editText == null)
+					if(temp != null && !(temp instanceof EditText))
 						return;
+					
+					EditText editText = (EditText) temp;
 					
 					final String newVal = s.toString();
 					
@@ -254,27 +260,79 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		
 		mAbilityModifyButton.setText(getChosenAbility());
 
+		if(mAbilityModifyButton.getText() != getString(R.string.none))
+			mAbilityCancel.setVisibility(View.VISIBLE);
+		
+		mAbilityModifyButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openAbilitySearchDialog(v);
+			}
+		});
+		
 		mAttackOneSearchButton.setText(getChosenAttack(1));
 		mAttackTwoSearchButton.setText(getChosenAttack(2));
 		mAttackThreeSearchButton.setText(getChosenAttack(3));
 		mAttackFourSearchButton.setText(getChosenAttack(4));		
 		
+		if(mAttackOneSearchButton.getText() != getString(R.string.none))
+			mAttackOneCancel.setVisibility(View.VISIBLE);
+		
+		if(mAttackTwoSearchButton.getText() != getString(R.string.none))
+			mAttackTwoCancel.setVisibility(View.VISIBLE);
+		
+		if(mAttackThreeSearchButton.getText() != getString(R.string.none))
+			mAttackThreeCancel.setVisibility(View.VISIBLE);
+
+		if(mAttackFourSearchButton.getText() != getString(R.string.none))
+			mAttackFourCancel.setVisibility(View.VISIBLE);		
+		
+		final Button [] attackSearchButtons = new Button [] {mAttackOneSearchButton, mAttackTwoSearchButton, mAttackThreeSearchButton, mAttackFourSearchButton};
+		
+		for(Button attackButton : attackSearchButtons){
+			attackButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					openAttackSearchDialog(v);
+				}
+			});
+		}
+		
+		Button hp50 = (Button) mParentContainer.findViewById(R.id.hpAt50);
+		Button hp100 = (Button) mParentContainer.findViewById(R.id.hpAt100);		
+
+		Button atk50 = (Button) mParentContainer.findViewById(R.id.atkAt50);
+		Button atk100 = (Button) mParentContainer.findViewById(R.id.atkAt100);
+		
+		Button def50 = (Button) mParentContainer.findViewById(R.id.defAt50);
+		Button def100 = (Button) mParentContainer.findViewById(R.id.defAt100);
+		
+		Button spatk50 = (Button) mParentContainer.findViewById(R.id.spatkAt50);
+		Button spatk100 = (Button) mParentContainer.findViewById(R.id.spatkAt100);
+		
+		Button spdef50 = (Button) mParentContainer.findViewById(R.id.spdefAt50);
+		Button spdef100 = (Button) mParentContainer.findViewById(R.id.spdefAt100);
+		
+		Button spe50 = (Button) mParentContainer.findViewById(R.id.speAt50);
+		Button spe100 = (Button) mParentContainer.findViewById(R.id.speAt100);
+		
+		final Button [] statTableButtons = new Button [] {hp50, hp100, atk50, atk100, def50, def100, spatk50, spatk100, spdef50, spdef100, spe50, spe100};
+		
+		for(Button toggleButton : statTableButtons){
+			toggleButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					toggleStatTable(v);
+				}
+			});
+		}
+		
 		createStatTableFragments();
 		
-        ((PokepraiserApplication)getApplication()).overrideFonts(findViewById(android.R.id.content));		
-	}
-
-	@Override
-	protected void onResume(){
-		super.onResume();
+        ((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentContainer);		
 		
-    	mTeamDataSource.openRead();
-    	final TeamMemberAttributes memberExists = mTeamDataSource.getTeamMember(mMemberAttributes.getId());
-    	mTeamDataSource.close();
-    	
-    	if(memberExists == null)
-    		finish();
-	}	
+		return mParentContainer;
+	}
 	
 	@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -336,12 +394,14 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 	}	
 	
     public void openAbilitySearchDialog(View v){
-    	mAbilitySearch.show(getSupportFragmentManager(), null);
+    	mAbilitySearch.setTargetFragment(this, 0);
+    	mAbilitySearch.show(getActivity().getSupportFragmentManager(), null);
     }
     
     public void openAttackSearchDialog(View v){
+    	mAttackSearch.setTargetFragment(this, 0);
     	mAttackSearch.setOriginButton(v.getId());
-    	mAttackSearch.show(getSupportFragmentManager(), null);
+    	mAttackSearch.show(getActivity().getSupportFragmentManager(), null);
     }
     
 	public void handleCancelClick(View v){
@@ -394,51 +454,51 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		
 		switch(id){
 			case R.id.hpAt50:
-				container = findViewById(R.id.hpStatsFragmentContainer50);
+				container = mParentContainer.findViewById(R.id.hpStatsFragmentContainer50);
 				break;
 				
 			case R.id.hpAt100:
-				container = findViewById(R.id.hpStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.hpStatsFragmentContainer100);				
 				break;
 				
 			case R.id.atkAt50:
-				container = findViewById(R.id.atkStatsFragmentContainer50);				
+				container = mParentContainer.findViewById(R.id.atkStatsFragmentContainer50);				
 				break;
 				
 			case R.id.atkAt100:
-				container = findViewById(R.id.atkStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.atkStatsFragmentContainer100);				
 				break;
 				
 			case R.id.defAt50:
-				container = findViewById(R.id.defStatsFragmentContainer50);				
+				container = mParentContainer.findViewById(R.id.defStatsFragmentContainer50);				
 				break;
 				
 			case R.id.defAt100:
-				container = findViewById(R.id.defStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.defStatsFragmentContainer100);				
 				break;	
 				
 			case R.id.spatkAt50:
-				container = findViewById(R.id.spatkStatsFragmentContainer50);				
+				container = mParentContainer.findViewById(R.id.spatkStatsFragmentContainer50);				
 				break;
 				
 			case R.id.spatkAt100:
-				container = findViewById(R.id.spatkStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.spatkStatsFragmentContainer100);				
 				break;
 				
 			case R.id.spdefAt50:
-				container = findViewById(R.id.spdefStatsFragmentContainer50);				
+				container = mParentContainer.findViewById(R.id.spdefStatsFragmentContainer50);				
 				break;
 				
 			case R.id.spdefAt100:
-				container = findViewById(R.id.spdefStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.spdefStatsFragmentContainer100);				
 				break;
 				
 			case R.id.speAt50:
-				container = findViewById(R.id.speStatsFragmentContainer50);				
+				container = mParentContainer.findViewById(R.id.speStatsFragmentContainer50);				
 				break;
 				
 			case R.id.speAt100:
-				container = findViewById(R.id.speStatsFragmentContainer100);				
+				container = mParentContainer.findViewById(R.id.speStatsFragmentContainer100);				
 				break;				
 		}
 
@@ -457,7 +517,7 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 		
 		for(int i = 0; i < parentViews.length; i++){
 			final Bundle args = new Bundle();
-			MemberStatsTable fragment = new MemberStatsTable();
+			MemberStatsTableFragment fragment = new MemberStatsTableFragment();
 			
 			if(i == 0){
 				args.putInt(ExtrasConstants.LEVEL, 50);
@@ -522,7 +582,7 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 			}
 			
 			fragment.setArguments(args);
-			FragmentTransaction txn = getSupportFragmentManager().beginTransaction();
+			FragmentTransaction txn = getChildFragmentManager().beginTransaction();
 			txn.add(parentViews[i], fragment, mStatTableTags[i]);
 			txn.commit();
 		}
@@ -530,50 +590,50 @@ public class TeamMemberActivity extends PokepraiserActivity implements AbilitySe
 	}
 
 	protected void handleEVChanged(int id, int evs) {
-		MemberStatsTable table50 = null;
-		MemberStatsTable table100 = null;
-		final FragmentManager manager = getSupportFragmentManager();
+		MemberStatsTableFragment table50 = null;
+		MemberStatsTableFragment table100 = null;
+		final FragmentManager manager = getChildFragmentManager();
 		
 		switch (id) {
 			case R.id.hpEvs:
 				mMemberAttributes.setHp(evs);
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[0]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[1]);
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[0]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[1]);
 				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.atkEvs:
 				mMemberAttributes.setAtk(evs);				
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[2]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[3]);
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[2]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[3]);
 				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.defEvs:
 				mMemberAttributes.setDef(evs);				
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[4]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[5]);
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[4]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[5]);
 				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.spatkEvs:
 				mMemberAttributes.setSpatk(evs);				
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[6]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[7]);
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[6]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[7]);
 				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.spdefEvs:
 				mMemberAttributes.setSpdef(evs);				
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[8]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[9]);
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[8]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[9]);
 				new UpdateTeamMemberDataTask().execute();
 				break;
 				
 			case R.id.speEvs:
 				mMemberAttributes.setSpe(evs);				
-				table50 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[10]);
-				table100 = (MemberStatsTable) manager.findFragmentByTag(mStatTableTags[11]);	
+				table50 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[10]);
+				table100 = (MemberStatsTableFragment) manager.findFragmentByTag(mStatTableTags[11]);	
 				new UpdateTeamMemberDataTask().execute();
 				break;				
 		}

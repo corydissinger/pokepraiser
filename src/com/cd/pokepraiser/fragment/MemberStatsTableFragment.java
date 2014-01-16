@@ -1,18 +1,18 @@
 package com.cd.pokepraiser.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.StatUtils;
 
-public class MemberStatsTable extends Fragment {
+public class MemberStatsTableFragment extends SherlockFragment {
 
 	private int mEvs;
 	private int mBaseStat;
@@ -23,7 +23,7 @@ public class MemberStatsTable extends Fragment {
 	private TextView mNeutralRange;
 	private TextView mPositiveRange;
 	
-	public MemberStatsTable() {}
+	public MemberStatsTableFragment() {}
 
 	@Override	
 	public void onCreate(Bundle savedInstanceState){

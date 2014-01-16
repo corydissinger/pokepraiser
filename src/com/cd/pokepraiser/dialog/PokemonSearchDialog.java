@@ -40,19 +40,14 @@ public class PokemonSearchDialog extends DialogFragment {
 		mPokemon = allPokemon;
 	}
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (PokemonSearchDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement PokemonSearchDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (PokemonSearchDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement PokemonSearchDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
 		View pokemonListView 		= theActivity.getLayoutInflater().inflate(R.layout.pokemon_list_screen, null);
@@ -103,6 +98,14 @@ public class PokemonSearchDialog extends DialogFragment {
         return builder.create();
 	}
 
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+        super.onDestroyView();
+	 }	
+	
 	public int getSelectedItem() {
 		return selectedItem;
 	}

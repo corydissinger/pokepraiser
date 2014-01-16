@@ -36,8 +36,7 @@
 		        android:text="@string/none"
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
-		        android:clickable="true"
-		        android:onClick="openAbilitySearchDialog" />
+		        android:clickable="true" />
 		    
 			<ImageView
 			    android:id="@+id/abilityCancel"
@@ -84,8 +83,7 @@
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
-		        android:clickable="true"
-		        android:onClick="openTypeSearchDialog" />
+		        android:clickable="true" />
 		    
 			<ImageView
 			    android:id="@+id/typeOneCancel"
@@ -124,8 +122,7 @@
 		        android:text="@string/none"		        
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
-		        android:clickable="true"
-		        android:onClick="openTypeSearchDialog" />
+		        android:clickable="true" />
 		    
 			<ImageView
 			    android:id="@+id/typeTwoCancel"
@@ -173,7 +170,6 @@
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
 		        android:clickable="true"
-		        android:onClick="openAttackSearchDialog"
 		        android:tag="0" />
 		    
 			<ImageView
@@ -214,7 +210,6 @@
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
 		        android:clickable="true"
-		        android:onClick="openAttackSearchDialog"
 		        android:tag="1" />
 		    
 			<ImageView
@@ -255,7 +250,6 @@
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
 		        android:clickable="true"
-		        android:onClick="openAttackSearchDialog"
 		        android:tag="2" />
 		    
 			<ImageView
@@ -296,7 +290,6 @@
 		        android:textSize="14sp"
 		        android:textColor="@color/clickable_text"
 		        android:clickable="true"
-		        android:onClick="openAttackSearchDialog"
 		        android:tag="3" />
 		    
 			<ImageView
@@ -334,8 +327,7 @@
 		        android:text="@string/search"	        
 		        android:textSize="22sp"
 		        android:textColor="@color/clickable_text"	        
-		        android:clickable="true"
-		        android:onClick="searchPokemon" />        
+		        android:clickable="true" />        
 		        
 	    </LinearLayout>
         	    

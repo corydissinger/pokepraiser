@@ -132,8 +132,7 @@
 				        android:gravity="center"
 				        android:textSize="18sp"
 				        android:textColor="@color/clickable_text"
-				        android:clickable="true"
-				        android:onClick="openAbilityOne" />						
+				        android:clickable="true" />						
 				    
 			    </LinearLayout>						
 			    
@@ -168,8 +167,7 @@
 				        android:gravity="center"
 				        android:textSize="18sp"
 				        android:textColor="@color/clickable_text"
-				        android:clickable="true"
-				        android:onClick="openAbilityTwo" />			
+				        android:clickable="true" />			
 			        				        
 			    </LinearLayout>
 			    
@@ -204,8 +202,7 @@
 				        android:gravity="center"
 				        android:textSize="18sp" 
 				        android:textColor="@color/clickable_text"
-				        android:clickable="true"
-				        android:onClick="openAbilityHidden" />				        
+				        android:clickable="true" />				        
 				        
 			    </LinearLayout>
 
@@ -587,7 +584,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>
@@ -636,7 +632,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>
@@ -685,7 +680,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>
@@ -734,7 +728,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>
@@ -783,7 +776,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>
@@ -832,7 +824,6 @@
 			        android:layout_width="0dip"
 			        android:layout_height="wrap_content"
 			        android:layout_weight="2"
-					android:onClick="toggleAttackList"
 					android:textSize="12sp"	/>
 			    
 		    </LinearLayout>

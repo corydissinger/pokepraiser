@@ -37,19 +37,14 @@ public class AddTeamMemberDialog extends DialogFragment {
 		mTeams = theTeams;
 	}	
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (AddTeamMemberDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement TeamAddDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (AddTeamMemberDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement TeamAddDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
 		View teamListScreen 		= theActivity.getLayoutInflater().inflate(R.layout.types_list_screen, null);
@@ -80,6 +75,14 @@ public class AddTeamMemberDialog extends DialogFragment {
         return builder.create();
 	}
 
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+         super.onDestroyView();
+	 }	
+	
 	public int getSelectedItem() {
 		return selectedItem;
 	}

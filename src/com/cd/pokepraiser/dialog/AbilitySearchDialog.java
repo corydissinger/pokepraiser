@@ -41,19 +41,14 @@ public class AbilitySearchDialog extends DialogFragment {
 		mAbilities = new ArrayList<AbilityInfo>(allAbilities);
 	}
 	
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        
-        try {
-        	mListener = (AbilitySearchDialogListener) activity;
-        } catch(ClassCastException ce){
-        	throw new ClassCastException(activity.toString() + " must implement AbilitySearchDialogListener");
-        }
-    }
-	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+        	mListener = (AbilitySearchDialogListener) getTargetFragment();
+        } catch(ClassCastException ce){
+        	throw new ClassCastException(getTargetFragment().toString() + " must implement AbilitySearchDialogListener");
+        }		
+		
 		final Activity theActivity = getActivity();
 		
 		View abilityListView 		= theActivity.getLayoutInflater().inflate(R.layout.abilities_list_screen, null);
@@ -111,6 +106,14 @@ public class AbilitySearchDialog extends DialogFragment {
 	public void setSelectedItem(AbilityInfo selectedItem) {
 		this.selectedItem = selectedItem;
 	}
+	
+	@Override
+	 public void onDestroyView() {
+	     if (getDialog() != null && getRetainInstance())
+	         getDialog().setDismissMessage(null);
+	     
+         super.onDestroyView();
+	 }	
 	
 	@Override
 	public void dismiss(){
