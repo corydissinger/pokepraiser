@@ -11,5 +11,7 @@ public class ExtrasConstants {
 	public static final String EVS 					= "h";
 	public static final String BASE_STAT 			= "i";
 	public static final String IS_HP 				= "j";
-	public static final String LEVEL 				= "k";		
+	public static final String LEVEL 				= "k";
+	public static final String ITEM_ID	 			= "l";
+	public static final String NATURES	 			= "m";	
 }

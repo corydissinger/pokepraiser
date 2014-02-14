@@ -1,7 +1,9 @@
 package com.cd.pokepraiser;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -14,21 +16,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.cd.pokepraiser.adapter.NavDrawerAdapter;
 import com.cd.pokepraiser.data.NavDrawerItem;
+import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.fragment.AbilitiesListFragment;
 import com.cd.pokepraiser.fragment.AbilityDetailFragment;
 import com.cd.pokepraiser.fragment.AttackDetailFragment;
 import com.cd.pokepraiser.fragment.AttacksListFragment;
+import com.cd.pokepraiser.fragment.ItemDetailFragment;
+import com.cd.pokepraiser.fragment.ItemsListFragment;
+import com.cd.pokepraiser.fragment.NaturesListFragment;
 import com.cd.pokepraiser.fragment.PokeSearchFragment;
 import com.cd.pokepraiser.fragment.PokemonDetailFragment;
 import com.cd.pokepraiser.fragment.PokemonListFragment;
 import com.cd.pokepraiser.fragment.TeamBuilderFragment;
 import com.cd.pokepraiser.fragment.TeamManagerFragment;
 import com.cd.pokepraiser.fragment.TeamMemberFragment;
+import com.cd.pokepraiser.util.TeamExportUtils;
 
 public class PokepraiserActivity extends SherlockFragmentActivity {
 	
@@ -45,7 +53,9 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 	private static final String POKE_LIST_TO_ABILITY 		= "k";
 	private static final String POKE_LIST_TO_TEAMS	 		= "l";
 	private static final String TEAM_MANAGER_TO_BUILDER		= "m";
-	private static final String TEAM_BUILDER_TO_MEMBER		= "n";	
+	private static final String TEAM_BUILDER_TO_MEMBER		= "n";
+	private static final String ITEM_LIST_TO_DETAIL			= "o";	
+	private static final String SEARCH_LIST_TO_DETAIL		= "p";
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -56,10 +66,15 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 	
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;	
+
+	private boolean mIsTwoPane = false;
+	private boolean mIsListOrigin = false;
 	
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_screen);
+        
+        mIsTwoPane = findViewById(R.id.list_frame) != null;
         
         if(savedInstanceState == null)
         	((PokepraiserApplication)getApplication()).loadResources();        
@@ -119,19 +134,25 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
     			mDrawerLayout.openDrawer(mDrawerList);    			
     		}
     	}
-    	
+    	Fragment currFrag;
         switch (item.getItemId()) {
             case R.id.action_team_add:
-        		Fragment currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);            	
+        		currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);            	
             	((PokemonDetailFragment)currFrag).openTeamAddDialog();
+            	return true;
+            	
+            case R.id.action_team_export:
+            	currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            	final List<TeamMemberAttributes> teamMembers = ((TeamBuilderFragment)currFrag).getTeamMembers();
+            	startEmailIntent(teamMembers);
             	return true;
             	
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    
-    @Override
+
+	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
@@ -166,10 +187,19 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
         final String transition = getTransitionString(newFrag);
         FragmentTransaction txn = fragmentManager.beginTransaction();
         
-        if(transition != null)
-        	txn.replace(R.id.content_frame, newFrag, newTag).addToBackStack(transition);
-        else{
-        	txn.replace(R.id.content_frame, newFrag);
+        if(mIsTwoPane){
+        	//In this condition, the user is navigating through detail screens
+        	if(transition != null){
+        		txn.replace(R.id.content_frame, newFrag, newTag).addToBackStack(transition);        		
+        	}else{ //In this condition, the user is starting from the 'top level' navigation 
+        		txn.replace(R.id.list_frame, newFrag);
+        	}
+        }else{
+	        if(transition != null)
+	        	txn.replace(R.id.content_frame, newFrag, newTag).addToBackStack(transition);
+	        else{
+	        	txn.replace(R.id.content_frame, newFrag);
+	        }
         }
         	
         txn.commit();
@@ -178,7 +208,17 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 	}
 
 	private String getTransitionString(Fragment newFrag) {
-		Fragment currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);		
+		Fragment currFrag; 
+		
+		if(mIsTwoPane){
+			if(mIsListOrigin){
+				currFrag = getSupportFragmentManager().findFragmentById(R.id.list_frame);				
+			}else{
+				currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+			}
+		}else{
+			currFrag = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+		}
 		
 		if(currFrag instanceof PokemonListFragment && newFrag instanceof PokemonDetailFragment){
 			return POKE_LIST_TO_DETAIL;
@@ -208,6 +248,10 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 			return TEAM_MANAGER_TO_BUILDER;
 		}else if(currFrag instanceof TeamBuilderFragment && newFrag instanceof TeamMemberFragment){
 			return TEAM_BUILDER_TO_MEMBER;
+		}else if(currFrag instanceof ItemsListFragment && newFrag instanceof ItemDetailFragment){
+			return ITEM_LIST_TO_DETAIL;
+		}else if(currFrag instanceof PokeSearchFragment && newFrag instanceof PokemonDetailFragment){
+			return SEARCH_LIST_TO_DETAIL;
 		}
 		
 		return null;
@@ -264,14 +308,24 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 				newFrag = new AbilitiesListFragment();
 				fragTag = AbilitiesListFragment.TAG;				
 				break;
-			case 4: //Advanced Search
+			case 4: //Item Search
+				isValidItem = true;				
+				newFrag = new ItemsListFragment();
+				fragTag = ItemsListFragment.TAG;
+				break;				
+			case 5: //Natures Search
+				isValidItem = true;				
+				newFrag = new NaturesListFragment();
+				fragTag = NaturesListFragment.TAG;
+				break;				
+			case 6: //Advanced Search
 				isValidItem = true;				
 				newFrag = new PokeSearchFragment();
 				fragTag = PokeSearchFragment.TAG;				
 				break;
-			case 5: //Tools title
+			case 7: //Tools title
 				break;
-			case 6: //Teambuilder
+			case 8: //Teambuilder
 				isValidItem = true;
 				newFrag = new TeamManagerFragment();
 				fragTag = TeamManagerFragment.TAG;
@@ -295,4 +349,23 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 		}
 		
 	}
+	
+    private void startEmailIntent(List<TeamMemberAttributes> teamMembers) {
+    	TeamExportUtils exportUtils = new TeamExportUtils(getApplicationContext());
+    	
+    	Intent i = new Intent(Intent.ACTION_SEND);
+    	i.setType("message/rfc822");
+    	i.putExtra(Intent.EXTRA_SUBJECT, "My Pokepraiser Team");
+    	i.putExtra(Intent.EXTRA_TEXT   , exportUtils.createFormattedTeam(teamMembers));
+    	
+    	try {
+    	    startActivity(Intent.createChooser(i, "Export team..."));
+    	} catch (android.content.ActivityNotFoundException ex) {
+    	    Toast.makeText(PokepraiserActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+    	}		
+	}
+    
+    public void setIsListOrigin(boolean isListOrigin){
+    	mIsListOrigin = isListOrigin;
+    }
 }

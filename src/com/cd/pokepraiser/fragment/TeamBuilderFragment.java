@@ -1,8 +1,9 @@
 package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
@@ -50,32 +53,35 @@ public class TeamBuilderFragment extends SherlockFragment implements PokemonSear
 	@Override
 	public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-		
+
+    	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());        
+        mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+    	
 		if(savedInstanceState == null){
 			savedInstanceState 	= getArguments();
 			mTeamInfo			= (TeamInfo) savedInstanceState.getSerializable(ExtrasConstants.TEAM_INFO);
+
+	        mTeamDataSource.openRead();
+	        mTeamMembers = mTeamDataSource.getTeamMembers(mTeamInfo.getDbId());
+	        mTeamDataSource.close();		
 			
-            mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
-            mTeamDataSource		= new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());
-            
-            mTeamDataSource.openRead();
-            mTeamMembers = mTeamDataSource.getTeamMembers(mTeamInfo.getDbId());
-            mTeamDataSource.close();
-            
+	        mPokemonDataSource.open();
+	        mPokemonDataSource.addPokemonNames(mTeamMembers);        
+	        mPokemonDataSource.close();			
+			
             mPokemonDataSource.open();
             mPokemon = mPokemonDataSource.getPokemonList(getResources());
-            mPokemonDataSource.addPokemonNames(mTeamMembers);
             mPokemonDataSource.close();		
 		}else{
 			mTeamInfo = (TeamInfo) savedInstanceState.getSerializable(ExtrasConstants.TEAM_INFO);
 			mTeamMembers = (ArrayList<TeamMemberAttributes>) savedInstanceState.getSerializable(ExtrasConstants.TEAM_MEMBERS);
 			mPokemon = (ArrayList<PokemonInfo>) savedInstanceState.getSerializable(ExtrasConstants.POKEMON_ID);
 		}
-
-    	mTeamDataSource = new TeamDataSource(((PokepraiserApplication)getActivity().getApplication()).getTeamdbDatabaseReference());		
 		
 		mPokemonSearch = new PokemonSearchDialog(mPokemon);
 		mDeleteMember  = new DeleteMemberDialog();
+		
+		setHasOptionsMenu(true);		
 	}
 	
 	@Override
@@ -95,10 +101,10 @@ public class TeamBuilderFragment extends SherlockFragment implements PokemonSear
 			}
 		});
 		
-		refreshMemberList(inflater);		
-		
         ((PokepraiserApplication)getActivity().getApplication()).overrideFonts(mParentView);		
 
+        refreshMemberList(inflater);        
+        
 		return mParentView;
 	}
 	
@@ -109,6 +115,11 @@ public class TeamBuilderFragment extends SherlockFragment implements PokemonSear
     	savedInstanceState.putSerializable(ExtrasConstants.POKEMON_ID, mPokemon);
     	
     	super.onSaveInstanceState(savedInstanceState);
+    }	
+	
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	inflater.inflate(R.menu.export_team, menu);
     }	
 	
     private void refreshMemberList(LayoutInflater inflater) {
@@ -176,6 +187,7 @@ public class TeamBuilderFragment extends SherlockFragment implements PokemonSear
         args.putInt(ExtrasConstants.MEMBER_ID, teamMember.getId());
         frag.setArguments(args);
         
+        ((PokepraiserActivity)getActivity()).setIsListOrigin(false);
         ((PokepraiserActivity)getActivity()).changeFragment(frag, TeamMemberFragment.TAG);
 	}
 
@@ -219,5 +231,17 @@ public class TeamBuilderFragment extends SherlockFragment implements PokemonSear
 		
 		refreshMemberList(getActivity().getLayoutInflater());		
 		dialog.dismiss();		
+	}
+
+	public List<TeamMemberAttributes> getTeamMembers() {
+        mTeamDataSource.openRead();
+        mTeamMembers = mTeamDataSource.getTeamMembers(mTeamInfo.getDbId());
+        mTeamDataSource.close();		
+		
+        mPokemonDataSource.open();
+        mPokemonDataSource.addPokemonNames(mTeamMembers);        
+        mPokemonDataSource.close();		
+		
+		return mTeamMembers;
 	}
 }

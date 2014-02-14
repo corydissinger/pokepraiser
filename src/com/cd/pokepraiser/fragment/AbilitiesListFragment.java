@@ -74,6 +74,7 @@ public class AbilitiesListFragment extends SherlockFragment {
 				args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
 				newFrag.setArguments(args);
 				
+				((PokepraiserActivity)getActivity()).setIsListOrigin(true);
 				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);
 			}
         });
@@ -106,5 +107,17 @@ public class AbilitiesListFragment extends SherlockFragment {
     	savedInstanceState.putSerializable(ExtrasConstants.ABILITY_ID, mAbilities);
     	
     	super.onSaveInstanceState(savedInstanceState);
-    }	
+    }
+    
+    @Override
+    public void onStop(){
+		mAdapter.getFilter().filter("");    	
+    	super.onStop();
+    }    
+    
+    @Override
+    public void onDestroyView(){
+		mAdapter.getFilter().filter("");    	
+    	super.onDestroyView();
+    }    
 }

@@ -10,6 +10,8 @@
     <string name="all_pokemon">All Pokemon</string>
     <string name="all_types">All Types</string>
     <string name="all_teams">All Teams</string>
+    <string name="all_natures">All Natures</string>
+	<string name="all_items">All Items</string>
     
     <string name="battle_desc_header">Battle Effect</string>
     <string name="secondary_desc_header">Secondary Effect</string>
@@ -56,7 +58,14 @@
     <string name="show">Show</string>
     <string name="hide">Hide</string> 
     <string name="level">LVL</string>
-    <string name="tm_hm">TM/HM</string>           
+    <string name="tm_hm">TM/HM</string>
+	<string name="attack">Attack</string>
+    <string name="defense">Defense</string>
+    <string name="special_attack">SP. Attack</string>
+    <string name="special_defense">SP. Defense</string>
+    <string name="speed">Speed</string>
+    <string name="neutral">Neutral</string>
+	<string name="effect">Effect</string>
 
     <!-- Team Screens -->    
     <string name="create_team_title">Create Team</string>
@@ -75,7 +84,9 @@
 	<string name="at_hundred">at lvl 100:&#160;</string>       
 	<string name="max_stats_negative">Negative Nature</string>
 	<string name="max_stats_neutral">Neutral Nature</string>
-	<string name="max_stats_positive">Positive Nature</string>		    
+	<string name="max_stats_positive">Positive Nature</string>
+    <string name="item_label">Item:</string>
+    <string name="nature_label">Nature:</string>    			    
     
     <!-- Search Screen -->
     <string name="ability_label">Ability:</string>
@@ -91,6 +102,8 @@
     <string name="search_pokemon">Search Pokemon</string>
     <string name="search_attacks">Search Attacks</string>
     <string name="search_abilities">Search Abilities</string>
+    <string name="search_items">Search Items</string>
+    <string name="search_natures">Search Natures</string>
     <string name="advanced_pokesearch">Advanced Pokesearch</string>
     <string name="tools_title">Tools</string>        
     <string name="team_builder">Team Builder</string>	

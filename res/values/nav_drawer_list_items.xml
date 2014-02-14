@@ -5,7 +5,9 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
-        <item>0</item>                        
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>                                        
         <item>@drawable/pokepraiser_teambuilder</item>
         <item>0</item>        
     </array>
@@ -14,6 +16,8 @@
         <item>@string/search_pokemon</item>
         <item>@string/search_attacks</item>
         <item>@string/search_abilities</item>
+        <item>@string/search_items</item>
+        <item>@string/search_natures</item>                
         <item>@string/advanced_pokesearch</item>        
         <item>@string/tools_title</item>
         <item>@string/team_builder</item>        

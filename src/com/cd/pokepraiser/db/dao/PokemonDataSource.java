@@ -8,11 +8,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.cd.pokepraiser.data.ItemInfo;
+import com.cd.pokepraiser.data.NatureInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.data.PokemonSearchQuery;
 import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.db.PokeDbHelper;
+import com.cd.pokepraiser.db.queries.ItemQueries;
 import com.cd.pokepraiser.db.queries.PokemonQueries;
 import com.cd.pokepraiser.db.util.PokemonSearchQueryBuilder;
 
@@ -200,5 +203,25 @@ public class PokemonDataSource {
 		cursor.close();
 		
 		return pokemonName;
+	}
+
+	public ArrayList<NatureInfo> getAllNatureInfo() {
+		Cursor cursor = db.rawQuery(PokemonQueries.GET_ALL_NATURE_INFO, null);
+
+		final ArrayList<NatureInfo> natureInfoList = new ArrayList<NatureInfo>(cursor.getCount());
+		
+		while(cursor.moveToNext()){
+			final NatureInfo nature = new NatureInfo();
+			
+			nature.setId(cursor.getInt(0));
+			nature.setName(cursor.getString(1));
+			nature.setPlus(cursor.getInt(2));
+			nature.setMinus(cursor.getInt(3));
+			
+			natureInfoList.add(nature);
+		}
+		
+		cursor.close();
+		return natureInfoList;
 	}
 }

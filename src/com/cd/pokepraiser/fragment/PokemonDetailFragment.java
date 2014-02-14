@@ -255,6 +255,7 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
 		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
 		newFrag.setArguments(args);
 		
+		((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);
     }
     
@@ -267,6 +268,7 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
 		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
 		newFrag.setArguments(args);
 		
+		((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);    	
     }
     
@@ -285,6 +287,7 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
 		args.putInt(ExtrasConstants.ABILITY_ID, abilityItem.getAbilityDbId());
 		newFrag.setArguments(args);
 		
+		((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);    	
     }        
     
@@ -646,6 +649,7 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
 				args.putInt(ExtrasConstants.ATTACK_ID, thePokemonAttackInfo.getAttackDbId());
 				newFrag.setArguments(args);
 				
+				((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);				
 			}
         });

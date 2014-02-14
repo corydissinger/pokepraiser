@@ -137,8 +137,9 @@ public class TeamDataSource {
 			member.setAbility(cursor.getInt(10));
 			member.setPokemonId(cursor.getInt(11));
 			member.setItem(cursor.getString(12));
+			member.setNature(cursor.getString(13));			
 			
-			member.setId(cursor.getInt(13));
+			member.setId(cursor.getInt(14));
 			
 			teamMemberList.add(member);
 		}
@@ -216,7 +217,6 @@ public class TeamDataSource {
 		values.put(TeamQueries.COLUMN_MOVE_THREE, memberAttributes.getMoveThree());		
 		values.put(TeamQueries.COLUMN_MOVE_FOUR, memberAttributes.getMoveFour());
 		
-		long result = db.update(TeamQueries.TABLE_MEMBERS, values, "_id = ?", new String [] { Integer.toString(memberAttributes.getId()) });
-		result = 0;
+		db.update(TeamQueries.TABLE_MEMBERS, values, "_id = ?", new String [] { Integer.toString(memberAttributes.getId()) });
 	}
 }

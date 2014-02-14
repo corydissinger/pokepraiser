@@ -413,6 +413,7 @@ public class PokeSearchFragment extends SherlockFragment implements AbilitySearc
 				args.putSerializable(ExtrasConstants.POKEMON_SEARCH, (Serializable)pokemonInfo);
 				newFrag.setArguments(args);
 				
+				((PokepraiserActivity)getActivity()).setIsListOrigin(true);
 				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);				
 			}else{
 				new ErrorDialog(R.string.search_not_found).show(getChildFragmentManager(), null);

@@ -1,6 +1,7 @@
 package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.TeamInfo;
+import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.db.dao.TeamDataSource;
 import com.cd.pokepraiser.dialog.AddTeamDialog;
 import com.cd.pokepraiser.dialog.AddTeamDialog.AddTeamDialogListener;
@@ -151,6 +155,7 @@ public class TeamManagerFragment extends SherlockFragment implements AddTeamDial
         args.putSerializable(ExtrasConstants.TEAM_INFO, teamInfo);
         frag.setArguments(args);
         
+        ((PokepraiserActivity)getActivity()).setIsListOrigin(true);        
         ((PokepraiserActivity)getActivity()).changeFragment(frag, TeamBuilderFragment.TAG);		
 	}
 	
@@ -179,5 +184,5 @@ public class TeamManagerFragment extends SherlockFragment implements AddTeamDial
 		
 		refreshTeamList(getActivity().getLayoutInflater());		
 		dialog.dismiss();
-	}	
+	}
 }

@@ -183,6 +183,7 @@ public class AttackDetailFragment extends Fragment {
 					args.putInt(ExtrasConstants.POKEMON_ID, thePokemon.getId());
 					newFrag.setArguments(args);
 					
+					((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 					((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);
 				}
 	        });

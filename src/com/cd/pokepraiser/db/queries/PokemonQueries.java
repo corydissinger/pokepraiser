@@ -109,6 +109,8 @@ public class PokemonQueries {
 	public static final String TABLE_POKEMON 	= "POKEMON";
 	
 	public static final String COLUMN_NAME		= "NAME";
-	public static final String COLUMN_ID		= "_id";	
+	public static final String COLUMN_ID		= "_id";
+
+	public static final String GET_ALL_NATURE_INFO = "SELECT _id, NAME, PLUS, MINUS FROM NATURES ORDER BY NAME;";	
 	
 }

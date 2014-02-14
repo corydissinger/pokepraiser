@@ -161,6 +161,7 @@ public class AbilityDetailFragment extends SherlockFragment {
 					args.putInt(ExtrasConstants.POKEMON_ID, thePokemon.getId());
 					newFrag.setArguments(args);
 					
+					((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 					((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);					
 				}
 	        });

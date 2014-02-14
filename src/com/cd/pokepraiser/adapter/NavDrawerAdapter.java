@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +58,11 @@ public class NavDrawerAdapter extends BaseAdapter {
 		if(currItem.getIcon() != 0){
 			icon.setImageResource(currItem.getIcon());
 			title.setText(currItem.getTitle());
+			title.setTextColor(mContext.getResources().getColor(R.color.exciting_red));
 		}else{
 			icon.setVisibility(View.GONE);
-			title.setText(currItem.getTitle());			
+			title.setText(currItem.getTitle());
+			title.setTextColor(mContext.getResources().getColor(R.color.medium_blue));
 		}			
 		
 		return view;

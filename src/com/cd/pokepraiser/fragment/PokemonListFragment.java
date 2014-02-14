@@ -77,6 +77,7 @@ public class PokemonListFragment extends SherlockFragment {
 				args.putInt(ExtrasConstants.POKEMON_ID, pokemonItem.getId());
 				newFrag.setArguments(args);
 				
+				((PokepraiserActivity)getActivity()).setIsListOrigin(true);				
 				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);
 			}
         });
@@ -109,6 +110,18 @@ public class PokemonListFragment extends SherlockFragment {
     	savedInstanceState.putSerializable(ExtrasConstants.POKEMON_ID, mPokemon);
     	
     	super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onStop(){
+		mPokemonListAdapter.getFilter().filter("");    	
+    	super.onStop();
     }    
+    
+    @Override
+    public void onDestroyView(){
+		mPokemonListAdapter.getFilter().filter("");    	
+    	super.onDestroyView();
+    }
     
 }

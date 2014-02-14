@@ -89,7 +89,89 @@
 	        </LinearLayout>			        
 	        
         </LinearLayout>	
+
+		<include layout="@layout/horizontal_fat_bar"/>	    
+	    
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+    	    android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/itemLabel"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/item_label" />
+	        
+		    <Button
+	        	android:id="@+id/itemSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="@string/none"
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true" />
+		    
+			<ImageView
+			    android:id="@+id/itemCancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="wrap_content"
+			    android:visibility="invisible" />
+						
+        </LinearLayout>
         
+		<include layout="@layout/horizontal_fat_bar"/>	    
+	    
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:background="@color/white"
+    	    android:padding="5sp" >
+	        
+			<TextView
+		        android:id="@+id/natureLabel"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"		        
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp"
+		        android:text="@string/nature_label" />
+	        
+		    <Button
+	        	android:id="@+id/natureSearch"
+		        android:layout_weight="5"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="@string/none"
+		        android:textSize="14sp"
+		        android:textColor="@color/clickable_text"
+		        android:clickable="true" />
+		    
+			<ImageView
+			    android:id="@+id/natureCancel"
+				android:clickable="true"			    
+			    android:src="@drawable/remove_button"
+		        android:gravity="center"	    
+		        android:layout_width="0dip"
+		        android:layout_weight="2"				    
+			    android:layout_height="wrap_content"
+			    android:visibility="invisible" />
+						
+        </LinearLayout>        	    
+	    
 		<include layout="@layout/horizontal_fat_bar"/>	    
 	    
         <LinearLayout 

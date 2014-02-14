@@ -2,7 +2,6 @@ package com.cd.pokepraiser.fragment;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,23 +17,23 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.cd.pokepraiser.PokepraiserActivity;
 import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
-import com.cd.pokepraiser.adapter.AttackInfoArrayAdapter;
-import com.cd.pokepraiser.data.AttackInfo;
-import com.cd.pokepraiser.db.dao.AttacksDataSource;
+import com.cd.pokepraiser.adapter.ItemInfoArrayAdapter;
+import com.cd.pokepraiser.data.ItemInfo;
+import com.cd.pokepraiser.db.dao.ItemsDataSource;
 import com.cd.pokepraiser.util.ExtrasConstants;
 
-public class AttacksListFragment extends SherlockFragment {
+public class ItemsListFragment extends SherlockFragment {
 
-	public static final String TAG = "attacksList";
+	public static final String TAG = "itemsList";
 	
-	private AttacksDataSource mAttacksDataSource;
+	private ItemsDataSource mItemsDataSource;
 	
-	private AttackInfoArrayAdapter mAdapter;
+	private ItemInfoArrayAdapter mAdapter;
+
+	private ViewGroup mParentView;	
+	private EditText mItemSearch;
 	
-	private ViewGroup mParentView;
-	private EditText mAttackSearch;
-	
-	private ArrayList<AttackInfo> mAttacks;	
+	private ArrayList<ItemInfo> mItems;	
 	
     @SuppressWarnings("unchecked")
 	@Override
@@ -42,54 +41,54 @@ public class AttacksListFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
         
         if(savedInstanceState == null){
-	        mAttacksDataSource = new AttacksDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+	        mItemsDataSource = new ItemsDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
 	        
-	        mAttacksDataSource.open();
-	        mAttacks = mAttacksDataSource.getAttackInfoList();
-	        mAttacksDataSource.close();
+	        mItemsDataSource.open();
+	        mItems = mItemsDataSource.getAllItemInfo();
+	        mItemsDataSource.close();
         }else{
-        	mAttacks = (ArrayList<AttackInfo>) savedInstanceState.getSerializable(ExtrasConstants.ATTACK_ID);
+        	mItems = (ArrayList<ItemInfo>) savedInstanceState.getSerializable(ExtrasConstants.ITEM_ID);
         }
-    }	
-	
+    }
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		mParentView = (ViewGroup)inflater.inflate(R.layout.attacks_list_screen, container, false);
-
-        ListView attacksListContent = (ListView)mParentView.findViewById(R.id.attacksList);
+		mParentView = (ViewGroup)inflater.inflate(R.layout.abilities_list_screen, container, false);
+	
+		ListView itemsListContent = (ListView)mParentView.findViewById(R.id.abilitiesList);
         
-        mAdapter = new AttackInfoArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mAttacks);
-        attacksListContent.setAdapter(mAdapter);
+        mAdapter = new ItemInfoArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mItems);
+        itemsListContent.setAdapter(mAdapter);
         
-        attacksListContent.setOnItemClickListener(new OnItemClickListener() {
+        itemsListContent.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View clickedView, int position, long arg3) {
-				final AttackInfo attackItem = (AttackInfo) parent.getItemAtPosition(position);
+				final ItemInfo item = (ItemInfo) parent.getItemAtPosition(position);
 				
-				AttackDetailFragment newFrag = new AttackDetailFragment();
+				ItemDetailFragment newFrag = new ItemDetailFragment();
 				Bundle args = new Bundle();
 				
-				args.putInt(ExtrasConstants.ATTACK_ID, attackItem.getAttackDbId());
+				args.putInt(ExtrasConstants.ITEM_ID, item.getId());
 				newFrag.setArguments(args);
 				
 				((PokepraiserActivity)getActivity()).setIsListOrigin(true);
-				((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);				
+				((PokepraiserActivity)getActivity()).changeFragment(newFrag, ItemDetailFragment.TAG);
 			}
         });
+
+        //Code to setup searcher
+        mItemSearch = (EditText)mParentView.findViewById(R.id.searchAbilities);
+        mItemSearch.setHint(R.string.search_items);
         
-        mAttackSearch = (EditText)mParentView.findViewById(R.id.searchAttacks);
-        
-        mAttackSearch.addTextChangedListener(new TextWatcher() {
+        mItemSearch.addTextChangedListener(new TextWatcher() {
             
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
                 mAdapter.getFilter().filter(cs);   
             }
              
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                    int arg3) {
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                  
             }
              
@@ -100,10 +99,10 @@ public class AttacksListFragment extends SherlockFragment {
 		
 		return mParentView;
 	}
-	
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-    	savedInstanceState.putSerializable(ExtrasConstants.ATTACK_ID, mAttacks);
+    	savedInstanceState.putSerializable(ExtrasConstants.ITEM_ID, mItems);
     	
     	super.onSaveInstanceState(savedInstanceState);
     }

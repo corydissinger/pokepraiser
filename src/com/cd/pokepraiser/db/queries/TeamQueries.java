@@ -25,6 +25,7 @@ public class TeamQueries {
 		        +       " MEM.ABILITY,"
 		        +   	" MEM.POKEMON_ID,"
 		        +	    " MEM.ITEM,"
+		        +	    " MEM.NATURE,"		        
 		        +	    " MEM._id"		        
 				+ " FROM MEMBERS AS MEM"
 				+ " JOIN TEAMS_MEMBERS AS TEAMS"

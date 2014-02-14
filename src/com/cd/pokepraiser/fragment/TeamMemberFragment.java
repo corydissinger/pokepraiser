@@ -24,40 +24,61 @@ import com.cd.pokepraiser.PokepraiserApplication;
 import com.cd.pokepraiser.R;
 import com.cd.pokepraiser.data.AbilityInfo;
 import com.cd.pokepraiser.data.AttackInfo;
+import com.cd.pokepraiser.data.ItemInfo;
+import com.cd.pokepraiser.data.NatureInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonDetail;
 import com.cd.pokepraiser.data.TeamMemberAttributes;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
+import com.cd.pokepraiser.db.dao.ItemsDataSource;
 import com.cd.pokepraiser.db.dao.PokemonDataSource;
 import com.cd.pokepraiser.db.dao.TeamDataSource;
 import com.cd.pokepraiser.dialog.AbilitySearchDialog;
 import com.cd.pokepraiser.dialog.AbilitySearchDialog.AbilitySearchDialogListener;
 import com.cd.pokepraiser.dialog.AttackSearchDialog;
 import com.cd.pokepraiser.dialog.AttackSearchDialog.AttackSearchDialogListener;
+import com.cd.pokepraiser.dialog.ItemSearchDialog;
+import com.cd.pokepraiser.dialog.ItemSearchDialog.ItemSearchDialogListener;
+import com.cd.pokepraiser.dialog.NatureSearchDialog;
+import com.cd.pokepraiser.dialog.NatureSearchDialog.NatureSearchDialogListener;
 import com.cd.pokepraiser.filter.EVFilter;
 import com.cd.pokepraiser.util.AttackUtils;
 import com.cd.pokepraiser.util.ExtrasConstants;
 import com.cd.pokepraiser.util.TypeUtils;
 
-public class TeamMemberFragment extends SherlockFragment implements AbilitySearchDialogListener, AttackSearchDialogListener{
+public class TeamMemberFragment extends SherlockFragment implements AbilitySearchDialogListener, 
+																	AttackSearchDialogListener,
+																	ItemSearchDialogListener,
+																	NatureSearchDialogListener{
 
 	public static final String TAG = "memberFragment";
 	
 	private TeamMemberAttributes 	mMemberAttributes;
 	private PokemonDetail			mPokemonDetail;
 	private ArrayList<AttackInfo>	mAttackInfoList;
+	private ArrayList<ItemInfo> 	mItems;
+	private ArrayList<NatureInfo> mNatures;	
 	
 	private PokemonDataSource 	mPokemonDataSource;
 	private TeamDataSource 	  	mTeamDataSource;	
 	private AbilitiesDataSource mAbilitiesDataSource;	
 	private AttacksDataSource 	mAttacksDataSource;	
-
+	private ItemsDataSource 	mItemsDataSource;
+	
 	private AbilitySearchDialog mAbilitySearch;
-	private AttackSearchDialog 	mAttackSearch;	
+	private AttackSearchDialog 	mAttackSearch;
+	private NatureSearchDialog 	mNatureSearch;
+	private ItemSearchDialog 	mItemSearch;	
 	
 	private ViewGroup			mParentContainer;
+
+	private Button				mNatureModifyButton;
+	private ImageView			mNatureCancel;
+	
+	private Button				mItemModifyButton;
+	private ImageView			mItemCancel;	
 	
 	private Button				mAbilityModifyButton;
 	private ImageView			mAbilityCancel;
@@ -105,13 +126,19 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
             mPokemonDataSource 	= new PokemonDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());
             mAbilitiesDataSource = new AbilitiesDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());
             mAttacksDataSource 	= new AttacksDataSource(((PokepraiserApplication)parent.getApplication()).getPokedbDatabaseReference());        	
-			
+	        mItemsDataSource = new ItemsDataSource(((PokepraiserApplication)getActivity().getApplication()).getPokedbDatabaseReference());
+	        
+	        mItemsDataSource.open();
+	        mItems = mItemsDataSource.getAllItemInfo();
+	        mItemsDataSource.close();			
+            
             mTeamDataSource.openRead();
             mMemberAttributes = mTeamDataSource.getTeamMember(memberId);
             mTeamDataSource.close();
             
 	        mPokemonDataSource.open();
 	        PokemonAttributes pokemonAttributes = mPokemonDataSource.getPokemonAttributes(mMemberAttributes.getPokemonId(), getResources());
+	        mNatures							= mPokemonDataSource.getAllNatureInfo();
 	        mPokemonDataSource.close();        
 	        
 	        mAbilitiesDataSource.open();
@@ -140,10 +167,17 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
 
 		PokemonAttributes pokemonAttributes 	= mPokemonDetail.getPokemonAttributes();
 		AbilityInfo [] pokemonAbilities			= mPokemonDetail.getPokemonAbilities();
-		List<PokemonAttackInfo> pokemonAttacks	= mPokemonDetail.getPokemonAttacks();		
 		
 		mAbilitySearch				= new AbilitySearchDialog(Arrays.asList(pokemonAbilities));
 		mAttackSearch				= new AttackSearchDialog(mAttackInfoList);
+		mItemSearch					= new ItemSearchDialog(mItems);
+		mNatureSearch				= new NatureSearchDialog(mNatures);
+
+        mNatureCancel				= (ImageView) mParentContainer.findViewById(R.id.natureCancel);		
+        mNatureModifyButton 		= (Button) mParentContainer.findViewById(R.id.natureSearch);		
+        
+        mItemCancel					= (ImageView) mParentContainer.findViewById(R.id.itemCancel);		
+        mItemModifyButton 			= (Button) mParentContainer.findViewById(R.id.itemSearch);        
 		
         mAbilityCancel				= (ImageView) mParentContainer.findViewById(R.id.abilityCancel);		
         mAbilityModifyButton 		= (Button) mParentContainer.findViewById(R.id.abilitySearch);		
@@ -192,7 +226,9 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
             typeTwo.setImageResource(TypeUtils.getTypeDrawableId(pokemonAttributes.getTypeTwo()));        	
         }        
 		
-        final ImageView [] theClickableImages = new ImageView[]{mAbilityCancel, 
+        final ImageView [] theClickableImages = new ImageView[]{mNatureCancel,
+        														mItemCancel,
+        														mAbilityCancel, 
 																mAttackOneCancel, 
 																mAttackTwoCancel, 
 																mAttackThreeCancel, 
@@ -251,12 +287,37 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
 		baseSpdef.setText(Integer.toString(pokemonAttributes.getBsSpdef()));
 		baseSpe.setText(Integer.toString(pokemonAttributes.getBsSpd()));
 		
+		//NPE Right here???
 		mHpEvsEdit.setText(Integer.toString(mMemberAttributes.getHp()));
 		mAtkEvsEdit.setText(Integer.toString(mMemberAttributes.getAtk()));
 		mDefEvsEdit.setText(Integer.toString(mMemberAttributes.getDef()));
 		mSpatkEvsEdit.setText(Integer.toString(mMemberAttributes.getSpatk()));
 		mSpdefEvsEdit.setText(Integer.toString(mMemberAttributes.getSpdef()));
 		mSpeEvsEdit.setText(Integer.toString(mMemberAttributes.getSpe()));		
+
+		if(mMemberAttributes.getNature() != null && mMemberAttributes.getNature() != getString(R.string.none)){
+			mNatureCancel.setVisibility(View.VISIBLE);
+			mNatureModifyButton.setText(mMemberAttributes.getNature());
+		}
+		
+		mNatureModifyButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openNatureSearchDialog(v);
+			}
+		});		
+		
+		if(mMemberAttributes.getItem() != null && mMemberAttributes.getItem() != getString(R.string.none)){
+			mItemModifyButton.setText(mMemberAttributes.getItem());
+			mItemCancel.setVisibility(View.VISIBLE);
+		}
+		
+		mItemModifyButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openItemSearchDialog(v);
+			}
+		});		
 		
 		mAbilityModifyButton.setText(getChosenAbility());
 
@@ -393,6 +454,40 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
 		dialog.dismiss();		
 	}	
 	
+	@Override
+	public void onNatureItemClick(NatureSearchDialog dialog) {
+		NatureInfo selectedNature = dialog.getSelectedItem();
+		
+		mMemberAttributes.setNature(selectedNature.getName());
+		mNatureModifyButton.setText(selectedNature.getName());
+		mNatureCancel.setVisibility(View.VISIBLE);		
+		new UpdateTeamMemberDataTask().execute();
+		
+		dialog.dismiss();
+	}
+
+	@Override
+	public void onItemItemClick(ItemSearchDialog dialog) {
+		ItemInfo selectedItem = dialog.getSelectedItem();
+		
+		mMemberAttributes.setItem(selectedItem.getName());
+		mItemModifyButton.setText(selectedItem.getName());
+		mItemCancel.setVisibility(View.VISIBLE);		
+		new UpdateTeamMemberDataTask().execute();
+		
+		dialog.dismiss();
+	}	
+
+    public void openNatureSearchDialog(View v){
+    	mNatureSearch.setTargetFragment(this, 0);
+    	mNatureSearch.show(getActivity().getSupportFragmentManager(), null);
+    }
+    
+    public void openItemSearchDialog(View v){
+    	mItemSearch.setTargetFragment(this, 0);
+    	mItemSearch.show(getActivity().getSupportFragmentManager(), null);
+    }    
+	
     public void openAbilitySearchDialog(View v){
     	mAbilitySearch.setTargetFragment(this, 0);
     	mAbilitySearch.show(getActivity().getSupportFragmentManager(), null);
@@ -408,6 +503,20 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
 		final int viewId				= v.getId();
 		
 		switch(viewId){
+			case R.id.itemCancel:
+								v.setVisibility(View.INVISIBLE);
+								mItemModifyButton.setText(R.string.none);
+								mMemberAttributes.setItem(getString(R.string.none));
+								new UpdateTeamMemberDataTask().execute();
+								break;
+								
+			case R.id.natureCancel:
+								v.setVisibility(View.INVISIBLE);
+								mNatureModifyButton.setText(R.string.none);
+								mMemberAttributes.setNature(getString(R.string.none));
+								new UpdateTeamMemberDataTask().execute();
+								break;								
+		
 			case R.id.abilityCancel:
 								v.setVisibility(View.INVISIBLE);
 								mAbilityModifyButton.setText(R.string.none);
@@ -697,5 +806,4 @@ public class TeamMemberFragment extends SherlockFragment implements AbilitySearc
 		}    	
     	
     }
-    
 }
