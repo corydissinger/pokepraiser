@@ -29,12 +29,16 @@ public class PokemonQueries {
 		  + "		PKMN.AB_ONE,"
 		  + "		PKMN.AB_TWO,"
 		  + "		PKMN.AB_HA,"
-		  + "		PKMN.EGG_GROUP_ONE,"
-		  + "		PKMN.EGG_GROUP_TWO,"
+		  + "		EGG1.NAME,"
+		  + "		EGG2.NAME,"
 		  + "		PKMN.IMG_PATH,"
 		  + "		PKMN.ICON_PATH,"
 		  + "		PKMN.ALT_FORM"
 		  + " FROM POKEMON AS PKMN"
+		  + " LEFT JOIN EGG_GROUPS AS EGG1"
+		  + " ON PKMN.EGG_GROUP_ONE = EGG1._id"
+		  + " LEFT JOIN EGG_GROUPS AS EGG2"
+		  + " ON PKMN.EGG_GROUP_TWO = EGG2._id"
 		  + " WHERE PKMN._id = ?;";
 	
 	public static final String GET_POKEMON_LEARNING_ABILITY =
@@ -111,6 +115,19 @@ public class PokemonQueries {
 	public static final String COLUMN_NAME		= "NAME";
 	public static final String COLUMN_ID		= "_id";
 
-	public static final String GET_ALL_NATURE_INFO = "SELECT _id, NAME, PLUS, MINUS FROM NATURES ORDER BY NAME;";	
+	public static final String GET_ALL_NATURE_INFO = "SELECT _id, NAME, PLUS, MINUS FROM NATURES ORDER BY NAME;";
 	
+	public static final String GET_EGG_GROUP_ID = "SELECT _id FROM EGG_GROUPS WHERE NAME = ?;";	
+
+	public static final String GET_ALL_POKEMON_IN_EGG_GROUP = 
+			"SELECT PKMN._id,"
+		  + "		PKMN.DEX_NO,"
+		  + "		PKMN.NAME,"
+		  + "		PKMN.TYPE_ONE,"
+		  + "		PKMN.TYPE_TWO,"
+		  + "		PKMN.ICON_PATH"
+		  + " FROM POKEMON AS PKMN"
+		  + " WHERE EGG_GROUP_ONE = ?"
+		  + " OR EGG_GROUP_TWO = ?"
+		  + " ORDER BY PKMN.DEX_NO ASC, PKMN.ALT_FORM ASC;";	
 }

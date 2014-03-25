@@ -236,6 +236,7 @@
 	        android:id="@+id/priorityLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+	        android:padding="5sp"
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -275,6 +276,7 @@
 	        android:id="@+id/contactLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -314,6 +316,7 @@
 	        android:id="@+id/soundLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -353,6 +356,7 @@
 	        android:id="@+id/punchLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -392,6 +396,7 @@
 	        android:id="@+id/snatchLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -431,6 +436,7 @@
 	        android:id="@+id/gravityLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -470,6 +476,7 @@
 	        android:id="@+id/defrostLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -509,6 +516,7 @@
 	        android:id="@+id/triplesLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -548,6 +556,7 @@
 	        android:id="@+id/reflectedLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -587,6 +596,7 @@
 	        android:id="@+id/blockedLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView
@@ -626,6 +636,7 @@
 	        android:id="@+id/mirrorableLayoutRow"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
 			android:background="@color/white" >	       
 	        
 		    <TextView

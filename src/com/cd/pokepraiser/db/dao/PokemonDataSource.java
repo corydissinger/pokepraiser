@@ -81,8 +81,8 @@ public class PokemonDataSource {
 		pokemonDetail.setAbOne(cursor.getInt(11));
 		pokemonDetail.setAbTwo(cursor.getInt(12));
 		pokemonDetail.setAbHa(cursor.getInt(13));
-		pokemonDetail.setEggOne(cursor.getInt(14));
-		pokemonDetail.setEggTwo(cursor.getInt(15));
+		pokemonDetail.setEggOne(cursor.getString(14));
+		pokemonDetail.setEggTwo(cursor.getString(15));
 		pokemonDetail.setAltForm(cursor.getInt(18));
 
 		final int imgDrawableId 		= resources.getIdentifier(cursor.getString(16), "drawable", "com.cd.pokepraiser");
@@ -223,5 +223,41 @@ public class PokemonDataSource {
 		
 		cursor.close();
 		return natureInfoList;
+	}
+
+	public ArrayList<PokemonInfo> getAllPokemonInEggGroup(String eggGroup, Resources resources) {
+		Cursor cursor = db.rawQuery(PokemonQueries.GET_EGG_GROUP_ID, new String [] { eggGroup });		
+		int eggGroupId = 0;
+		
+		while(cursor.moveToNext()){
+			eggGroupId = cursor.getInt(0);
+		}
+		
+		cursor.close();
+		
+		//Now that we have the egg group int ID again, get all of the matching pokes
+		cursor = db.rawQuery(PokemonQueries.GET_ALL_POKEMON_IN_EGG_GROUP, new String [] { Integer.toString(eggGroupId), Integer.toString(eggGroupId) });
+
+		final ArrayList<PokemonInfo> pokemonInfoList = new ArrayList<PokemonInfo>(cursor.getCount());
+		
+		while(cursor.moveToNext()){
+			final PokemonInfo info = new PokemonInfo();
+			
+			//TODO: Never name Android resources with hyphens, use underscores!
+			final int drawableId 			= resources.getIdentifier(cursor.getString(5), "drawable", "com.cd.pokepraiser");
+			
+			info.setId(cursor.getInt(0));
+			info.setDexNo(cursor.getInt(1));
+			info.setName(cursor.getString(2));
+			info.setTypeOne(cursor.getInt(3));
+			info.setTypeTwo(cursor.getInt(4));
+			info.setIconDrawable(drawableId);
+			
+			pokemonInfoList.add(info);
+		}
+		
+		cursor.close();		
+		
+		return pokemonInfoList;
 	}
 }

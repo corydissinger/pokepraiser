@@ -28,6 +28,7 @@ import com.cd.pokepraiser.data.AbilityInfo;
 import com.cd.pokepraiser.data.PokemonAttackInfo;
 import com.cd.pokepraiser.data.PokemonAttributes;
 import com.cd.pokepraiser.data.PokemonDetail;
+import com.cd.pokepraiser.data.PokemonInfo;
 import com.cd.pokepraiser.data.TeamInfo;
 import com.cd.pokepraiser.db.dao.AbilitiesDataSource;
 import com.cd.pokepraiser.db.dao.AttacksDataSource;
@@ -141,6 +142,9 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
         TextView abilityOne			= (TextView) mParentView.findViewById(R.id.abilityOne);
         TextView abilityTwo			= (TextView) mParentView.findViewById(R.id.abilityTwo);        
         TextView abilityHidden		= (TextView) mParentView.findViewById(R.id.abilityHidden);        
+
+        TextView eggOne				= (TextView) mParentView.findViewById(R.id.eggOne);
+        TextView eggTwo				= (TextView) mParentView.findViewById(R.id.eggTwo);        
         
         TextView hpLabel			= (TextView) mParentView.findViewById(R.id.baseHpLabel);
         TextView atkLabel			= (TextView) mParentView.findViewById(R.id.baseAtkLabel);
@@ -214,9 +218,41 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
             });
         }
         
+        if(pokemonAttributes.getEggOne() == null){
+        	final LinearLayout eggOneLayout = (LinearLayout) mParentView.findViewById(R.id.eggOneCell);
+        	((LinearLayout)eggOneLayout.getParent()).removeView(eggOneLayout);        	
+        }else{
+            eggOne.setText(pokemonAttributes.getEggOne());
+            eggOne.setOnClickListener(new View.OnClickListener(){
+    			@Override
+    			public void onClick(View v) {
+    				openEggGroupList(v);
+    			}
+            });        	
+        }
+        
+        if(pokemonAttributes.getEggTwo() == null){
+        	final LinearLayout eggTwoLayout = (LinearLayout) mParentView.findViewById(R.id.eggTwoCell);
+        	((LinearLayout)eggTwoLayout.getParent()).removeView(eggTwoLayout);        	
+        }else{
+        	eggTwo.setText(pokemonAttributes.getEggTwo());
+        	eggTwo.setOnClickListener(new View.OnClickListener(){
+    			@Override
+    			public void onClick(View v) {
+    				openEggGroupList(v);
+    			}            	
+            });        	
+        }
+        
+        if(pokemonAttributes.getEggOne() == null && pokemonAttributes.getEggTwo() == null){
+        	final LinearLayout eggNoneLayout = (LinearLayout) mParentView.findViewById(R.id.eggNoneCell);
+        	eggNoneLayout.setVisibility(View.VISIBLE);
+        }
+        
         //Set the base stat values
 
         applyProgressAndColorToBars();
+        
         hp.setText(Integer.toString(pokemonAttributes.getBsHp()));        
         def.setText(Integer.toString(pokemonAttributes.getBsDef()));        
         atk.setText(Integer.toString(pokemonAttributes.getBsAtk()));        
@@ -290,6 +326,23 @@ public class PokemonDetailFragment extends SherlockFragment implements AddTeamMe
 		((PokepraiserActivity)getActivity()).setIsListOrigin(false);
 		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);    	
     }        
+    
+	private void openEggGroupList(View v) {
+		final String eggGroup = ((Button)v).getText().toString(); 
+		
+		mPokemonDataSource.open();
+		final ArrayList<PokemonInfo> pokemonInEggGroup = mPokemonDataSource.getAllPokemonInEggGroup(eggGroup, getResources());
+		mPokemonDataSource.close();
+		
+		PokemonListFragment newFrag = new PokemonListFragment();
+		Bundle args = new Bundle();
+		
+		args.putSerializable(ExtrasConstants.POKEMON_SEARCH, pokemonInEggGroup);
+		newFrag.setArguments(args);
+		
+		((PokepraiserActivity)getActivity()).setIsListOrigin(false);
+		((PokepraiserActivity)getActivity()).changeFragment(newFrag, newFrag.TAG);		
+	}    
     
     public void toggleAttackList(View v){
     	LinearLayout labelButtonContainer = (LinearLayout) v.getParent();

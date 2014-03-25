@@ -58,8 +58,8 @@ public class AttacksQueries {
 		    +	" WHERE PKMN_ATKS.DEX_NO ="; //Shitty hack, thands Android SQLite apis!
 	
 	public static final String GET_ALL_LEARNED_ATTACKS_TWO =
-			" AND PKMN_ATKS.ALT_FORM =";
+			" AND (PKMN_ATKS.ALT_FORM = 0 OR PKMN_ATKS.ALT_FORM =";
 	
 	public static final String GET_ALL_LEARNED_ATTACKS_THREE =	
-			" ORDER BY PKMN_ATKS.LEARNED_TYPE, PKMN_ATKS.LVL_OR_TM;";	
+			" ) ORDER BY PKMN_ATKS.LEARNED_TYPE, PKMN_ATKS.LVL_OR_TM;";	
 }

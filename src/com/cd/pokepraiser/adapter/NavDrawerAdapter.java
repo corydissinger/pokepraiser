@@ -59,6 +59,9 @@ public class NavDrawerAdapter extends BaseAdapter {
 			icon.setImageResource(currItem.getIcon());
 			title.setText(currItem.getTitle());
 			title.setTextColor(mContext.getResources().getColor(R.color.exciting_red));
+			
+			view.setEnabled(false);
+			view.setOnClickListener(null);
 		}else{
 			icon.setVisibility(View.GONE);
 			title.setText(currItem.getTitle());

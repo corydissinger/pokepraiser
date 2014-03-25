@@ -39,7 +39,10 @@
     <string name="search">Search</string>
     <string name="abilities_label">Abilities</string>    
     <string name="first_ability">First:</string>
-    <string name="second_ability">Second:</string>        
+    <string name="second_ability">Second:</string>
+	<string name="no_egg">No Egg Groups. (Most liklely not breedable)</string>    
+    <string name="first_egg">Egg Group One:</string>
+    <string name="second_egg">Egg Group Two:</string>            
     <string name="hidden_ability">Hidden:</string>
     <string name="learned_by">Learned By</string>
     <string name="hp_label">HP:</string>    

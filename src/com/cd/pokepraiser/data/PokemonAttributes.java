@@ -29,8 +29,8 @@ public class PokemonAttributes implements Serializable {
 	private int abHa;
 	private int imgDrawable;
 	private int iconDrawable;
-	private int eggOne;
-	private int eggTwo;
+	private String eggOne;
+	private String eggTwo;
 	private int pokemonId;
 	private int altForm;
 	
@@ -112,16 +112,16 @@ public class PokemonAttributes implements Serializable {
 	public void setAbHa(int abHa) {
 		this.abHa = abHa;
 	}
-	public int getEggOne() {
+	public String getEggOne() {
 		return eggOne;
 	}
-	public void setEggOne(int eggOne) {
+	public void setEggOne(String eggOne) {
 		this.eggOne = eggOne;
 	}
-	public int getEggTwo() {
+	public String getEggTwo() {
 		return eggTwo;
 	}
-	public void setEggTwo(int eggTwo) {
+	public void setEggTwo(String eggTwo) {
 		this.eggTwo = eggTwo;
 	}
 	public int getImgDrawable() {

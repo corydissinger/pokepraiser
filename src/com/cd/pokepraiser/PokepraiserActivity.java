@@ -56,6 +56,7 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 	private static final String TEAM_BUILDER_TO_MEMBER		= "n";
 	private static final String ITEM_LIST_TO_DETAIL			= "o";	
 	private static final String SEARCH_LIST_TO_DETAIL		= "p";
+	private static final String POKE_DETAIL_TO_LIST			= "q";	
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -186,11 +187,21 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         final String transition = getTransitionString(newFrag);
         FragmentTransaction txn = fragmentManager.beginTransaction();
+        txn.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         
         if(mIsTwoPane){
         	//In this condition, the user is navigating through detail screens
-        	if(transition != null){
-        		txn.replace(R.id.content_frame, newFrag, newTag).addToBackStack(transition);        		
+        	//Also allows me to put bad hacks that change the way certain screen transitions behave
+        	if(transition != null &&
+    		   !transition.equals(POKE_DETAIL_TO_LIST)){
+        		
+        		txn.replace(R.id.content_frame, newFrag, newTag).addToBackStack(transition);
+        		
+        	}else if(transition != null &&
+        			 transition.equals(POKE_DETAIL_TO_LIST)){ //In this condition, we do want to treat swapping the list content as a txn to rollback
+        		
+        		txn.replace(R.id.list_frame, newFrag, newTag).addToBackStack(transition);
+        		
         	}else{ //In this condition, the user is starting from the 'top level' navigation 
         		txn.replace(R.id.list_frame, newFrag);
         	}
@@ -252,6 +263,8 @@ public class PokepraiserActivity extends SherlockFragmentActivity {
 			return ITEM_LIST_TO_DETAIL;
 		}else if(currFrag instanceof PokeSearchFragment && newFrag instanceof PokemonDetailFragment){
 			return SEARCH_LIST_TO_DETAIL;
+		}else if(currFrag instanceof PokemonDetailFragment && newFrag instanceof PokemonListFragment){
+			return POKE_DETAIL_TO_LIST;
 		}
 		
 		return null;

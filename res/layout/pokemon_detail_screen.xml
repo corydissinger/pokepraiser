@@ -209,6 +209,106 @@
 		</LinearLayout>
 		
 		<include layout="@layout/horizontal_fat_bar"/>
+	
+	    <LinearLayout 
+	        android:id="@+id/eggBox"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="10sp"				
+	        android:background="@color/white" >			
+
+		    <LinearLayout 
+		        android:id="@+id/eggNoneCell"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+				android:orientation="vertical"
+				android:visibility="gone">
+				    
+			    <TextView
+			        android:id="@+id/eggNoneLabel"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+			        android:gravity="center"
+			        android:textAppearance="?android:attr/textAppearanceLarge"
+			        android:textSize="14sp"
+			        android:text="@string/no_egg" />		        
+		        
+	        </LinearLayout>	        
+	        	        
+		    <LinearLayout 
+		        android:id="@+id/eggOneCell"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+				android:orientation="vertical" >		            
+            		     
+			    <TextView
+			        android:id="@+id/eggOneLabel"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+			        android:layout_marginLeft="40sp"		        
+			        android:gravity="right|center_vertical"
+			        android:textAppearance="?android:attr/textAppearanceLarge"
+			        android:textSize="14sp"
+			        android:text="@string/first_egg" />
+			    
+				<View
+		        	android:layout_width="0sp"			    
+			        android:layout_height="12sp"
+			        android:visibility="invisible"/>					    					    
+			        
+			    <Button
+			        android:id="@+id/eggOne"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="30sp"
+		            android:layout_marginRight="30sp"			            
+			        android:gravity="center"
+			        android:textSize="18sp"
+			        android:textColor="@color/clickable_text"
+			        android:clickable="true" />						
+			    
+		    </LinearLayout>						
+		    
+		    <LinearLayout 
+		        android:id="@+id/eggTwoCell"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="15sp"
+				android:orientation="vertical" >
+
+			    <TextView
+			        android:id="@+id/eggTwoLabel"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+			        android:layout_marginLeft="40sp"			        
+			        android:gravity="right|center_vertical"
+			        android:textAppearance="?android:attr/textAppearanceLarge"
+			        android:textSize="14sp"
+			        android:text="@string/second_egg" />		        
+		        
+				<View
+		        	android:layout_width="0sp"			    
+			        android:layout_height="12sp"
+			        android:visibility="invisible"/>
+
+			    <Button
+			        android:id="@+id/eggTwo"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="30sp"
+		            android:layout_marginRight="30sp"			        
+			        android:gravity="center"
+			        android:textSize="18sp"
+			        android:textColor="@color/clickable_text"
+			        android:clickable="true" />			
+		        				        
+		    </LinearLayout>
+		    
+	    </LinearLayout>
+		    
+		<include layout="@layout/horizontal_fat_bar"/>
 		
 	    <LinearLayout
 			android:id="@+id/hpRow"	        
