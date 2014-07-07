@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/attackScrollable"
+       	android:layout_height="wrap_content"
+       	android:layout_width="match_parent"
+       	android:orientation="vertical"
+       	android:paddingLeft="20sp"
+       	android:paddingRight="20sp"       	
+		android:background="@drawable/dex_background" >
+       	
+	    <TextView
+	        android:id="@+id/attackName"
+    		android:layout_marginTop="20sp"	        
+	        style="@style/abilityNameStyle"/>
+	    
+	    <LinearLayout
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	         
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>	        
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/powerLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/basePowerLabel"
+	        	android:text="@string/power"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/basePower"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>
+
+	    <LinearLayout
+	        android:id="@+id/accuracyLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+   			android:background="@color/white" >
+	        
+		    <TextView
+		        android:id="@+id/baseAccuracyLabel"
+	        	android:text="@string/accuracy"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        	        			        
+				style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/baseAccuracy"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+
+	    <LinearLayout
+	        android:id="@+id/ppLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+   			android:background="@color/white" >
+	        
+		    <TextView
+		        android:id="@+id/basePpLabel"
+	        	android:text="@string/pp"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    		    
+		    <TextView
+		        android:id="@+id/basePp"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+
+	    <LinearLayout
+	        android:id="@+id/effectPctLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+   			android:background="@color/white" >
+	        
+		    <TextView
+		        android:id="@+id/effectPctLabel"
+	        	android:text="@string/effect_percent"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        	
+	        	style="@style/detailAttributeHeaderStyle" />
+
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    		    
+		    <TextView
+		        android:id="@+id/effectPct"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+	    	    	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>	
+	    </LinearLayout>	    
+	    
+	    <TextView
+	        android:id="@+id/battleDescLabel"
+   			android:background="@color/white"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10sp"     
+	        android:gravity="center"
+	        android:text="@string/battle_desc_header"	        
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textSize="22sp" />
+	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    	    
+	    <TextView
+	        android:id="@+id/battleDesc"
+			android:background="@color/white"	        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+   	        android:padding="10sp"
+	        android:gravity="left|center_vertical"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textSize="14sp" />	    	
+	        
+	    <LinearLayout
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	         
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>
+		</LinearLayout>	    
+	    
+	    <TextView
+	        android:id="@+id/secondaryDescLabel"
+			android:background="@color/white"	        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10sp"	             
+	        android:gravity="center"
+	        android:text="@string/secondary_desc_header"	        
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textSize="22sp" />
+	    
+	    <LinearLayout
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	         
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>
+		</LinearLayout>		    
+	
+	    <TextView
+	        android:id="@+id/secondaryDesc"
+			android:background="@color/white"	        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10sp"	   	        	        
+	        android:gravity="left|center_vertical"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textSize="14sp" />
+	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>
+		</LinearLayout>				  
+		
+	    <LinearLayout
+	        android:id="@+id/priorityLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="5sp"
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/priorityLabel"
+	        	android:text="@string/priority"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/priority"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/contactLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/contactLabel"
+	        	android:text="@string/contact"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/contact"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/soundLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/soundLabel"
+	        	android:text="@string/sound"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/sound"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+	    	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/punchLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/punchLabel"
+	        	android:text="@string/punch"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/punch"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/snatchLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/snatchLabel"
+	        	android:text="@string/snatch"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/snatch"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/gravityLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/gravityLabel"
+	        	android:text="@string/gravity"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/gravity"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/defrostLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/defrostLabel"
+	        	android:text="@string/defrost"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/defrost"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+        
+	    <LinearLayout
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	         
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+        
+	    <LinearLayout
+	        android:id="@+id/triplesLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/triplesLabel"
+	        	android:text="@string/triples"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/triples"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	   
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+        
+	    <LinearLayout
+	        android:id="@+id/reflectedLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/reflectedLabel"
+	        	android:text="@string/reflected"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/reflected"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	    
+	    
+	    <LinearLayout
+	        android:id="@+id/blockedLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/blockedLabel"
+	        	android:text="@string/blocked"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/blocked"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+        
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>
+		</LinearLayout>	    
+        
+	    <LinearLayout
+	        android:id="@+id/mirrorableLayoutRow"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+  	        android:padding="5sp"	        
+			android:background="@color/white" >	       
+	        
+		    <TextView
+		        android:id="@+id/mirrorableLabel"
+	        	android:text="@string/mirrorable"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"	        	
+		        android:layout_weight="5"	        			        
+		        style="@style/detailAttributeHeaderStyle" />
+		    
+			<View
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:visibility="invisible"/>		    
+		    
+		    <TextView
+		        android:id="@+id/mirrorable"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2"
+		        android:gravity="left|center_vertical"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textSize="14sp" />		    	        
+	        
+        </LinearLayout>	    
+	    	    
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_fat_bar"/>
+		</LinearLayout>		    
+	    
+	   	<TextView
+	   	    android:id="@+id/learningLabel"
+			android:text="@string/learned_by"
+			style="@style/abilityAttributeHeaderStyle" 
+			android:background="@color/white" />	
+			
+	    <LinearLayout 
+	       	android:layout_height="wrap_content"
+	       	android:layout_width="match_parent"	        
+        	android:layout_marginLeft="10sp"
+       		android:layout_marginRight="10sp">
+			<include layout="@layout/horizontal_bar"/>				        
+	    </LinearLayout>	   	
+			
+	   	<LinearLayout
+	   	    android:id="@+id/learningList"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"	   	    
+    		android:layout_marginBottom="20sp"	        
+	        android:orientation="vertical" >
+	   	    
+	   	</LinearLayout>	    	
+	    		    
+	</LinearLayout>
+	
+</ScrollView>

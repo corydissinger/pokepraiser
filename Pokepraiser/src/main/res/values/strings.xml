@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Pokepraiser</string>
+    
+    <string name="action_settings">Settings</string>
+    
+    <string name="all_abilities">All Abilities</string>    
+    <string name="all_attacks">All Attacks</string>
+    <string name="all_pokemon">All Pokemon</string>
+    <string name="all_types">All Types</string>
+    <string name="all_teams">All Teams</string>
+    <string name="all_natures">All Natures</string>
+	<string name="all_items">All Items</string>
+    
+    <string name="battle_desc_header">Battle Effect</string>
+    <string name="secondary_desc_header">Secondary Effect</string>
+    <string name="power">Power:</string>
+    <string name="accuracy">Accuracy:</string>
+    <string name="pp">PP:</string>
+    <string name="priority">Priority?</string>    
+    <string name="contact">Physical Contact?</string>
+    <string name="sound">Sound Type?</string>
+    <string name="punch">Punch Move?</string>
+    <string name="snatch">Snatchable?</string>
+    <string name="gravity">Grounded by Gravity?</string>
+    <string name="defrost">Defrosts User?</string>
+    <string name="triples">Hits opposite side in Triple Battles?</string>
+    <string name="reflected">Reflected by Magic Bounce?</string>
+    <string name="blocked">Blocked by Protect?</string>
+    <string name="mirrorable">Copyable by Mirror Move?</string>
+                                            
+    <string name="power_short">POW:</string>
+    <string name="accuracy_short">ACC:</string>
+    <string name="pp_short">PP:</string>    
+    <string name="effect_percent">Effect Rate:</string>
+    <string name="battle_effect_label">Battle Effect</string>
+    <string name="world_effect_label">World Effect</string>
+    <string name="search">Search</string>
+    <string name="abilities_label">Abilities</string>    
+    <string name="first_ability">First:</string>
+    <string name="second_ability">Second:</string>
+	<string name="no_egg">No Egg Groups. (Most liklely not breedable)</string>    
+    <string name="first_egg">Egg Group One:</string>
+    <string name="second_egg">Egg Group Two:</string>            
+    <string name="hidden_ability">Hidden:</string>
+    <string name="learned_by">Learned By</string>
+    <string name="hp_label">HP:</string>    
+    <string name="attack_label">ATK:</string>
+    <string name="defense_label">DEF:</string>
+    <string name="special_attack_label">SP. ATK:</string>
+    <string name="special_defense_label">SP. DEF:</string>
+    <string name="speed_label">SPEED:</string>
+    <string name="learned_attacks_label">Learned Attacks</string>    
+    <string name="level_up_label">Level Up</string>
+    <string name="tm_hm_label">TM &amp; HM</string>
+    <string name="egg_label">Egg Moves</string>
+	<string name="gv_only_label">Transfer Only</string>
+	<string name="pre_evo_label">Pre Evolve</string>
+	<string name="move_tutor_label">Move Tutor</string>		                        
+    <string name="show">Show</string>
+    <string name="hide">Hide</string> 
+    <string name="level">LVL</string>
+    <string name="tm_hm">TM/HM</string>
+	<string name="attack">Attack</string>
+    <string name="defense">Defense</string>
+    <string name="special_attack">SP. Attack</string>
+    <string name="special_defense">SP. Defense</string>
+    <string name="speed">Speed</string>
+    <string name="neutral">Neutral</string>
+	<string name="effect">Effect</string>
+
+    <!-- Team Screens -->    
+    <string name="create_team_title">Create Team</string>
+    <string name="choose_name">Make a name for your team</string>
+    <string name="your_teams">Your Teams</string>
+    <string name="add_team">Add Team +</string>
+    <string name="delete_team_title">Delete Team</string>
+    <string name="delete_member_title">Delete Member</string>    
+    <string name="delete_team_confirm">You are about to permanently delete the team:&#160;</string>
+    <string name="delete_member_confirm">You are about to permanently delete the team member:&#160;</string>    
+    <string name="no_teams">No Teams yet!</string>
+	<string name="no_members">No Members yet!</string>             
+    <string name="add_pokemon">Add Pokemon +</string>
+    <string name="evs_label">EVs:&#160;</string>
+	<string name="at_fifty">at lvl 50:&#160;</string>    
+	<string name="at_hundred">at lvl 100:&#160;</string>       
+	<string name="max_stats_negative">Negative Nature</string>
+	<string name="max_stats_neutral">Neutral Nature</string>
+	<string name="max_stats_positive">Positive Nature</string>
+    <string name="item_label">Item:</string>
+    <string name="nature_label">Nature:</string>    			    
+    
+    <!-- Search Screen -->
+    <string name="ability_label">Ability:</string>
+    <string name="type_label">Type:</string>        
+	<string name="attack_one_label">Attack One:</string>
+	<string name="attack_two_label">Attack Two:</string>
+	<string name="attack_three_label">Attack Three:</string>
+	<string name="attack_four_label">Attack Four:</string>	
+	<string name="searching">Searching</string>	
+
+	<!-- Menu strings -->
+    <string name="search_title">Search Data</string>		
+    <string name="search_pokemon">Search Pokemon</string>
+    <string name="search_attacks">Search Attacks</string>
+    <string name="search_abilities">Search Abilities</string>
+    <string name="search_items">Search Items</string>
+    <string name="search_natures">Search Natures</string>
+    <string name="advanced_pokesearch">Advanced Pokesearch</string>
+    <string name="tools_title">Tools</string>        
+    <string name="team_builder">Team Builder</string>
+    <string name="menu_settings">Settings</string>
+	
+	<!-- Common strings -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="edit">Edit</string>        
+    <string name="cancel">Cancel</string>
+    <string name="none">None</string>                
+
+	<!-- Error strings -->    
+    <string name="error">Error</string>
+    <string name="search_not_found">No Pokemon match your search filters!</string>
+    <string name="use_android_default">Use Android default font?</string>
+    <string name="save">Save</string>
+
+    <!-- Preferences Key Strings -->
+    <string name="preference_file">pokepraiserPrefs</string>
+    <string name="preference_font">customFont</string>
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/settingsScrollable"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20sp"
+        android:paddingRight="20sp"
+        android:background="@drawable/dex_background" >
+
+        <TextView
+            android:id="@+id/settingsTitle"
+            android:layout_marginTop="20sp"
+            android:text="@string/menu_settings"
+            style="@style/abilityNameStyle"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp">
+            <include layout="@layout/horizontal_fat_bar"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fontPreferenceRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:background="@color/white" >
+
+            <CheckBox
+                android:id="@+id/fontCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/use_android_default" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp">
+            <include layout="@layout/horizontal_fat_bar"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/confirmRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:padding="5sp"
+            android:background="@color/white" >
+
+            <Button
+                android:id="@+id/saveButton"
+                android:text="@string/save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:text="@string/cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
